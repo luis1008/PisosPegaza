@@ -1,0 +1,42 @@
+label{
+    font-weight: bold;
+}
+
+input,textarea{
+	text-transform: uppercase;
+}
+
+/*NavPills*/
+
+.nav-pills > .dropdown > .dropdown-menu > a.active,
+.nav-pills > .dropdown > .dropdown-menu > a:active{
+	background-color: #dc3545;
+	color: white;
+	border-radius: 0px;
+	font-weight: bold;
+}
+
+.nav-pills > .dropdown > a.active {
+	background-color: #dc3545;
+	color: white;
+	border-radius: 0px;
+	font-weight: bold;
+}
+
+.nav-pills > .dropdown > a {
+	color: white;
+	font-weight: bold;
+	border-radius: 0px;
+	background-color: #23272b;
+}
+
+.nav-pills{
+	/*border: 2px solid #dc3545;*/
+	border-radius: 5px;
+}
+
+.nav-pills > .dropdown > a:hover{
+	background-color: #dc3545;
+	color: white;
+	border-radius: 0px;
+}

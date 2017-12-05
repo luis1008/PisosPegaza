@@ -1,0 +1,31 @@
+<?php
+
+namespace pegaza;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Producto extends Model
+{
+    protected $table      = "producto";
+    
+    protected $primaryKey = "id_producto";
+    
+    protected $fillable   = ['pd_nombre', 
+                           'pd_tipo', 
+                           'pd_cantidad', 
+                           'pd_costo', 
+                           'pd_precio_venta',
+                           'pd_status'];
+
+    public function materiasprimas(){
+      return $this->belongsToMany('pegaza\MateriaPrima', 'detalle_requisitos', 'producto_id', 'mp_id')->withPivot('det_cantidad','det_precio','det_subtotal','det_status');
+    }
+
+    public function pedidos(){
+      return $this->belongsToMany('pegaza\Pedido', 'detalle_pedido','producto_id','pedido_id')->withPivot('det_prod_cantidad','det_prod_precio','det_prod_subtotal','det_prod_status');
+    }
+
+    public function pedidospegaza(){
+      return $this->belongsToMany('pegaza\PedidoPegaza', 'detalle_pedido','producto_id','pegaza_id')->withPivot('det_prod_cantidad','det_prod_status');
+    } 
+}
