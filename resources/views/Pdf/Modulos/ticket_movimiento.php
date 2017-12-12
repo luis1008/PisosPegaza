@@ -24,7 +24,7 @@
 <body>
 	<div>
 		<p align="center" style="font-size: 40px">Fecha</p>
-		<p class="text-center" style="font-size:30px;"><b><?php echo $movimiento->created_at ?></b></p>
+		<p class="text-center" style="font-size:40px;"><b><?php echo $movimiento->created_at ?></b></p>
 		<p class="text-center"><b><?php echo $nota ?></b></p>
 		<p>Al repartidor <?php echo $movimiento->empleado->em_nombre ?> se le entrego $ <?php echo number_format($movimiento->mt_entregado,2) ?> para ir a comprar a los diferentes lugares lo siguiente:</p>
 		<p class="text-center"><b>Concepto</b></p>
@@ -41,7 +41,7 @@
 		<p style="border-top:5px solid black;" class="text-center">
 			FIRMA
 		</p>
-		<p align="center" style="font-size: 15px">www.pegaza.com.mx</p>
+		<p align="center" style="font-size: 30px">www.pegaza.com.mx</p>
 			<br>
 		<p align="center" style="font-size: 20px">***************************************************************************************************</p>
 	</div>
@@ -49,7 +49,7 @@
 	<?php if ($nota == "ORIGINAL"): ?>
 		<div> 
 		<p align="center" style="font-size: 40px">Fecha</p>  				 
-			<p class="text-center" style="font-size:30px;"><b><?php echo $movimiento->created_at ?></b></p>
+			<p class="text-center" style="font-size:40px;"><b><?php echo $movimiento->created_at ?></b></p>
 		<p class="text-center"><b>COPIA</b></p>
 		<p>Al repartidor <?php echo $movimiento->empleado->em_nombre ?> se le entrego $ <?php echo number_format($movimiento->mt_entregado,2) ?> para ir a comprar a los diferentes lugares lo siguiente:</p>
 		<p class="text-center"><b>Concepto</b></p>
@@ -66,7 +66,8 @@
 		<p style="border-top:5px solid black;" class="text-center">
 			FIRMA
 		</p>
-		<p align="center" style="font-size: 15px">www.pegaza.com.mx</p>
+		<p align="center" style="font-size: 30px">www.pegaza.com.mx</p>
+		<p align="center" style="font-size: 30px">***************************************************************************************************</p>
 		</div>
 	<?php endif ?>
 </body>

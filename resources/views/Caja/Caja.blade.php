@@ -323,7 +323,7 @@
 		                        	<?php if ($pe->pe_status != "PREPARADO PARA ENTREGAR"): ?>
 		                        		<a href="<?php echo route('pdf_pedido',['id'=>$pe->id_pedido,'preorden'=>1,'copia'=>1]) ?>" class="btn btn-danger btn-sm"><span class="icon icon-file-pdf"></span></a>
 		                        	<?php else : ?>
-		                        		<a href="<?php echo route('pdf_pedido',['id'=>$pe->id_pedido,'preorden'=>0,'copia'=>1]) ?>" class="btn btn-danger btn-sm"><span class="icon icon-file-pdf"></span></a>
+		                        		<a target="_blank()" href="<?php echo route('pdf_pedido',['id'=>$pe->id_pedido,'preorden'=>0,'copia'=>1]) ?>" class="btn btn-danger btn-sm"><span class="icon icon-file-pdf"></span></a>
 		                        	<?php endif ?>
 		                        </td>
 		                        <td>
@@ -754,7 +754,7 @@
 								<td class="text-left">
 									<?php $conceptos = \DB::table('detalle_movimientos')->select('ct_concepto','id_concepto')->where('movimiento_temporal_id',$mt->id_movimiento_temporal)->where('compra_id','0')->get(); ?>
 									<?php foreach($mt->compras as $con){ ?>
-										<li>Compra No° <?php echo str_pad($con->id_compra, 2, "0", STR_PAD_LEFT) ?></li>
+										<li>Compra No° <?php echo str_pad($con->cm_nota, 2, "0", STR_PAD_LEFT) ?></li>
 									<?php } ?>
 									<?php foreach($conceptos as $con){ ?>
 										<li><?php echo $con->ct_concepto ?></li>
@@ -1433,7 +1433,7 @@
 								<label>Compras</label>
 								<select name="compras[]" class="form-control multicompra" multiple>
 									@foreach($mov_compras as $compra)
-										<option value="{{$compra->id_compra}}">Compra No° {{str_pad($compra->id_compra, 2, "0", STR_PAD_LEFT)}}</option>
+										<option value="{{$compra->id_compra}}">Compra No° {{str_pad($compra->cm_nota, 2, "0", STR_PAD_LEFT)}}</option>
 									@endforeach
 								</select>
 							</div>

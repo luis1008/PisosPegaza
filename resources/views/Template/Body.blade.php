@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="<?php echo asset('bootstrap4/css/bootstrap.min.css') ?>">
 	<link rel="stylesheet" href="<?php echo asset('datetimepicker/css/bootstrap-datepicker.min.css') ?>">
 	<link rel="stylesheet" href="<?php echo asset('chosen/chosen.min.css') ?>">
+	<link rel="stylesheet" href="<?php echo asset('img/icono.ico') ?>">
 	<!-- JS -->
 	<script src="<?php echo asset('jquery/jquery.js') ?>"></script>
 	<script src="<?php echo asset('bootstrap4/js/popper.min.js') ?>"></script>

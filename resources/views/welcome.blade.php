@@ -4,6 +4,7 @@
         <title>Login</title>
         <link rel="stylesheet" href="<?php echo asset('fonts/style.css') ?>">
         <link rel="stylesheet" href="<?php echo asset('bootstrap4/css/bootstrap.min.css') ?>">
+        <link rel="stylesheet" href="<?php echo asset('img/icono.ico') ?>">
         <style>
             .login{
                 width: 30%;
@@ -25,6 +26,11 @@
                     <h4><b>Bienvenido al Sistema Administrativo Pegaza</b></h4>
                 </div>
             </div>
+            <center>  
+            <div>  
+                <img src="img/logo.jpg">
+            </div>
+            </center>
             <div class="login">
                 <?php if(count($errors) > 0){ ?>
                     <div class="alert alert-danger">
