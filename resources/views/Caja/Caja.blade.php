@@ -97,7 +97,8 @@
 	    <a class="nav-link dropdown-toggle tooltips2" data-toggle="dropdown" href="#" data-placement="top" title="Produccion"><span class="icon icon-hammer"></span> <!-- Produccion --></a>
 	    <div class="dropdown-menu">
 	      <a class="dropdown-item" data-toggle="pill" href="#pills-produccion" role="tab"><span class="icon icon-eye"></span> Ver</a>
-	      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#produccion"><span class="icon icon-plus"></span> Nuevo Pedido</a>
+	      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#produccion_bodega"><span class="icon icon-plus"></span> Produccion Bodega</a>
+	       <a class="dropdown-item" href="#" data-toggle="modal" data-target="#produccion_pedido"><span class="icon icon-plus"></span> Producccion Pedido</a>
 	    </div>
 	  </li>
 	</ul> <!-- /ul nav -->
@@ -1169,8 +1170,8 @@
 		</div>
 	</div>
 
-	<!-- Modal PEDIDOS PRODUCCION-->
-	<div class="modal fade" id="produccion" tabindex="-1" role="dialog" aria-labelledby="produccion" aria-hidden="true">
+	<!-- Modal PRODUCCION BODEGA-->
+	<div class="modal fade" id="produccion_bodega" tabindex="-1" role="dialog" aria-labelledby="produccion" aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -1208,6 +1209,56 @@
 				                <button type="button" class="btn btn-dark btn-AddProductoProduccion"><span class="icon icon-plus" ></span>Agregar</button>
 				            </div>
 				        </div>
+						<div class="modal-footer">
+							<button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button>
+							<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
+							<button type="submit" class="btn btn-dark"><span class="icon icon-floppy-disk"></span> Guardar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal PRODUCCION PEDIDOS-->
+	<div class="modal fade" id="produccion_pedido" tabindex="-1" role="dialog" aria-labelledby="produccion" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="produccion">Producción Bajo Pedido</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form action="{{route('post_pedido_produccion')}}" method="POST">
+						{{csrf_field()}}
+						<table class="table table-hover">
+							<thead>
+								<th><input type="checkbox" id="check_all"></th>
+								<th>No. Nota</th>
+								<th>Pedido</th>
+								<th>Entrega</th>
+								<th>Cliente</th>
+							</thead>
+							<tbody>
+								<?php foreach ($pendientes as $pedido): ?>
+									<tr>
+										<td><input type="checkbox" name="pedidos[]" class="CheckPedido" value="<?php echo $pedido->pe_nota ?>" required></td>
+										<td><?php echo $pedido->pe_nota ?></td>
+										<td><?php echo $pedido->pe_fecha_pedido ?></td>
+										<td><?php echo $pedido->pe_fecha_entrega ?></td>
+										<td><?php echo $pedido->cliente->cl_nombre ?></td>
+									</tr>
+								<?php endforeach ?>
+							</tbody>
+						</table>
+						<div class="form-group col-md-12">
+								<div class="input-group">
+									<span class="input-group-addon"><span class="icon icon-pencil"></span></span>
+									<textarea name="memo" rows="3" class="form-control" placeholder="MEMO" required></textarea>
+								</div>
+							</div>
 						<div class="modal-footer">
 							<button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button>
 							<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
@@ -1261,7 +1312,7 @@
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-user"></span></span>
 									<select name="cliente" id="cl" class="form-control" required>
-										<option value="">Seleccionar Cliente</option>
+										<option value="" hidden>Seleccionar Cliente</option>
 										<option value="add">Nuevo Cliente</option>
 										<?php foreach($clientes as $cl){ ?>
 											<option value="<?php echo $cl->id_cliente?>"><?php echo $cl->cl_nombre ?></option>
@@ -1345,7 +1396,7 @@
 							</div>
 						</div>
 						<div class="form-row">
-							<div class="form-group col">
+							<!--<div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-credit-card"></span></span>
 									<select class="form-control select-status-pago" name="pago_status" required>
@@ -1355,7 +1406,7 @@
 	                                    <option value="PAGADO">PAGADO</option>
 	                                </select>
 								</div>
-							</div>
+							</div>-->
 							<div class="form-group col input-status-abono" style="display:none;">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-coin-dollar"></span></span>
@@ -1366,7 +1417,7 @@
 						<div class="AddProducto"></div>
 						<div class="form-row" style="margin-bottom:15px;">
 							<div class="text-center col">
-								<button type="button" class="btn btn-primary btn-AddProducto"><span class="icon icon-plus"></span>Agregar</button>
+								<button type="button" class="btn btn-danger btn-AddProducto"><span class="icon icon-plus"></span>Agregar</button>
 							</div>
 						</div>
 						<div class="modal-footer">
@@ -1969,6 +2020,61 @@
                             <button type="reset"  class="btn btn-primary"><span class="icon icon-fire"></span> Limpiar</button> 
                             <button type="button" class="btn btn-danger btn-closeProv"><span class="icon icon-cross"></span> Cerrar</button>
                             <button type="button" class="btn btn-success btn-SubmitProv"><span class="icon icon-floppy-disk"></span> Guardar</button>
+                        </div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal PEDIDO -> INSERTAR NUEVO DOMICILIO <OPTION> -->
+	<div class="modal fade" id="Domicilio" tabindex="-1" role="dialog" aria-labelledby="domicilios" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="domicilios">NUEVO DOMICILIO</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form method="POST" id="form-Dom">
+                        <input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
+                        <input type="hidden" name="id" value="" id="cli_id">
+						<div class="form-row">
+                            <div class="form-group col">
+								<div class="input-group">
+									<span class="input-group-addon"><span class="icon icon-location"></span></span>
+									<input type="text" class="form-control form-clearDom" name="calle" placeholder="CALLE">
+								</div>
+							</div>
+                            
+							<div class="form-group col">
+								<div class="input-group">
+									<span class="input-group-addon"><span class="icon icon-location"></span></span>
+									<input type="email" class="form-control form-clearDom" name="colonia"  placeholder="COLONIA">
+								</div>
+							</div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col">
+								<div class="input-group">
+									<span class="input-group-addon"><span class="icon icon-office"></span></span>
+									<input type="text" class="form-control form-clearDom" name="ciudad"  placeholder="CIUDAD" required>
+								</div>
+							</div>
+                            <div class="form-group col">
+								<div class="input-group">
+									<span class="input-group-addon"><span class="icon icon-location"></span></span>
+									<input type="text" class="form-control form-clearDom" name="codigo_postal"  placeholder="C.P.">
+								</div>
+							</div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button> 
+                            <button type="button" class="btn btn-danger btn-closeDom"><span class="icon icon-cross"></span> Cerrar</button>
+                            <button type="button" class="btn btn-dark btn-SubmitDom"><span class="icon icon-floppy-disk"></span> Guardar</button>
                         </div>
 					</form>
 				</div>

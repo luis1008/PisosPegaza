@@ -8,7 +8,7 @@
         <style>
             .login{
                 width: 30%;
-                margin: 20% 0 0 35%;
+                margin: 0 0 0 35%;
             }
 
             button{

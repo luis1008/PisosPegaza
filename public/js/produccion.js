@@ -48,4 +48,31 @@ $(document).ready(function(){
     $(document).on('click','.btn-AddProductoProduccion',function(){
         GetAjaxProductoProduccion(1);
     });
+
+    $('#check_all').change(function(){
+        var check = $(this).prop('checked');
+        $('.CheckPedido').each(function(){
+            $(this).prop('checked',check);
+            $(this).prop('required',!check);
+        });
+    });
+
+    $('.CheckPedido').change(function(){
+        var checkeado = 0;
+        var check;
+        $('.CheckPedido').each(function(){
+            if (this.checked) {
+                checkeado++;
+            }
+        });
+        if (checkeado != 0) {
+            check = false;
+        }else{
+            check = true;
+        }
+
+        $('.CheckPedido').each(function(){
+            $(this).prop('required',check);
+        });
+    });
 });

@@ -41,11 +41,12 @@ class CajaController extends Controller
         $prod = Producto::where('pd_status','=','1')->orderBy('pd_nombre')->get();
         $mp = MateriaPrima::where('mp_status','=','1')->orderBy('mp_nombre')->get();
         $u_pe = Pedido::select('pe_nota')->orderBy('id_pedido','DESC')->first();
-        $u_pe = ($u_pe) ? $u_pe->pe_nota : "0";
+        $u_pe = ($u_pe) ? $u_pe->pe_nota+1 : "0";
         $viaj = Viaje::where('vi_status','0')->get();
         $pega = PedidoPegaza::where('pp_status','PENDIENTE')->get();
         $mov_comp = Compra::where('cm_status','PENDIENTE')->where('cm_movimiento','0')->where('cm_proveedor','0')->get();
         $pend = \DB::table('detalle_viaje')->join('pedidos','pedidos.id_pedido','=','detalle_viaje.pedido_id')->select('pedidos.id_pedido')->where('detalle_viaje.det_status','PENDIENTE')->get();
+        $pedidos_pendientes_produccion = Pedido::where('pe_status','PENDIENTE PARA PRODUCCION')->get();
         //dd($pend);
         return view('Caja.Caja')->with('empleados',$emp)
                                 ->with('vehiculos',$veh)
@@ -65,6 +66,7 @@ class CajaController extends Controller
                                 ->with('pedidos_adeuda',$ped_ade)
                                 ->with('mov_compras',$mov_comp)
                                 ->with('mat_primas',$mp)
+                                ->with('pendientes',$pedidos_pendientes_produccion)
                                 ->with('productos',$prod);
 
     }
@@ -253,7 +255,7 @@ class CajaController extends Controller
         $pedido->pe_importe         = $request->importe;
         $pedido->pe_forma_pago      = $request->forma_pago;
         $pedido->pe_status          = $request->status;
-        $pedido->pe_pago_status     = $request->pago_status;
+        //$pedido->pe_pago_status     = $request->pago_status;
         if($pedido->pe_forma_pago == "ABONADO"){
             $pedido->pe_total_abonado   = $request->abono_pedido;
         } else if($pedido->pe_forma_pago == "PAGADO"){

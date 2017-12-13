@@ -12,6 +12,7 @@ use pegaza\Producto;
 use pegaza\Pedido;
 use pegaza\Cliente;
 use pegaza\Viaje;
+use pegaza\Domicilio;
 use pegaza\Compra;
 
 class AjaxController extends Controller
@@ -120,6 +121,37 @@ class AjaxController extends Controller
             $cue = new Cuenta();
             $cue->ct_nombre = $request->nombre;
             $cue->save();
+
+            return response()->json("exito");
+        }
+    }
+
+    public function SetDomicilios(Request $request){
+        if ($request->ajax()) {
+            //Validar campos required
+            $this->validate($request, 
+                [
+                    'id'            => 'required',
+                    'calle'         => 'required',
+                    'colonia'       => 'required',
+                    'ciudad'        => 'required',
+                    'codigo_postal' => 'required'
+                ],
+                [
+                    'id.required'               => 'EL CAMPO CLIENTE ES OBLIGATORIO',
+                    'calle.required'            => 'EL CAMPO CALLE ES OBLIGATORIO',
+                    'colonia.required'          => 'EL CAMPO COLONIA ES OBLIGATORIO',
+                    'ciudad.required'           => 'EL CAMPO CIUDAD ES OBLIGATORIO',
+                    'codigo_postal.required'    => 'EL CAMPO CODIGO POSTAL ES OBLIGATORIO'
+                ]);
+            // INSERTAR NUEVA CUENTA
+            $dom = new Domicilio();
+            $dom->dom_calle         = $request->calle;
+            $dom->dom_colonia       = $request->colonia;
+            $dom->dom_ciudad        = $request->ciudad;
+            $dom->dom_codigo_postal = $request->codigo_postal;
+            $dom->cliente_id        = $request->id;
+            $dom->save();
 
             return response()->json("exito");
         }

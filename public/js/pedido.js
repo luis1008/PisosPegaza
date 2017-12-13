@@ -54,9 +54,10 @@ $(document).ready(function(){
             $('#NewCliente').modal('show');
             $(this).val("");
         } else {
+            $('#cli_id').val(id);
             $.get('/GetDomicilioCliente',{id:id}).done(function(data){
                 //console.log(data);
-                $('#dest').empty().append('<option value="">Seleccionar Destino</option>')
+                $('#dest').empty().append('<option value="">Seleccionar Destino</option><option value="add">Nuevo Domicilio</option>')
                 $.each(data,function(index,domicilio){
                     $('#dest').append('<option value="'+domicilio.dom_calle+', '+domicilio.dom_colonia+'>'+domicilio.dom_ciudad+'">'+domicilio.dom_calle+' '+domicilio.dom_colonia+' '+domicilio.dom_ciudad+'</option>')
                 });
@@ -325,4 +326,48 @@ $(document).ready(function(){
         var id = $(this).val();
         GetAjaxProductoUpdate(1,id);
     });
+
+    //FUNCION DE AGREGAR DOMICILIO A CLIENTE DESDE EL PEDIDO
+    $(document).on('change','#dest',function(){
+        var id = $(this).val();
+        if (id === "add") {
+            $('#Domicilio').modal('show');
+            $('#pedido').modal('hide');
+            $(this).val("");
+        } 
+    });
+
+    $('.btn-SubmitDom').click(function(){
+        $.post('/SetDomicilios',$('#form-Dom').serialize()).done(function(data){
+            if (data === "exito") {
+                $('#Domicilio').modal('hide');
+                $('.form-clearDom').val("");
+                GetAjaxDomicilios();
+                $('#pedido').modal('show');
+            }
+        }).fail(function(error){
+            $('.mensaje-error-ajax').empty();
+            $.each(error.responseJSON,function(index, mensaje){
+                $('.mensaje-error-ajax').append("<p style='color:red;font-weight:bold;'>"+mensaje[0]+"</p>");
+            });
+            $('#MensajeError').modal('show');
+        });
+    });
+
+    $('.btn-closeDom').click(function(){
+        $('#Domicilio').modal('hide');
+        $('.form-clearDom').val("");
+        $('#pedido').modal('show');
+    });
+
+    function GetAjaxDomicilios(){
+        var id = $('#cl').val();
+        $.get('/GetDomicilioCliente',{id:id}).done(function(data){
+            //console.log(data);
+            $('#dest').empty().append('<option value="">Seleccionar Destino</option><option value="add">Nuevo Domicilio</option>')
+            $.each(data,function(index,domicilio){
+                $('#dest').append('<option value="'+domicilio.dom_calle+', '+domicilio.dom_colonia+'>'+domicilio.dom_ciudad+'">'+domicilio.dom_calle+' '+domicilio.dom_colonia+' '+domicilio.dom_ciudad+'</option>')
+            });
+        });
+    }
 });

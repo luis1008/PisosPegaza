@@ -261,6 +261,7 @@ Route::group(['middleware' => 'auth'],function(){
 	Route::get('/GetPrecioUltimaCompra', 'AjaxController@GetPrecioUltimaCompra');
 	Route::get('/GetCuentas', 'AjaxController@GetCuentas');
 	Route::post('/SetCuentas', 'AjaxController@SetCuentas');
+	Route::post('/SetDomicilios', 'AjaxController@SetDomicilios');
 	Route::get('/GetProducto', 'AjaxController@GetProducto');
 	Route::get('/GetPrecioUltimaVenta', 'AjaxController@GetPrecioUltimaVenta');
 	Route::get('/GetDomicilioCliente', 'AjaxController@GetDomicilioCliente');

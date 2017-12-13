@@ -77,10 +77,8 @@
                                     <p><b>Domicilio(s): </b></p>
                                     <?php foreach($cl->domicilios as $dom) { ?>
 
-                                        <p><?php echo $dom->dom_calle . ", " . $dom->dom_colonia . " - " . $dom->dom_codigo_postal ?></p>
+                                        <p><?php echo $dom->dom_calle . ", " . $dom->dom_colonia . " - " . $dom->dom_codigo_postal . " - " . $dom->dom_ciudad ?></p>
                                         <?php } ?>
-
-                                        <p><?php echo "<b>CALLE:</b> " . $dom->dom_calle . ", <b>COLONIA:</b> " . $dom->dom_colonia . ", <b>CIUDAD:</b> " . $dom->dom_ciudad . " - <b>CODIGO POSTAL:</b> " . $dom->dom_codigo_postal ?></p>
 
                                     <p><b>Observaciones: </b><?php echo $cl->cl_observacion ?></p>
                                 </div>
@@ -174,33 +172,41 @@
                                         </div>
 
                                             <div class="form-row">
-                                                <div class="form-group col-md-4">
+                                            <?php foreach ($cl->domicilios as $pos => $dom): ?>
+                                                
+                                                <div class="form-group col-md-<?php if($pos != 0) echo '3'; else echo '4'; ?>">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><span class="icon icon-location"></span></span>
                                                         <input class="form-control" value="<?php echo $dom->dom_calle ?>" name="calle[]" type="text" required>
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group col-md-4">
+                                                <div class="form-group col-md-3">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><span class="icon icon-location"></span></span>
                                                         <input class="form-control" value="<?php echo $dom->dom_colonia ?>" name="colonia[]" required>
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group col-md-4">
+                                                <div class="form-group col-md-3">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><span class="icon icon-office"></span></span>
                                                         <input class="form-control" value="<?php echo $dom->dom_ciudad ?>" name="ciudad[]" type="text" required>
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group col-md-4">
+                                                <div class="form-group col-md-2">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><span class="icon icon-location"></span></span>
                                                         <input class="form-control" value="<?php echo $dom->dom_codigo_postal ?>" name="codigo_postal[]" type="text"  required>
                                                     </div>
                                                 </div>
+                                                <?php if ($pos != 0): ?>
+                                                    <div class="form-group col-md-1">
+                                                        <button type="button" class="btn btn-danger btn-estatus"><span class="icon icon-bin"></span></button>
+                                                    </div>
+                                                <?php endif ?>
+                                            <?php endforeach ?>
                                             </div>
 
                                              <div class="form-row AddDomicilio"></div>
@@ -366,6 +372,7 @@
                                     <input class="form-control" name="codigo_postal[]" type="text" placeholder="C.P" required>
                                 </div>
                             </div>
+
                         </div>
 
                         <div class="form-row AddDomicilio"></div>

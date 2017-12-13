@@ -305,6 +305,8 @@ $(document).ready(function(){
 		});
 	}
 
+	
+
 	// FUNCIONES QUE CALCULAN DE LOS PRECIOS Y SUBTOTALES
 	$(document).on('change','input[name="precio[]"]', function(){
         CalcularSubTotal();
@@ -343,4 +345,6 @@ $(document).ready(function(){
 
 		return f_money;
 	}
+
+
 });
