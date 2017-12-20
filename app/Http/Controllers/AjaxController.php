@@ -17,6 +17,13 @@ use pegaza\Compra;
 
 class AjaxController extends Controller
 {
+    public function GetPedidosPendientesPago(Request $request){
+        if ($request->ajax()) {
+            $pedidos = Pedido::where('cliente_id','=',$request->id)->where('pe_pago_status','!=','PAGADO')->get();
+            return response()->json($pedidos);
+        }
+    }
+
     public function GetImporteCompra(Request $request){
         if ($request->ajax()) {
             $importe = Compra::find($request->id);

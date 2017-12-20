@@ -48,8 +48,7 @@
 	  <li class="nav-item dropdown">
 	    <a class="nav-link dropdown-toggle tooltips2" data-toggle="dropdown" href="#" data-placement="top" title="Cobranza"><span class="icon icon-coin-dollar"></span> <!-- Información --></a>
 	    <div class="dropdown-menu">
-	      <a class="dropdown-item" data-toggle="pill" href="#pills-pagos" role="tab"><span class="icon icon-eye"></span> Ver</a>
-	      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#"><span class="icon icon-plus"></span> Nuevo</a>
+	      <a class="dropdown-item" data-toggle="pill" href="#pills-pagos" role="tab"><span class="icon icon-eye"></span> Pagos</a>
 	    </div>
 	  </li>
 	  <!-- li Pedido -->
@@ -105,192 +104,137 @@
 
 	<!-- Tab Content -->
 	<div class="tab-content" id="pills-tabContent">
-
-	
-
- 					  	<!-- Tab Informacion -->
+		<!-- Tab Informacion -->
 	  	<div class="tab-pane fade show active" id="pills-info" role="tabpanel">
 	  		<div class="card-header text-center text-white bg-danger"><b>PRODUCTOS EN EXISTENCIA</b></div>
         	<table class="table table-hover table-sm">
-            <thead>
-                <th>No. Producto</th>
-                <th>Nombre</th>
-                <th>Tipo</th>
-                <th>Cantidad</th>
-                <th></th>
-            </thead>
-            <tbody>
-                <?php if(count($productos) < 1) { ?>
-                    <tr>
-                        <td colspan="6">NO SE ENCONTRO NINGUN REGISTRO</td>
-                    </tr>
-                <?php } ?>
-                <?php foreach ($productos as $pd) { ?>
-                    <tr class='<?php if($pd->pd_status){ echo "table-success"; } else { echo "table-danger"; } ?>'>
-                        <th><?php echo  str_pad($pd->id_producto, 2, "0", STR_PAD_LEFT) ?></th>
-                        <td><?php echo $pd->pd_nombre ?></td>
-                        <td><?php echo $pd->pd_tipo ?></td>
-                        <td><?php echo number_format($pd->pd_cantidad) ?></td>
-                    </tr>
-                <?php } ?>
-            </tbody>
+	            <thead>
+	                <th>No. Producto</th>
+	                <th>Nombre</th>
+	                <th>Tipo</th>
+	                <th>Cantidad</th>
+	                <th></th>
+	            </thead>
+	            <tbody>
+	                <?php if(count($productos) < 1) { ?>
+	                    <tr>
+	                        <td colspan="6">NO SE ENCONTRO NINGUN REGISTRO</td>
+	                    </tr>
+	                <?php } ?>
+	                <?php foreach ($productos as $pd) { ?>
+	                    <tr class='<?php if($pd->pd_status){ echo "table-success"; } else { echo "table-danger"; } ?>'>
+	                        <th><?php echo  str_pad($pd->id_producto, 2, "0", STR_PAD_LEFT) ?></th>
+	                        <td><?php echo $pd->pd_nombre ?></td>
+	                        <td><?php echo $pd->pd_tipo ?></td>
+	                        <td><?php echo number_format($pd->pd_cantidad) ?></td>
+	                    </tr>
+	                <?php } ?>
+	            </tbody>
         	</table>
-
-        	<br>
+			<br>
 
         	<div class="card-header text-center text-white bg-danger"><b>MATERIA PRIMA EN EXISTENCIA</b></div>
         	<table class="table table-hover table-sm">
-            <thead>
-            	<th>No. Materia Prima</th>
-                <th>Nombre</th>
-                <th>Cantidad</th>
-                <th></th>
-            </thead>
-            <tbody>
-                <?php if(count($mat_primas) < 1) { ?>
-                    <tr>
-                        <td colspan="5">NO SE ENCONTRO NINGUN REGISTRO</td>
-                    </tr>
-                <?php } ?>
-                <?php foreach ($mat_primas as $mp) { ?>
-                    <tr class='<?php if($mp->mp_status){ echo "table-success"; } else { echo "table-danger"; } ?>'>
-                        <th><?php echo str_pad($mp->id_materia_prima, 2, "0", STR_PAD_LEFT) ?></th>
-                        <td><?php echo $mp->mp_nombre ?></td> 
-                        <!-- TOTAL DE MATERIA PRIMA -->
-                        	<?php $cantidad_total=\DB::table('compra_mp')->where('mp_id',$mp->id_materia_prima)->SUM('det_cantidad'); ?>
-                        	<td><?php echo $cantidad_total ?></td>                 
-                    </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-        <br>
-        <br>
-        <div class="card-header text-center text-white bg-danger"><b>INGRESOS Y EGRESOS</b></div>
+	            <thead>
+	            	<th>No. Materia Prima</th>
+	                <th>Nombre</th>
+	                <th>Cantidad</th>
+	                <th></th>
+	            </thead>
+	            <tbody>
+	                <?php if(count($mat_primas) < 1) { ?>
+	                    <tr>
+	                        <td colspan="5">NO SE ENCONTRO NINGUN REGISTRO</td>
+	                    </tr>
+	                <?php } ?>
+	                <?php foreach ($mat_primas as $mp) { ?>
+	                    <tr class='<?php if($mp->mp_status){ echo "table-success"; } else { echo "table-danger"; } ?>'>
+	                        <th><?php echo str_pad($mp->id_materia_prima, 2, "0", STR_PAD_LEFT) ?></th>
+	                        <td><?php echo $mp->mp_nombre ?></td> 
+	                        <!-- TOTAL DE MATERIA PRIMA -->
+	                        <?php $cantidad_total=\DB::table('compra_mp')->where('mp_id',$mp->id_materia_prima)->SUM('det_cantidad'); ?>
+	                        <td><?php echo $cantidad_total ?></td>                 
+	                    </tr>
+	                <?php } ?>
+	            </tbody>
+	        </table>
+	        <br>
+        	<div class="card-header text-center text-white bg-danger"><b>INGRESOS Y EGRESOS</b></div>
 		    <table class="table table-hover table-sm">
-		            <thead>
-		                <th></th>
-		                <th>Ingresos</th>
-		                <th>Egresos</th>
-		            </thead>
-		            <tbody>
-		                <?php if(count($pedidos) < 1) { ?>
-		                    <tr>
-		                        <td colspan="5">NO SE ENCONTRO NINGUN PEDIDO</td>
-		                    </tr>
-		                <?php } ?>
-		                <!-- TOTAL DE INGRESOS -->
-		                    <tr>
-		                        <th>Total</th>
-		                        <?php $total=\DB::table('pedidos')->SUM('pe_total_abonado'); ?>
-                        	<td><?php echo number_format($total,2) ?></td>  
+	            <thead>
+	                <th></th>
+	                <th>Ingresos</th>
+	                <th>Egresos</th>
+	            </thead>
+	            <tbody>
+	                <?php if(count($pedidos) < 1) { ?>
+	                    <tr>
+	                        <td colspan="5">NO SE ENCONTRO NINGUN PEDIDO</td>
+	                    </tr>
+	                <?php } ?>
+	                <!-- TOTAL DE INGRESOS -->
+	                    <tr>
+	                        <th>Total</th>
+	                        <?php $total=\DB::table('pedidos')->SUM('pe_total_abonado'); ?>
+	                		<td><?php echo number_format($total,2) ?></td>  
 
-                        	<!-- TOTAL DE EGRESOS -->
-		                        <?php $total=\DB::table('compras')->SUM('cm_total'); ?>
-                        	<td><?php echo number_format($total,2) ?></td>  		      
-		                    </tr>
-		                 
+	                		<!-- TOTAL DE EGRESOS -->
+	                        <?php $total=\DB::table('compras')->SUM('cm_total'); ?>
+	                		<td><?php echo number_format($total,2) ?></td>  		      
+	                    </tr>
+		        </tbody>
 		    </table>
-						
-<br>
-<br>
+			<br>
  		</div>
-
- 				  	<!-- Tab Cobranza -->
+ 		<!-- Tab Cobranza -->
 	  	<div class="tab-pane fade" id="pills-pagos" role="tabpanel">
-	  	<div class="card-header text-center text-white bg-danger" align="center"><b>COBRANZAS</b></div>
-	  	<br>
-	  	<select name="cliente" required class="form-control">
-
-				<option value="">Clientes</option>
-					<?php foreach($clientes as $cl){ ?>
-				<option value="<?php echo $cl->id_cliente?>"><?php echo $cl->cl_nombre ?></option>
-												<?php } ?>
-		</select>
-			<br>
-			<br>
-			<div class="card-header text-center text-white bg-info"><b>PEDIDOS QUE ADEUDA</b></div>
-		        <table class="table table-hover table-sm">
-		            <thead>
-		                <th>No. Nota</th>
-		                <th>Pedido</th>
-		                <th>Cliente</th>
-		                <th>Debe</th>
-		                <th>Total Abonado</th>
-		            </thead>
-		            <tbody>
-		                <?php if(count($pedidos_adeuda) < 1) { ?>
-		                    <tr>
-		                        <td colspan="5">NO SE ENCONTRO NINGUN PEDIDO</td>
-		                    </tr>
-		                <?php } ?>
-		                <?php foreach ($pedidos_adeuda as $pe) { ?>
-		                    <tr>
-		                        <td><?php echo $pe->pe_nota ?></td>
-		                        <td><?php echo $pe->pe_fecha_pedido ?></td>
-		                        <td><?php echo $pe->cliente->cl_nombre ?></td>
-		                        <td><?php echo $pe->pe_importe ?></td>
-		                        <td><?php echo $pe->pe_total_abonado ?></td>		               
-		                        <td>
-		                            <button type="button" class="btn btn-dark btn-sm" data-toggle="modal" data-target="#abonar-<?php echo $pe->id_pedido ?>">Abonar</button>
-		                        </td>
-		                    </tr>
-				        	<!-- MODAL PARA ABONAR -->
-							<div class="modal fade" id="abonar-<?php echo $pe->id_pedido ?>" tabindex="-1" role="dialog" aria-hidden="true">
-								<div class="modal-dialog modal-lg" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title" id="movimientos">Abonar a Pedido: <?php echo $pe->id_pedido ?></h5>
-											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-										<div class="modal-body">
-											<form action="<?php echo route('put_abona_pedido',$pe->id_pedido) ?>" method="POST">
-												<input type="hidden" name="_method" value="PUT">
-						                        <input type="hidden" name="_token" value="<?php echo csrf_token()?>">
-												<div class="form-row">
-													<div class="form-group col">
-														<div class="input-group">
-															<span class="input-group-addon"><span class="icon icon-coin-dollar"></span></span>
-															<input type="text" class="form-control" placeholder="CANTIDAD QUE ABONA" name="abona" required>
-														</div>
-													</div>
-
-													<div class="form-group col">
-														<div class="input-group">
-															<span class="input-group-addon"><span class="icon icon-user"></span></span>
-															<select name="forma_pago" required class="form-control">
-																	<option value="">FORMA DE PAGO</option>
-																	<option value="EFECTIVO">EFECTIVO</option>
-																	<option value="CHEQUE">CHEQUE</option>
-																	<option value="DEPOSITO">DEPOSITO</option>
-																	<option value="TRANSFERENCIA">TRANSFERENCIA</option>
-																
-															</select>
-														</div>
-													</div>
-													
-												</div>
-												<div class="form-row AddConcepto" style="margin-top:25px;"></div>
-												<div class="modal-footer">
-													<button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button>
-													<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
-													<button type="submit" class="btn btn-dark"><span class="icon icon-floppy-disk"></span> Guardar</button>
-												</div>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-		                <?php } ?>
-		            </tbody>
-		        </table>
-
-		        <br>
-			<br>
-
+		  	<div class="card">
+		  		<div class="card-header text-center text-white bg-danger" data-toggle="collapse" href="#CollapseCliente" aria-expanded="true" aria-controls="CollapseCliente"><b><span class="icon icon-circle-down"></span> Cobranza a Cliente</b></div>
+			  	<div id="CollapseCliente" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+				  	<form action="{{ route('post_pago_pedido') }}" method="POST">
+				  		{{ csrf_field() }}
+				  		<div class="row card-body">
+					  		<div class="col-md-6">
+					  			<label>Clientes</label>
+							  	<select name="cliente" required class="form-control" id="SelectClientePendiente">
+									<option value="">Seleccionar</option>
+									<?php foreach($ClientesPendientes as $cl){ ?>
+										<option value="<?php echo $cl->cliente->id_cliente?>"><?php echo $cl->cliente->cl_nombre ?></option>
+									<?php } ?>
+								</select>
+					  		</div>
+					  		<div class="col-md-6">
+					  			<label>Total a Pagar</label>
+					  			<div class="input-group">
+					  				<input type="number" class="form-control" name="pago_total" step="0.01" min="0.1" value="0" id="pago" readonly>
+					  				<div class="input-group-btn">
+					  					<button type="submit" class="btn btn-dark" id="BtnPagoClientePedidos" disabled><span class="icon icon-coin-dollar"></span> Pagar</button>
+					  				</div>
+					  			</div>
+					  		</div>
+						  	<div class="col-md-12" style="margin-top:15px;">
+						        <table class="table table-hover table-sm text-center">
+						            <thead>
+						            	<th class="text-center"></th>
+						                <th class="text-center">No. Nota</th>
+						                <th class="text-center">Pedido</th>
+						                <!-- <th class="text-center">Cliente</th> -->
+						                <th class="text-center">Termino</th>
+						                <th class="text-center">Debe</th>
+						                <th class="text-center">Total Abonado</th>
+						            </thead>
+						            <tbody id="BodyPedidosCliente">
+					                    <tr>
+					                        <td colspan="6">NO SE ENCONTRO NINGÚN PEDIDO</td>
+					                    </tr>
+						            </tbody>
+						        </table>
+						  	</div>
+			        	</div>
+				  	</form>
+		        </div>
+		  	</div>
  		</div>
-
 	  	<!-- Tab Pedido -->
 	  	<div class="tab-pane fade" id="pills-pedido" role="tabpanel">
 			<div class="card text-black bg-light">
@@ -607,8 +551,8 @@
     	<!-- Tab Prestamo -->
 	  	<div class="tab-pane fade" id="pills-prestamo" role="tabpanel">
 			<div class="card text-black bg-light">
-			<div class="card-header text-center text-white bg-danger"><b>PRESTAMOS</b></div>
-			<!-- <div class="card-body"> -->
+				<div class="card-header text-center text-white bg-danger"><b>PRESTAMOS</b></div>
+				<!-- <div class="card-body"> -->
 				<table class="table table-hover table-sm text-center">
 					<thead>
 						<th>#</th>
@@ -2101,6 +2045,17 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Modal IMAGEN CARGANDO -->
+	<div class="modal fade" id="ImgCargando" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="Cargando" aria-hidden="true">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-body text-center">
+					<img src="{{asset('img/cargando.gif')}}" >
+				</div>
+			</div>
+		</div>
+	</div>
 @stop
 
 @section('js')
@@ -2109,6 +2064,7 @@
 	<script src="<?php echo asset('js/viaje.js') ?>"></script>
 	<script src="<?php echo asset('js/produccion.js') ?>"></script>
 	<script src="<?php echo asset('js/movimiento_temporal.js') ?>"></script>
+	<script src="<?php echo asset('js/cobranza.js') ?>"></script>
 	<script>
 		// PAGAR COMPRA
 		function ValidarCantidadPagar(num){

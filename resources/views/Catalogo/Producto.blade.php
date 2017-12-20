@@ -120,7 +120,7 @@
                              <div class="form-group col">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-stack"></span></span>
-                                    <input type="text" class="form-control" name="cantidad"  placeholder="CANTIDAD" required>
+                                    <input type="text" class="form-control" name="cantidad_producto" value="1" placeholder="CANTIDAD" readonly>
                                 </div>
                             </div>
                         </div>

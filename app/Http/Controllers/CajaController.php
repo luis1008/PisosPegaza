@@ -47,6 +47,7 @@ class CajaController extends Controller
         $mov_comp = Compra::where('cm_status','PENDIENTE')->where('cm_movimiento','0')->where('cm_proveedor','0')->get();
         $pend = \DB::table('detalle_viaje')->join('pedidos','pedidos.id_pedido','=','detalle_viaje.pedido_id')->select('pedidos.id_pedido')->where('detalle_viaje.det_status','PENDIENTE')->get();
         $pedidos_pendientes_produccion = Pedido::where('pe_status','PENDIENTE PARA PRODUCCION')->get();
+        $ClientesPendientesPorPagar    = Pedido::where('pe_pago_status','!=','PAGADO')->where('pe_status','ENTREGADO')->orderBy('pe_fecha_pedido')->groupBy('cliente_id')->get();
         //dd($pend);
         return view('Caja.Caja')->with('empleados',$emp)
                                 ->with('vehiculos',$veh)
@@ -55,6 +56,7 @@ class CajaController extends Controller
                                 ->with('compras',$com)
                                 ->with('PPendientes',$prp)
                                 ->with('clientes',$cli)
+                                ->with('ClientesPendientes',$ClientesPendientesPorPagar)
                                 ->with('pedidos',$ped)
                                 ->with('ultima_nota',$u_pe)
                                 ->with('cobranza',$cob)
@@ -431,5 +433,47 @@ class CajaController extends Controller
         }
 
         return redirect()->route('caja');
+    }
+
+    //COBRANZA
+    public function post_pago_pedido(Request $request){
+        
+        $v_pago  = $request->pago_total;
+
+        for ($i = 0; $i < sizeof($request->pedidos); $i++) {
+
+            $v_resto = $request->resto[$i];
+
+            if ($v_resto <= $v_pago) {
+                $this->AbonarPedidoCliente($request->pedidos[$i], $v_resto);
+            } elseif ($v_pago > 0){
+                $this->AbonarPedidoCliente($request->pedidos[$i], $v_pago);
+            }
+
+            $v_pago -= $v_resto;
+        }
+
+        return redirect()->route('caja');
+    }
+
+    // FUNCION RECICLABLES
+    public function AbonarPedidoCliente($id, $pago){
+
+        $pedido = Pedido::find($id);
+        $pedido->pe_total_abonado += $pago;
+        if (($pedido->pe_total_abonado >= $pedido->pe_importe) && $pedido->pe_pago_status != "PAGADO") {
+            $pedido->pe_pago_status = "PAGADO";
+        } elseif (($pedido->pe_total_abonado < $pedido->pe_importe) && $pedido->pe_pago_status == "PENDIENTE"){
+            $pedido->pe_pago_status = "ABONADO";
+        }
+        $pedido->save();
+
+        $abonos = new AbonoPedido();
+        $abonos->ap_abono     = $pago;
+        $abonos->ap_numero    = $pedido->abonos->count() + 1;
+        $abonos->pedido_id    = $id;
+        $abonos->ap_pago      = 'EFECTIVO';
+        $abonos->ap_folio     = $pedido->pe_nota;//AQUI QUE ONDA?
+        $abonos->save();
     }
 }

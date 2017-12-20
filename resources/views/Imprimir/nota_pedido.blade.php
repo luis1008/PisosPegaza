@@ -15,7 +15,7 @@
                         <a href="<?php echo route('caja') ?>" class="btn btn-danger">
                             <span class="icon icon-undo2"></span> Salir
                         </a>
-                        <a href="<?php echo route('pdf_pedido',['id'=>$datos['id'],'preorden'=>$datos['orden']]) ?>" class="btn btn-success">
+                        <a href="<?php echo route('pdf_pedido',['id'=>$datos['id'],'preorden'=>$datos['orden']]) ?>" class="btn btn-success" target="_blank">
                             <span class="icon icon-file-pdf"></span> Nota Pedido
                         </a>
                     </td>

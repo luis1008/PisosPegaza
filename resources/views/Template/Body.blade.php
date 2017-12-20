@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="<?php echo asset('bootstrap4/css/bootstrap.min.css') ?>">
 	<link rel="stylesheet" href="<?php echo asset('datetimepicker/css/bootstrap-datepicker.min.css') ?>">
 	<link rel="stylesheet" href="<?php echo asset('chosen/chosen.min.css') ?>">
-	<link rel="stylesheet" href="<?php echo asset('img/icono.ico') ?>">
+	<link rel="shortcut icon" href="<?php echo asset('img/WebIcono.png') ?>">
 	<!-- JS -->
 	<script src="<?php echo asset('jquery/jquery.js') ?>"></script>
 	<script src="<?php echo asset('bootstrap4/js/popper.min.js') ?>"></script>
@@ -40,6 +40,7 @@
 	@yield('js')
 	<script>
 		$(document).ready(function(){
+			
 			$(document).on('focus','input,textarea',function(){
 				$(this).select();
 			});
@@ -50,6 +51,7 @@
 			$(document).on('change','input,textarea',function(){
 				this.value = this.value.toUpperCase();
 			});
+
 		});
 	</script>
 </body>

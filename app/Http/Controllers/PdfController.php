@@ -17,8 +17,8 @@ class PdfController extends Controller
     	$ped = Pedido::find($id);
     	$letra = $this->num2letras($ped->pe_importe);
         $pdf = \PDF::loadview('Pdf.Modulos.pdf_pedido',['pedido'=>$ped,'leyenda'=>$leyenda,'nota'=>$tipo_nota,'letra'=>$letra]);
-        //return $pdf->stream();
-        return $pdf->download('PedidoNo'.$ped->pe_nota.'.pdf');
+        return $pdf->stream();
+        //return $pdf->download('PedidoNo'.$ped->pe_nota.'.pdf');
     }
 
     public function ticket_viaje($id, $copia = 0){

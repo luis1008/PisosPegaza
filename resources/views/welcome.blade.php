@@ -4,7 +4,7 @@
         <title>Login</title>
         <link rel="stylesheet" href="<?php echo asset('fonts/style.css') ?>">
         <link rel="stylesheet" href="<?php echo asset('bootstrap4/css/bootstrap.min.css') ?>">
-        <link rel="stylesheet" href="<?php echo asset('img/icono.ico') ?>">
+        <link rel="shortcut icon" href="<?php echo asset('img/WebIcono.png') ?>">
         <style>
             .login{
                 width: 30%;

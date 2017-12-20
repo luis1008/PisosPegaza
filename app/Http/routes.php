@@ -247,6 +247,12 @@ Route::group(['middleware' => 'auth'],function(){
 		'as'   => 'post_pedido_produccion'
 	]);
 
+	//COBRANZA
+	Route::post('/PagoPedidoCliente',[
+		'uses' => 'CajaController@post_pago_pedido',
+		'as'   => 'post_pago_pedido'
+	]);
+
 	//PDF
 	Route::get('/NotaPedido/{id}/{preorden?}/{copia?}', 'PdfController@pdf_pedido')->name('pdf_pedido');
 	Route::get('/TicketViaje/{id}/{copia?}', 'PdfController@ticket_viaje')->name('ticket_viaje');
@@ -267,4 +273,5 @@ Route::group(['middleware' => 'auth'],function(){
 	Route::get('/GetDomicilioCliente', 'AjaxController@GetDomicilioCliente');
 	Route::get('/GetKilometrajeFinal', 'AjaxController@GetKilometrajeFinal');
 	Route::get('/GetImporteCompra', 'AjaxController@GetImporteCompra');
+	Route::get('/GetPedidosPendientesPago', 'AjaxController@GetPedidosPendientesPago');
 });// EDN group -> AUTH

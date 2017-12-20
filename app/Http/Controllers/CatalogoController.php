@@ -239,11 +239,11 @@ class CatalogoController extends Controller
     }
 
     public function post_producto(Request $request){
-        //dd($request->cantidad);
+        //dd($request);
         $producto = new Producto();
         $producto->pd_nombre        = $request->nombre;
         $producto->pd_tipo          = $request->tipo;
-        $producto->pd_cantidad      = $request->cantidad;
+        $producto->pd_cantidad      = $request->cantidad_producto;
         $producto->pd_costo         = $request->costo;
         $producto->pd_precio_venta  = $request->precio_venta;
         $producto->save();
