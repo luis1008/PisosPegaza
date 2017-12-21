@@ -9,6 +9,7 @@ use pegaza\Http\Requests;
 use pegaza\Viaje;
 use pegaza\Empleado;
 use pegaza\Vehiculo;
+use pegaza\Pedido;
 
 class ViajeController extends Controller
 {

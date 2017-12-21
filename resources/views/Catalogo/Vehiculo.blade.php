@@ -20,7 +20,6 @@
                 <th>Placas</th>
                 <th>Nombre</th>
                 <th>Caracteristicas</th>
-                <th>Falla</th>
                 <th>Opciones</th>
                 <th></th>
             </thead>
@@ -35,7 +34,6 @@
                         <td><?php echo $vh->placas ?></td>
                         <td><?php echo $vh->vh_nombre ?></td>
                         <td><?php echo $vh->vh_caracteristicas ?></td>
-                        <td><?php echo $vh->vh_falla ?></td>
                         <td>
                              <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#mod-<?php echo $vh->placas ?>"><span class="icon icon-spinner10"></span></button>
                             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#info-<?php echo $vh->placas ?>"><span class="icon icon-eye"></span></button>

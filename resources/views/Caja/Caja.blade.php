@@ -105,61 +105,8 @@
 	<!-- Tab Content -->
 	<div class="tab-content" id="pills-tabContent">
 		<!-- Tab Informacion -->
-	  	<div class="tab-pane fade show active" id="pills-info" role="tabpanel">
-	  		<div class="card-header text-center text-white bg-danger"><b>PRODUCTOS EN EXISTENCIA</b></div>
-        	<table class="table table-hover table-sm">
-	            <thead>
-	                <th>No. Producto</th>
-	                <th>Nombre</th>
-	                <th>Tipo</th>
-	                <th>Cantidad</th>
-	                <th></th>
-	            </thead>
-	            <tbody>
-	                <?php if(count($productos) < 1) { ?>
-	                    <tr>
-	                        <td colspan="6">NO SE ENCONTRO NINGUN REGISTRO</td>
-	                    </tr>
-	                <?php } ?>
-	                <?php foreach ($productos as $pd) { ?>
-	                    <tr class='<?php if($pd->pd_status){ echo "table-success"; } else { echo "table-danger"; } ?>'>
-	                        <th><?php echo  str_pad($pd->id_producto, 2, "0", STR_PAD_LEFT) ?></th>
-	                        <td><?php echo $pd->pd_nombre ?></td>
-	                        <td><?php echo $pd->pd_tipo ?></td>
-	                        <td><?php echo number_format($pd->pd_cantidad) ?></td>
-	                    </tr>
-	                <?php } ?>
-	            </tbody>
-        	</table>
-			<br>
-
-        	<div class="card-header text-center text-white bg-danger"><b>MATERIA PRIMA EN EXISTENCIA</b></div>
-        	<table class="table table-hover table-sm">
-	            <thead>
-	            	<th>No. Materia Prima</th>
-	                <th>Nombre</th>
-	                <th>Cantidad</th>
-	                <th></th>
-	            </thead>
-	            <tbody>
-	                <?php if(count($mat_primas) < 1) { ?>
-	                    <tr>
-	                        <td colspan="5">NO SE ENCONTRO NINGUN REGISTRO</td>
-	                    </tr>
-	                <?php } ?>
-	                <?php foreach ($mat_primas as $mp) { ?>
-	                    <tr class='<?php if($mp->mp_status){ echo "table-success"; } else { echo "table-danger"; } ?>'>
-	                        <th><?php echo str_pad($mp->id_materia_prima, 2, "0", STR_PAD_LEFT) ?></th>
-	                        <td><?php echo $mp->mp_nombre ?></td> 
-	                        <!-- TOTAL DE MATERIA PRIMA -->
-	                        <?php $cantidad_total=\DB::table('compra_mp')->where('mp_id',$mp->id_materia_prima)->SUM('det_cantidad'); ?>
-	                        <td><?php echo $cantidad_total ?></td>                 
-	                    </tr>
-	                <?php } ?>
-	            </tbody>
-	        </table>
-	        <br>
-        	<div class="card-header text-center text-white bg-danger"><b>INGRESOS Y EGRESOS</b></div>
+		<div class="tab-pane fade show active" id="pills-info" role="tabpanel">
+			<div class="card-header text-center text-white bg-danger"><b>INGRESOS Y EGRESOS</b></div>
 		    <table class="table table-hover table-sm">
 	            <thead>
 	                <th></th>
@@ -167,24 +114,76 @@
 	                <th>Egresos</th>
 	            </thead>
 	            <tbody>
-	                <?php if(count($pedidos) < 1) { ?>
-	                    <tr>
-	                        <td colspan="5">NO SE ENCONTRO NINGUN PEDIDO</td>
-	                    </tr>
-	                <?php } ?>
 	                <!-- TOTAL DE INGRESOS -->
 	                    <tr>
 	                        <th>Total</th>
 	                        <?php $total=\DB::table('pedidos')->SUM('pe_total_abonado'); ?>
-	                		<td><?php echo number_format($total,2) ?></td>  
+	                		<td><?php echo '$'. number_format($total,2) ?></td>  
 
 	                		<!-- TOTAL DE EGRESOS -->
 	                        <?php $total=\DB::table('compras')->SUM('cm_total'); ?>
-	                		<td><?php echo number_format($total,2) ?></td>  		      
+	                		<td><?php echo '$'. number_format($total,2) ?></td>  		      
 	                    </tr>
 		        </tbody>
 		    </table>
 			<br>
+	  
+	  		<div class="card">
+	  			<div class="card-header text-center text-white bg-dark" data-toggle="collapse" href="#CollapseProductos" aria-expanded="true" aria-controls="CollapseProductos"><b><span class="icon icon-circle-down"></span> Productos en Existencia</b></div>
+	  			<div id="CollapseProductos" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+        			<table class="table table-hover table-sm">
+			            <thead>
+			                <th>No. Producto</th>
+			                <th>Nombre</th>
+			                <th>Tipo</th>
+			                <th>Cantidad</th>
+			            </thead>
+			            <tbody>
+			                <?php if(count($productos) < 1) { ?>
+			                    <tr>
+			                        <td colspan="4">NO SE ENCONTRO NINGÚN REGISTRO</td>
+			                    </tr>
+			                <?php } ?>
+			                <?php foreach ($productos as $pd) { ?>
+			                    <tr class='<?php if($pd->pd_cantidad!=0){ echo "table-success"; } else { echo "table-danger"; } ?>'>
+			                        <th><?php echo  str_pad($pd->id_producto, 2, "0", STR_PAD_LEFT) ?></th>
+			                        <td><?php echo $pd->pd_nombre ?></td>
+			                        <td><?php echo $pd->pd_tipo ?></td>
+			                        <td><?php echo number_format($pd->pd_cantidad) ?></td>
+			                    </tr>
+			                <?php } ?>
+			            </tbody>
+		        	</table>
+		        </div>
+			<br>
+
+	  			<div class="card-header text-center text-white bg-danger" data-toggle="collapse" href="#CollapseMateria" aria-expanded="true" aria-controls="CollapseMateria"><b><span class="icon icon-circle-down"></span> Materia Prima en Existencia</b></div>
+	  			<div id="CollapseMateria" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+		        	<table class="table table-hover table-sm">
+			            <thead>
+			            	<th>No. Materia Prima</th>
+			                <th>Nombre</th>
+			                <th>Cantidad</th>
+			            </thead>
+			            <tbody>
+			                <?php if(count($mat_primas) < 1) { ?>
+			                    <tr>
+			                        <td colspan="3">NO SE ENCONTRO NINGUN REGISTRO</td>
+			                    </tr>
+			                <?php } ?>
+			                <?php foreach ($mat_primas as $mp) { ?>
+			                    <?php $cantidad_total=\DB::table('compra_mp')->where('mp_id',$mp->id_materia_prima)->SUM('det_cantidad'); ?>
+			                    <tr class='<?php if($cantidad_total!=0){ echo "table-success"; } else { echo "table-danger"; } ?>'>
+			                        <th><?php echo str_pad($mp->id_materia_prima, 2, "0", STR_PAD_LEFT) ?></th>
+			                        <td><?php echo $mp->mp_nombre." ".$mp->mp_cantidad." ".$mp->mp_unidad ?></td> 
+			                        <!-- TOTAL DE MATERIA PRIMA -->
+			                        <td>{{$cantidad_total or "0"}}</td>                 
+			                    </tr>
+			                <?php } ?>
+			            </tbody>
+			        </table>
+ 				</div>
+ 			</div>
  		</div>
  		<!-- Tab Cobranza -->
 	  	<div class="tab-pane fade" id="pills-pagos" role="tabpanel">
@@ -902,7 +901,7 @@
 								<td><?php echo $viaje->vi_destino ?></td>
 								<td><?php echo $viaje->created_at ?></td>
 								<td>
-									<a class="btn btn-danger btn-sm" href="<?php echo route('get_viaje',$viaje->id_viaje) ?>"><span class="icon icon-eye"></span></a>
+									<a class="btn btn-danger btn-sm" target="_blank()" href="<?php echo route('get_viaje',$viaje->id_viaje) ?>"><span class="icon icon-eye"></span></a>
 								</td>
 								<td>
 									<a class="btn btn-dark btn-sm" target="_blank()" href="<?php echo route('ticket_viaje',['id'=>$viaje->id_viaje,'copia'=>1]) ?>"><span class="icon icon-ticket"></span></a>

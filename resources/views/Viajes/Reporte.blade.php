@@ -51,7 +51,7 @@
 			</thead>
 			<tbody>
 				<?php foreach ($viajes->pedidos as $pedido): ?>
-					<?php if ($pedido->pe_status==="EN CAMINO A ENTREGAR"): ?>
+					<?php if ($pedido->pe_status==="PREPARADO PARA ENTREGAR"): ?>
 						<tr>
 							<td><?php echo $pedido->pe_nota ?></td>
 							<td><?php echo $pedido->pe_fecha_pedido ?></td>
@@ -81,7 +81,7 @@
 			</thead>
 			<tbody>
 				<?php foreach ($viajes->pedidos as $pedido): ?>
-					<?php if ($pedido->pe_status==="EN CAMINO A COBRAR"): ?>
+					<?php if ($pedido->pe_pago_status==="PENDIENTE"): ?>
 						<tr>
 							<td><?php echo $pedido->pe_nota ?></td>
 							<td><?php echo $pedido->cliente->cl_nombre ?></td>
