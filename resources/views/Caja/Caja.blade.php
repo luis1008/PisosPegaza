@@ -693,7 +693,7 @@
 							<tr>
 								<th class="text-center"><?php echo str_pad($mt->id_movimiento_temporal, 2, "0", STR_PAD_LEFT) ?></th>
 								<td><?php echo $mt->created_at ?></td>
-								<td><?php echo $mt->empleado->em_nombre ?></td>
+								<td><?php echo $mt->empleado_id ?></td>
 								<td>$<?php echo number_format($mt->mt_entregado,2)?></td>
 								<td class="text-left">
 									<?php $conceptos = \DB::table('detalle_movimientos')->select('ct_concepto','id_concepto')->where('movimiento_temporal_id',$mt->id_movimiento_temporal)->where('compra_id','0')->get(); ?>
@@ -901,7 +901,10 @@
 								<td><?php echo $viaje->vi_destino ?></td>
 								<td><?php echo $viaje->created_at ?></td>
 								<td>
-									<a class="btn btn-danger btn-sm" target="_blank()" href="<?php echo route('get_viaje',$viaje->id_viaje) ?>"><span class="icon icon-eye"></span></a>
+									<a class="btn btn-dark btn-sm" target="_blank()" href="<?php echo route('get_viaje',$viaje->id_viaje) ?>"><span class="icon icon-plus"></span></a>
+								</td>
+								<td>
+									<a class="btn btn-danger btn-sm" target="_blank()" href="<?php echo route('get_viaje_caja',$viaje->id_viaje) ?>"><span class="icon icon-eye"></span></a>
 								</td>
 								<td>
 									<a class="btn btn-dark btn-sm" target="_blank()" href="<?php echo route('ticket_viaje',['id'=>$viaje->id_viaje,'copia'=>1]) ?>"><span class="icon icon-ticket"></span></a>
@@ -1126,6 +1129,31 @@
 				<div class="modal-body">
 					<form action="{{route('post_pedido_produccion')}}" method="POST">
 						{{csrf_field()}}
+						<div class="form-row">
+							<div class="form-group col">
+								<div class="input-group">
+									<span class="input-group-addon"><span class="icon icon-user"></span></span>
+									<input type="text" class="form-control" name="encargado" placeholder="ENCARGADO" required>
+								</div>
+							</div>
+							<div class="form-group col">
+								<div class="input-group">
+									<span class="input-group-addon"><span class="icon icon-user"></span></span>
+									<input type="text" class="form-control" placeholder="AYUDANTE" name="ayudante">
+								</div>
+							</div>
+
+							<div class="form-group col">
+								<div class="input-group">
+									<span class="input-group-addon"><span class="icon icon-clock"></span></span>
+									<select name="turno">
+										<option>Selecciona Turno</option>
+										<option value="MATUTINO">MATUTINO</option>
+										<option value="VESPERTINO">VESPERTINO</option>
+									</select>
+								</div>
+							</div>
+						</div>
 						<div class="form-row">
 							<div class="form-group col">
 								<div class="input-group">
@@ -1391,12 +1419,7 @@
 							<div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-user"></span></span>
-									<select name="empleado" required class="form-control">
-										<option value="">Seleccionar Empleado</option>
-										<?php foreach($empleados as $emp){ ?>
-											<option value="<?php echo $emp->id_empleado?>"><?php echo $emp->em_nombre ?></option>
-										<?php } ?>
-									</select>
+									<input type="text" class="form-control" name="empleado" placeholder="PERSONA QUE REALIZA EL MOVIMIENTO" required>
 								</div>
 							</div>
 							<div class="form-group col">

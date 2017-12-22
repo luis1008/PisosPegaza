@@ -20,4 +20,11 @@ class ViajeController extends Controller
         
         return view('Viajes.Reporte')->with('viajes',$via);
     }
+
+    public function get_viaje_caja($id){
+        //dd($id);
+        $via  = Viaje::find($id);
+        
+        return view('Viajes.Reporte_Caja')->with('viajes',$via);
+    }
 }

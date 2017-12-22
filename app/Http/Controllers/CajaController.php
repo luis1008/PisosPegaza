@@ -22,6 +22,7 @@ use pegaza\Domicilio;
 use pegaza\Vehiculo;
 use pegaza\Viaje;
 use pegaza\MateriaPrima;
+use pegaza\Produccion;
 
 class CajaController extends Controller
 {
@@ -245,7 +246,7 @@ class CajaController extends Controller
         //dd(substr($request->destino, 0, $pos));
         $pedido = new Pedido();
         $pedido->cliente_id         = $request->cliente;
-        $pedido->pe_nota            = $request->nota;
+        $pedido->pe_nota            = $request->nota->unique();
         $pedido->pe_fecha_entrega   = $request->fecha_programada;
         $pedido->pe_fecha_pedido    = $request->fecha_pedido;
         $pedido->pe_destino_pedido  = substr($request->destino, 0, $pos);
@@ -431,6 +432,12 @@ class CajaController extends Controller
         for ($i=0; $i < sizeof($request->cantidad3); $i++) { 
             $pedido->productos()->attach($request->producto3[$i],['det_prod_cantidad'=>$request->cantidad3[$i]]);
         }
+
+        $produccion = new Produccion();
+        $produccion->pr_encargado   = $request->encargado;
+        $produccion->pr_ayudante    = $request->ayudante;
+        $produccion->pr_turno       = $request->turno;
+        $produccion->save();
 
         return redirect()->route('caja');
     }

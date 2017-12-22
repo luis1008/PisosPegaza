@@ -15,7 +15,7 @@
                         <a href="<?php echo route('caja') ?>" class="btn btn-danger">
                             <span class="icon icon-undo2"></span> Salir
                         </a>
-                        <a href="<?php echo route('ticket_movimiento',['id'=>$datos['id']]) ?>" class="btn btn-success">
+                        <a href="<?php echo route('ticket_movimiento',['id'=>$datos['id']]) ?>" target="_blank()" class="btn btn-success">
                             <span class="icon icon-file-pdf"></span> Ticket Movimiento
                         </a>
                     </td>
