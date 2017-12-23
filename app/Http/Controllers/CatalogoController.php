@@ -115,7 +115,15 @@ class CatalogoController extends Controller
     public function put_datos_cliente(Request $request,$id){
         //dd($request);
         $cli = Cliente::find($id);
-        $cli->cl_correo          = $request->correo;
+        if ($cli->cl_correo != $request->correo) {
+            $this->validate($request, [
+                    'correo'    => 'email|unique:cliente,cl_correo'
+                ],[
+                    'correo.email'  => 'EL CAMPO CORREO DEBE SER DE TIPO CORREO (@live.com, @gmail.com, @hotmail.com, etc.)',
+                    'correo.unique' => 'EL CORREO YA EXISTE'
+                ]);
+            $cli->cl_correo  = $request->correo;
+        }
         $cli->cl_telefono        = $request->telefono;
         $cli->cl_nombre_contacto = $request->nombre_contacto;
         $cli->cl_forma_pago      = $request->forma_pago;
@@ -182,10 +190,25 @@ class CatalogoController extends Controller
         
     }
 
-    public function put_mat_prima(Request $request){
+    public function put_mat_prima($id){
 
-        $mat_prima = MateriaPrima::find($request->mat_prima);
-        $mat_prima->mp_status = $request->status;
+        $mat_prima = MateriaPrima::find($id);
+        $mat_prima->mp_status = !$mat_prima->mp_status;
+        $mat_prima->save();
+
+        return redirect()->route('mat_prima');
+
+    }
+
+    public function put_datos_mat_prima(Request $request, $id){
+
+        $mat_prima = MateriaPrima::find($id);
+        $mat_prima->mp_nombre      = $request->nombre;
+        $mat_prima->mp_cantidad    = $request->cantidad;
+        $mat_prima->mp_unidad      = $request->unidad;
+        $mat_prima->mp_precio      = $request->precio;
+        $mat_prima->mp_observacion = $request->observacion;
+
         $mat_prima->save();
 
         return redirect()->route('mat_prima');
@@ -199,41 +222,56 @@ class CatalogoController extends Controller
     }
 
     public function post_vehiculo(Request $request){
-        //dd($request);
-         //Lado izquierdo son los campos del modelo que especifico y del lado derecho son los names de los inputs de la vista del formulario
-        $vehiculo = new Vehiculo();
-        $vehiculo->placas                  = $request->placas;
-        $vehiculo->vh_nombre               = $request->nombre;
-        $vehiculo->vh_caracteristicas      = $request->caracteristicas;
-
-        $vehiculo->save();//Guarda los datos en la base
         
-        return redirect()->route('vehiculo');//Lo redirecciona a la vista
+        $vehiculo = new Vehiculo();
+        $vehiculo->placas             = $request->placas;
+        $vehiculo->vh_nombre          = $request->nombre;
+        $vehiculo->vh_caracteristicas = $request->caracteristicas;
+
+        $vehiculo->save();
+        
+        return redirect()->route('vehiculo');
     }
 
-    public function put_vehiculo(Request $request){
+    public function add_fallas_vehiculo(Request $request, $id){
+        
+        $vehiculo = new Falla();
+        $vehiculo->placas         = $id;
+        $vehiculo->fa_descripcion = $request->descripcion;
+        $vehiculo->fa_lugar       = $request->lugar;
+        $vehiculo->fa_costo       = $request->costo;
 
-        $vehiculo = Vehiculo::find($request->vehiculo);
-        $vehiculo->vh_status = $request->status;
+        $vehiculo->save();
+        
+        return redirect()->route('vehiculo');
+    }
+
+    public function put_vehiculo($id){
+
+        $vehiculo = Vehiculo::find($id);
+        $vehiculo->vh_status = !$vehiculo->vh_status;
         $vehiculo->save();
 
         return redirect()->route('vehiculo');
 
     }
 
-    public function post_datos_vehiculo(Request $request){
-        //dd($request);
-        $falla = new Falla();
-        $falla->placas              = $request->placas;
-        $falla->fa_descripcion      = $request->descripcion;
-        $falla->fa_lugar            = $request->lugar;
-        $falla->fa_costo            = $request->costo;
-        $falla->save();
+    public function put_datos_vehiculo(Request $request, $id){
+        
+        $vehiculo = Vehiculo::find($id);
+        $vehiculo->vh_nombre          = $request->nombre;
+        $vehiculo->vh_caracteristicas = $request->caracteristicas;
+
+        $vehiculo->save();
 
         return redirect()->route('vehiculo');
-
     }
 
+    public function view_fallas(Request $request, $placas){
+        $vehiculo = Vehiculo::find($placas);
+        $falla    = Falla::where('placas','=',$placas)->Fechas($request->inicial,$request->final)->orderBy('created_at')->get();
+        return view('Catalogo.fallas')->with('vehiculo', $vehiculo)->with('fallas', $falla);
+    }
 
     // PRODUCTO
     public function producto(){
@@ -258,10 +296,21 @@ class CatalogoController extends Controller
         return redirect()->route('producto');//Lo redirecciona a la vista
     }
 
-    public function put_producto(Request $request){
+    public function put_datos_producto(Request $request, $id){
+        
+        $producto = Producto::find($id);
+        $producto->pd_nombre        = $request->nombre;
+        $producto->pd_costo         = $request->costo;
+        $producto->pd_precio_venta  = $request->precio_venta;
+        $producto->save();
+        
+        return redirect()->route('producto');
+    }
 
-        $producto = Producto::find($request->producto);
-        $producto->pd_status = $request->status;
+    public function put_producto($id){
+
+        $producto = Producto::find($id);
+        $producto->pd_status = !$producto->pd_status;
         $producto->save();
 
         return redirect()->route('producto');
@@ -281,7 +330,7 @@ class CatalogoController extends Controller
             $this->validate($request, [
                 'nombre'    => 'required',
                 'domicilio' => 'required',
-                'correo'    => 'email',
+                'correo'    => 'email|unique:proveedor,pv_correo',
                 'rfc'       => 'unique:proveedor,pv_rfc',
                 'contacto'  => 'required',
                 'telefono'  => 'required'
@@ -292,8 +341,7 @@ class CatalogoController extends Controller
                 'telefono.required'  => 'EL CAMPO TELEFONO ES OBLIGATORIO',
                 'rfc.unique'         => 'LA RFC QUE SE INGRESO YA EXISTE EN OTRO PROVEEDOR',
                 'correo.email'       => 'EL CAMPO CORREO DEBE SER DE TIPO CORREO (@live.com, @gmail.com, @hotmail.com, etc.)'
-            ]
-            );
+            ]);
         }
         $proveedor = new Proveedor();
         $proveedor->pv_nombre     = $request->nombre;
@@ -332,7 +380,7 @@ class CatalogoController extends Controller
     }
 
 
-    public function put_proveedor(Request $request, $id){
+    public function put_proveedor($id){
         //dd($request);
         $prov = Proveedor::find($id);
         $prov->pv_status = !$prov->pv_status;
@@ -345,7 +393,15 @@ class CatalogoController extends Controller
     public function put_datos_proveedor(Request $request,$id){
         //dd($request);
         $prove = Proveedor::find($id);
-        $prove->pv_correo     = ($request->correo) ? $request->correo : "NO TIENE";
+        if ($prove->pv_correo != $request->correo) {
+            $this->validate($request, [
+                    'correo'    => 'email|unique:proveedor,pv_correo'
+                ],[
+                    'correo.email'       => 'EL CAMPO CORREO DEBE SER DE TIPO CORREO (@live.com, @gmail.com, @hotmail.com, etc.)',
+                    'correo.unique'      => 'EL CORREO YA EXISTE'
+                ]);
+            $prove->pv_correo  = $request->correo;
+        }
         $prove->pv_domicilio  = $request->domicilio;
         $prove->pv_ciudad     = $request->ciudad;
         $prove->save();
@@ -456,7 +512,14 @@ class CatalogoController extends Controller
             $emp->documentos->licencia_conducir      = $request->check_licencia;
             $emp->documentos->save();
 
-            $emp->usuario->usuario = $request->usuario;
+            if ($emp->usuario->usuario != $request->usuario) {
+                $this->validate($request, [
+                    'usuario' => 'unique:usuario,usuario'
+                ],[
+                    'usuario.unique' => 'EL NOMBRE DE USUARIO YA EXISTE'
+                ]);
+                $emp->usuario->usuario = $request->usuario;
+            }
             $emp->usuario->perfil  = $request->perfil;
             if ($request->password != "" || $request->password != null) {
                 $emp->usuario->password = bcrypt ($request->password);

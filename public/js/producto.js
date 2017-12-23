@@ -5,9 +5,10 @@ $(document).ready(function(){
         if(tipo == "ENSAMBLADO"){
             $('.input-costo').prop('readonly',true);
             GetAjaxMateriaPrima(0);
-            $('.AppendBtn').append('<button type="button" class="btn btn-primary btn-AddMaterial"><span class="icon icon-plus"></span> Material</button>');
+            $('.AppendBtn').append('<button type="button" class="btn btn-dark btn-AddMaterial"><span class="icon icon-plus"></span> Material</button>');
         } else {
             $('.AddEnsamblado,.AppendBtn').empty();
+            $('.input-costo').val('').prop('readonly',false);
         }
     });
 
@@ -68,6 +69,7 @@ $(document).ready(function(){
         $.each($('input.subtotal'),function(){
             subtotal += parseFloat($(this).val());
         });
+        subtotal = Math.round(subtotal * 100 / 100);
         $('.input-costo').val(subtotal);
     }
 
@@ -96,7 +98,7 @@ $(document).ready(function(){
                     form += '<div class="form-row">'+
                                 '<div class="form-group col-md-1 DivCantidad">'+
                                     '<label>Cant.</label>'+
-                                    '<input type="text" name="cantidad[]" class="form-control" value="1" placeholder="NECESITA" required>'+
+                                    '<input type="number" name="cantidad[]" class="form-control" value="1" placeholder="NECESITA" required>'+
                                 '</div>'+
                                 '<div class="form-group col-md-6">'+
                                     '<label>Material</label>'+
@@ -112,7 +114,7 @@ $(document).ready(function(){
                                 '<input type="hidden" class="cantidad_materiaprima" value="0">'+
                                 '<div class="form-group col-md-2 DivPrecio">'+
                                     '<label>Precio</label>'+
-                                    '<input type="text" name="precio[]" class="form-control" value="0" placeholder="$" required>'+
+                                    '<input type="number" name="precio[]" class="form-control" value="0" placeholder="$" required>'+
                                 '</div>'+
                                 '<div class="form-group col-md-2 DivSub">'+
                                     '<label>Sub. Total</label>'+
@@ -130,5 +132,10 @@ $(document).ready(function(){
                 }
             }
         });
+    }
+
+    function FormatMoney(money){
+        var v_money = money.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g,"$1,");
+        return v_money;
     }
 });

@@ -58,9 +58,14 @@ Route::group(['middleware' => 'auth'],function(){
 		'as'	=> 'post_mat_prima'
 	]);
 
-	Route::put('/MateriaPrima',[
+	Route::get('/MateriaPrima/{id}',[
 		'uses'  => 'CatalogoController@put_mat_prima',
 		'as'	=> 'put_mat_prima'
+	]);
+
+	Route::put('/MateriaPrima/{id}',[
+		'uses'  => 'CatalogoController@put_datos_mat_prima',
+		'as'	=> 'put_datos_mat_prima'
 	]);
 
 
@@ -70,23 +75,30 @@ Route::group(['middleware' => 'auth'],function(){
 		'as'	=> 'vehiculo' //Nombre de la ruta
 	]);
 
-
-	Route::post('/Falla',[
-		'uses'  => 'CatalogoController@post_datos_vehiculo',
-		'as'	=> 'post_datos_vehiculo'
-	]);
-
 	Route::post('/Vehiculo',[
 		'uses'  => 'CatalogoController@post_vehiculo', //A que controlador y despues del @ es a que funcion dentro del controlador
 		'as'	=> 'post_vehiculo' //Nombre de la ruta
 	]);
 
+	Route::post('/FallasVehiculo/{id}',[
+		'uses'  => 'CatalogoController@add_fallas_vehiculo', //A que controlador y despues del @ es a que funcion dentro del controlador
+		'as'	=> 'add_fallas_vehiculo' //Nombre de la ruta
+	]);
 
-	Route::put('/Vehiculo',[
+	Route::put('/Vehiculo/{id}',[
+		'uses'  => 'CatalogoController@put_datos_vehiculo',
+		'as'	=> 'put_datos_vehiculo'
+	]);
+
+	Route::get('/Vehiculo/{id}',[
 		'uses'  => 'CatalogoController@put_vehiculo', //A que controlador y despues del @ es a que funcion dentro del controlador
 		'as'	=> 'put_vehiculo' //Nombre de la ruta
 	]);
 
+	Route::get('/Fallas/{placas}',[
+		'uses'  => 'CatalogoController@view_fallas', //A que controlador y despues del @ es a que funcion dentro del controlador
+		'as'	=> 'view_fallas' //Nombre de la ruta
+	]);
 
 	// PRODUCTO
 	Route::get('/Producto',[
@@ -104,7 +116,7 @@ Route::group(['middleware' => 'auth'],function(){
 		'as'	=> 'put_datos_producto'
 	]);
 
-	Route::put('/Producto',[
+	Route::get('/Producto/{id}',[
 		'uses'  => 'CatalogoController@put_producto', //A que controlador y despues del @ es a que funcion dentro del controlador
 		'as'	=> 'put_producto' //Nombre de la ruta
 	]);
