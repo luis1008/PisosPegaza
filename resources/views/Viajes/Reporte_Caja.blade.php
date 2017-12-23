@@ -133,30 +133,43 @@
 	<br>
 	<div class="card">
 		<div class="card-header bg-dark text-center text-white"><b>Egresos</b></div>
-			<table class="table table-sm">
-			
+		<table class="table table-sm">
+			<thead>
+				<th class="text-center">Nota</th>
+				<th>Gasto</th>
+				<th>Salida</th>
+			</thead>
+			<tbody>
+				{{-- FOREACH --}}
+				<tr>
+					<td class="text-center"><span class="badge badge-success">SI</span></td>
+					<td>Diesel</td>
+					<td>$250.00</td>
+				</tr>
+				<tr>
+					<td class="text-center"><span class="badge badge-success">SI</span></td>
+					<td>Comida</td>
+					<td>$100.00</td>
+				</tr>
+				<tr>
+					<td class="text-center"><span class="badge badge-danger">NO</span></td>
+					<td>Refacción</td>
+					<td>$200.00</td>
+				</tr>
+			</tbody>
 		</table>
-	</div> 
-	<br>
-	<div class="text-center">
-		<button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#egreso"><span class="icon icon-plus"></span> Agregar Egreso</button>
 	</div>
-	
+	<br>
 	<div class="form-row">
 		<div class="form-group col-md-3">
 			<label>Kilometraje Final</label>
 			<div class="input-group">
 				<span class="input-group-addon">KM</span>
-				<input type="text" class="form-control" name="final">
+				<input type="text" class="form-control" name="final" value="">
 			</div>
 		</div>
-		<div class="form-group col-md-12">
-			<label>Observaciones</label>
-			<textarea name="descripcion" id="" cols="30" rows="10" class="form-control"></textarea>
-		</div>
-		<div class="form-group col-md-12 text-center">
-			<button class="btn btn-info">Finalizar Viaje</button>
-		</div>
+	
+		
 	</div>
 	<!-- Modal EGRESOS -->
 	<div class="modal fade" id="egreso" tabindex="-1" role="dialog" aria-labelledby="egresos" aria-hidden="true">
@@ -169,21 +182,20 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<form action="{{route('post_gastos',$viajes->id_viaje)}}" method="POST">
-						{{csrf_field()}}
+					<form action="">
 						<div class="form-row">
-								<div class="form-group col">
-								<label>No. Nota</label>
-								<div class="input-group">
-									<span class="input-group-addon"><span class="icon icon-coin-dollar"></span></span>
-									<input type="text" class="form-control" name="nota" placeholder="No. Nota">
-								</div>
+							<div class="form-group col">
+								<label>Se Entrego Nota</label>
+								<select name="nota" id="" class="form-control">
+									<option value="SI">SI</option>
+									<option value="NO">NO</option>
+								</select>
 							</div>
 							<div class="form-group col">
-								<label>Importe</label>
+								<label>Cantidad</label>
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-coin-dollar"></span></span>
-									<input type="number" class="form-control" name="importe" value="0.00">
+									<input type="number" class="form-control" name="cantidad" value="0.00">
 								</div>
 							</div>
 						</div>
@@ -192,18 +204,16 @@
 								<label>Concepto Gasto</label>
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-price-tag"></span></span>
-									<input type="text" class="form-control" name="concepto" placeholder="Concepto">
+									<input type="text" class="form-control" name="concepto" placeholder="GASTO">
 								</div>
 							</div>
 						</div>
-						<div class="modal-footer">
-							<button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button>
-							<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
-							<button type="submit" class="btn btn-dark"><span class="icon icon-floppy-disk"></span> Guardar</button>
-						</div>
 					</form>
 				</div>
-			
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span></button>
+					<button type="button" class="btn btn-success"><span class="icon icon-floppy-disk"></span></button>
+				</div>
 			</div>
 		</div>
 	</div>

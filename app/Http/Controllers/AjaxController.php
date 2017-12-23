@@ -67,7 +67,7 @@ class AjaxController extends Controller
 
     public function GetProducto(Request $request){
         if ($request->ajax()) {
-            $pd = Producto::where('pd_status','=','1')->orderBy('pd_nombre')->get();
+            $pd = Producto::where('pd_tipo','=','ENSAMBLADO')->orderBy('pd_nombre')->get();
             return response()->json($pd);
         }
     }

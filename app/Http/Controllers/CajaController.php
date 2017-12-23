@@ -22,6 +22,8 @@ use pegaza\Domicilio;
 use pegaza\Vehiculo;
 use pegaza\Viaje;
 use pegaza\MateriaPrima;
+use pegaza\Produccion;
+use pegaza\Gastos;
 
 class CajaController extends Controller
 {
@@ -78,7 +80,7 @@ class CajaController extends Controller
         //dd($request);
         $mov = new MovimientoTemporal();
         $mov->mt_entregado = $request->entregado;
-        $mov->empleado_id  = $request->empleado;
+        $mov->empleado  = $request->empleado;
         $mov->save();
 
         for ($i=0; $i < sizeof($request->concepto); $i++) { 
@@ -243,9 +245,18 @@ class CajaController extends Controller
         //dd($request);
         $pos = strpos($request->destino, '>');
         //dd(substr($request->destino, 0, $pos));
+        if ($request->ajax()) {
+            //Validar campos required
+            $this->validate($request, [
+                'rfc'       => 'unique:pedido,pe_nota',
+                ],[
+                    'nota.unique'  => 'EL NUMERO DE NOTA YA EXISTE.',
+                    ]
+            );
+        }
         $pedido = new Pedido();
         $pedido->cliente_id         = $request->cliente;
-        $pedido->pe_nota            = $request->nota;
+        $pedido->pe_nota            = ($request->nota!= "") ? $request->nota : NULL;
         $pedido->pe_fecha_entrega   = $request->fecha_programada;
         $pedido->pe_fecha_pedido    = $request->fecha_pedido;
         $pedido->pe_destino_pedido  = substr($request->destino, 0, $pos);
@@ -420,6 +431,19 @@ class CajaController extends Controller
         return view('Imprimir.ticket_viaje',['datos'=>$datos]);
     }
 
+    //GASTOS EN VIAJE
+    public function post_gastos(Request $request, $id){
+
+        $gastos = new Gastos();
+        $gastos->ga_nota       = $request->nota;
+        $gastos->ga_importe    = $request->importe;
+        $gastos->ga_concepto   = $request->concepto;
+        $gastos->viaje_id      = $request->id;
+        $gastos->save();
+        
+        return view('Viajes.Reporte');  
+}
+    
     // PRODUCCION
     public function post_pedido_produccion(Request $request){
         //dd($request->producto3);
@@ -431,6 +455,12 @@ class CajaController extends Controller
         for ($i=0; $i < sizeof($request->cantidad3); $i++) { 
             $pedido->productos()->attach($request->producto3[$i],['det_prod_cantidad'=>$request->cantidad3[$i]]);
         }
+
+        $produccion = new Produccion();
+        $produccion->pr_encargado   = $request->encargado;
+        $produccion->pr_ayudante    = $request->ayudante;
+        $produccion->pr_turno       = $request->turno;
+        $produccion->save();
 
         return redirect()->route('caja');
     }

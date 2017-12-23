@@ -268,6 +268,17 @@ Route::group(['middleware' => 'auth'],function(){
 		'as'   => 'get_viaje'
 	]);
 
+	Route::get('/ViajeCaja/{id}',[
+		'uses' => 'ViajeController@get_viaje_caja',
+		'as'   => 'get_viaje_caja'
+	]);
+
+	//GASTOS
+	Route::post('/Gastos/{id}',[
+		'uses' => 'CajaController@post_gastos',
+		'as'   => 'post_gastos'
+		]);
+
 	// PRODUCCION
 	Route::post('/PedidoProduccion',[
 		'uses' => 'CajaController@post_pedido_produccion',

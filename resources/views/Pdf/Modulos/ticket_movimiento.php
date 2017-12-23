@@ -26,7 +26,7 @@
 		<p align="center" style="font-size: 40px">Fecha</p>
 		<p class="text-center" style="font-size:40px;"><b><?php echo $movimiento->created_at ?></b></p>
 		<p class="text-center"><b><?php echo $nota ?></b></p>
-		<p>Al repartidor <?php echo $movimiento->empleado->em_nombre ?> se le entrego $ <?php echo number_format($movimiento->mt_entregado,2) ?> para ir a comprar a los diferentes lugares lo siguiente:</p>
+		<p>Al repartidor <?php echo $movimiento->empleado_id ?> se le entrego $ <?php echo number_format($movimiento->mt_entregado,2) ?> para ir a comprar a los diferentes lugares lo siguiente:</p>
 		<p class="text-center"><b>Concepto</b></p>
 
 		<?php $conceptos = \DB::table('detalle_movimientos')->select('ct_concepto','id_concepto')->where('movimiento_temporal_id',$movimiento->id_movimiento_temporal)->where('compra_id','0')->get(); ?>
@@ -51,7 +51,7 @@
 		<p align="center" style="font-size: 40px">Fecha</p>  				 
 			<p class="text-center" style="font-size:40px;"><b><?php echo $movimiento->created_at ?></b></p>
 		<p class="text-center"><b>COPIA</b></p>
-		<p>Al repartidor <?php echo $movimiento->empleado->em_nombre ?> se le entrego $ <?php echo number_format($movimiento->mt_entregado,2) ?> para ir a comprar a los diferentes lugares lo siguiente:</p>
+		<p>Al repartidor <?php echo $movimiento->empleado_id ?> se le entrego $ <?php echo number_format($movimiento->mt_entregado,2) ?> para ir a comprar a los diferentes lugares lo siguiente:</p>
 		<p class="text-center"><b>Concepto</b></p>
 
 		<?php $conceptos = \DB::table('detalle_movimientos')->select('ct_concepto','id_concepto')->where('movimiento_temporal_id',$movimiento->id_movimiento_temporal)->where('compra_id','0')->get(); ?>
