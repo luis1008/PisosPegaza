@@ -199,7 +199,7 @@
 									<option value="">Seleccionar</option>
 									<?php foreach($ClientesPendientes as $cl){ ?>
 										<option value="<?php echo $cl->cliente->id_cliente?>"><?php echo $cl->cliente->cl_nombre ?></option>
-									<?php } ?>
+									<?php } ?> 
 								</select>
 					  		</div>
 					  		<div class="col-md-6">
