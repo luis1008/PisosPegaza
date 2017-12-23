@@ -27,8 +27,7 @@ class Cliente extends Model
         return $this->hasMany('pegaza\Domicilio','cliente_id');
     }
 
-
-    public function documentos_cl(){
+    public function documentos(){
         return $this->hasOne('pegaza\Documentos_Cl','cliente_id');
     }
 

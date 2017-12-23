@@ -40,12 +40,44 @@ class Empleado extends Model
         return $this->hasMany('pegaza\Viaje','empleado_id');
     }
 
-    public function contrato(){
-        return $this->hasOne('pegaza\Contrato','empleado_id');
+    public function contratos(){
+        return $this->hasMany('pegaza\Contrato','empleado_id');
     }
-
 
     public function compras(){
         return $this->hasOne('pegaza\Compra','empleado_id');
+    }
+
+    // Mutators
+    public function setEmCurpAttribute($valor){
+        if ($valor == null || $valor == "") {
+            $this->attributes['em_curp'] = NULL;
+        } else {
+            $this->attributes['em_curp'] = $valor;
+        }
+    }
+
+    public function setEmNumSegSocialAttribute($valor){
+        if ($valor == null || $valor == "") {
+            $this->attributes['em_num_seg_social'] = NULL;
+        } else {
+            $this->attributes['em_num_seg_social'] = $valor;
+        }
+    }
+
+    public function setEmNumLicenciaAttribute($valor){
+        if ($valor == null || $valor == "") {
+            $this->attributes['em_num_licencia'] = NULL;
+        } else {
+            $this->attributes['em_num_licencia'] = $valor;
+        }
+    }
+
+    public function setEmVigenciaLicenciaAttribute($valor){
+        if ($valor == null || $valor == "") {
+            $this->attributes['em_vigencia_licencia'] = NULL;
+        } else {
+            $this->attributes['em_vigencia_licencia'] = $valor;
+        }
     }
 }
