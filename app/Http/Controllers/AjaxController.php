@@ -14,9 +14,28 @@ use pegaza\Cliente;
 use pegaza\Viaje;
 use pegaza\Domicilio;
 use pegaza\Compra;
+use pegaza\Contacto;
 
 class AjaxController extends Controller
 {
+    public function SetEliminacionDomicilioCliente(Request $request){
+        if ($request->ajax()) {
+            $dom = Domicilio::find($request->id);
+            $dom->dom_status = !$dom->dom_status;
+            $dom->save();
+            return response()->json("OK");
+        }
+    }
+
+    public function SetEliminacionContactoProveedor(Request $request){
+        if ($request->ajax()) {
+            $cn = Contacto::find($request->id);
+            $cn->cn_status = !$cn->cn_status;
+            $cn->save();
+            return response()->json("OK");
+        }
+    }
+
     public function GetPedidosPendientesPago(Request $request){
         if ($request->ajax()) {
             $pedidos = Pedido::where('cliente_id','=',$request->id)->where('pe_pago_status','!=','PAGADO')->get();

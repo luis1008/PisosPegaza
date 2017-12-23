@@ -8,7 +8,7 @@
 		<span class="icon icon-exit"></span> Salir
 	</a>
 
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cliente">
+    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#cliente">
 		<span class="icon icon-user-plus"></span> Nuevo
 	</button>
     <br>
@@ -23,12 +23,11 @@
                 <th>Forma Pago</th>
                 <th>Tipo Cliente</th>
                 <th>Opciones</th>
-                <th></th>
             </thead>
             <tbody>
                 <?php if(count($clientes) < 1) { ?>
                     <tr>
-                        <td colspan="6">NO SE ENCONTRO NINGUN REGISTRO</td>
+                        <td colspan="6">NO SE ENCONTRO NINGÚN REGISTRO</td>
                     </tr>
                 <?php } ?>
                 <?php foreach ($clientes as $cl) { ?>
@@ -39,24 +38,18 @@
                         <td><?php echo $cl->cl_forma_pago ?></td>
                         <td><?php echo $cl->cl_tipo_cliente ?></td>
                         <td>
-                        
-                             <!-- BOTON DE MODIFICAR CLIENTE -->
-                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#mod-<?php echo $cl->id_cliente ?>"><span class="icon icon-spinner10"></span></button>
+                            <!-- BOTON DE MODIFICAR CLIENTE -->
+                            <button type="button" class="btn btn-dark btn-sm tooltips2" title="Agregar/Eliminar Domicilios" data-toggle="modal" data-target="#location-<?php echo $cl->id_cliente ?>"><span class="icon icon-location"></span></button>
 
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#info-<?php echo $cl->id_cliente ?>"><span class="icon icon-eye"></span></button>
+                            <button type="button" class="btn btn-danger btn-sm tooltips2" title="Modificar" data-toggle="modal" data-target="#mod-<?php echo $cl->id_cliente ?>"><span class="icon icon-pencil"></span></button>
 
-                            <form action="<?php echo route('put_cliente') ?>" method="POST" style="display:inline-block;">
-                            <input type="hidden" name="_method" value="PUT">
-                            {{ csrf_field() }}
-                                <input type="hidden" name="cliente" value="<?php echo $cl->id_cliente ?>">
-                                <?php if($cl->cl_status){ ?>
-                                    <input type="hidden" name="status" value="0">
-                                    <button type="submit" class="btn btn-danger btn-sm"><span class="icon icon-arrow-down"></span>
-                                <?php } else { ?>
-                                    <input type="hidden" name="status" value="1">
-                                    <button type="submit" class="btn btn-success btn-sm"><span class="icon icon-arrow-up"></span>
-                                <?php } ?>
-                            </form>
+                            <button type="button" class="btn btn-dark btn-sm tooltips2" title="Información" data-toggle="modal" data-target="#info-<?php echo $cl->id_cliente ?>"><span class="icon icon-info"></span></button>
+                            
+                            <?php if($cl->cl_status){ ?>
+                                <a href="<?php echo route('put_cliente', $cl->id_cliente) ?>" class="btn btn-danger btn-sm tooltips2" title="Suspender"><span class="icon icon-arrow-down"></span></a>
+                            <?php } else { ?>
+                                <a href="<?php echo route('put_cliente', $cl->id_cliente) ?>" class="btn btn-danger btn-sm tooltips2" title="Activar"><span class="icon icon-arrow-up"></span></a>
+                            <?php } ?>
                         </td>
                     </tr>
                     <!-- INFORMACION CLIENTE -->
@@ -64,23 +57,50 @@
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="infos">Informacion de <?php echo $cl->cl_nombre ?></h5>
+                                    <h5 class="modal-title" id="infos">Información</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <p><b>Dueño: </b><?php echo $cl->cl_nombre_dueno ?></p>
-                                    <p><b>Contacto: </b><?php echo $cl->cl_nombre_contacto ?></p>
-                                    <p><b>RFC: </b><?php echo $cl->cl_rfc ?></p>
-                                    <p><b>Termino Credito: </b><?php echo $cl->cl_termino_credito ?></p>
-                                    <p><b>Domicilio(s): </b></p>
-                                    <?php foreach($cl->domicilios as $dom) { ?>
+                                    <div class="form-row">
+                                        <div class="col text-center bg-danger text-white" style="font-size:20px;"><b>Datos Generales</b></div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <label>Dueño:</label>
+                                            <p><?php echo $cl->cl_nombre_dueno ?></p>
+                                        </div>
+                                        <div class="col">
+                                            <label>RFC:</label>
+                                            <p><?php echo $cl->cl_rfc ?></p>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <label>Contacto:</label>
+                                            <p><?php echo $cl->cl_nombre_contacto ?></p>
+                                        </div>
+                                        <div class="col">
+                                            <label>Termino Credito:</label>
+                                            <p><?php echo $cl->cl_termino_credito ?></p>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <label>Observaciones:</label>
+                                            <p><?php echo $cl->cl_observacion ?></p>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col text-center bg-dark text-white" style="font-size:20px;"><b>Domicilio(s)</b></div>
+                                    </div>
+                                    @foreach($cl->domicilios as $dom)
+                                        @if($dom->dom_status)
+                                            <li><?php echo $dom->dom_calle . ", " . $dom->dom_colonia . " - " . $dom->dom_codigo_postal . " - " . $dom->dom_ciudad ?></li>
+                                        @endif
+                                    @endforeach
 
-                                        <p><?php echo $dom->dom_calle . ", " . $dom->dom_colonia . " - " . $dom->dom_codigo_postal . " - " . $dom->dom_ciudad ?></p>
-                                        <?php } ?>
-
-                                    <p><b>Observaciones: </b><?php echo $cl->cl_observacion ?></p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
@@ -134,7 +154,8 @@
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><span class="icon icon-credit-card"></span></span>
                                                     <select class="form-control" name="forma_pago" required>
-                                                        <option value="">FORMA DE PAGO</option>
+                                                        <option value="{{$cl->cl_forma_pago}}" hidden selected>{{$cl->cl_forma_pago}}</option>
+                                                        <!-- <option value="">FORMA DE PAGO</option> -->
                                                         <option value="EFECTIVO">EFECTIVO</option>
                                                         <option value="CHEQUE">CHEQUE</option>
                                                         <option value="TRANSFERENCIA">TRANSFERENCIA</option>
@@ -149,7 +170,8 @@
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><span class="icon icon-accessibility"></span></span>
                                                     <select class="form-control" name="tipo" required>
-                                                        <option value="">TIPO CLIENTE</option>
+                                                        <option value="{{$cl->cl_tipo_cliente}}" hidden selected>{{$cl->cl_tipo_cliente}}</option>
+                                                        <!-- <option value="">TIPO CLIENTE</option> -->
                                                         <option value="NORMAL">NORMAL</option>
                                                         <option value="RIGUROSO">RIGUROSO</option>
                                                     </select>
@@ -159,7 +181,8 @@
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><span class="icon icon-clock"></span></span>
                                                     <select class="form-control" name="termino" required>
-                                                        <option value="">TERMINO CREDITO</option>
+                                                        <option value="{{$cl->cl_termino_credito}}" hidden selected>{{$cl->cl_termino_credito}}</option>
+                                                        <!-- <option value="">TERMINO CREDITO</option> -->
                                                         <option value="NINGUNO">NINGUNO</option>
                                                         <option value="1 SEMANA">1 SEMANA</option>
                                                         <option value="15 DIAS">15 DIAS</option>
@@ -171,72 +194,103 @@
                                             </div>
                                         </div>
 
-                                            <div class="form-row">
-                                            <?php foreach ($cl->domicilios as $pos => $dom): ?>
-                                                
-                                                <div class="form-group col-md-<?php if($pos != 0) echo '3'; else echo '4'; ?>">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon"><span class="icon icon-location"></span></span>
-                                                        <input class="form-control" value="<?php echo $dom->dom_calle ?>" name="calle[]" type="text" required>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group col-md-3">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon"><span class="icon icon-location"></span></span>
-                                                        <input class="form-control" value="<?php echo $dom->dom_colonia ?>" name="colonia[]" required>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group col-md-3">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon"><span class="icon icon-office"></span></span>
-                                                        <input class="form-control" value="<?php echo $dom->dom_ciudad ?>" name="ciudad[]" type="text" required>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group col-md-2">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon"><span class="icon icon-location"></span></span>
-                                                        <input class="form-control" value="<?php echo $dom->dom_codigo_postal ?>" name="codigo_postal[]" type="text"  required>
-                                                    </div>
-                                                </div>
-                                                <?php if ($pos != 0): ?>
-                                                    <div class="form-group col-md-1">
-                                                        <button type="button" class="btn btn-danger btn-estatus"><span class="icon icon-bin"></span></button>
-                                                    </div>
-                                                <?php endif ?>
-                                            <?php endforeach ?>
-                                            </div>
-
-                                             <div class="form-row AddDomicilio"></div>
-
-                                            <div class="form-row">
-                                                <div class="form-group col-md-12 text-center">
-                                                    <button type="button" class="btn btn-primary btn-sm btn-domicilio"><span class="icon icon-plus"></span><b>Domicilio</b></button>
-                                                </div>
-
-                                                <div class="form-group col-md-12">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon"><span class="icon icon-binoculars"></span></span>
-                                                        <textarea class="form-control" row="8" name="observaciones" placeholder="OBSERVACIONES"></textarea>
-                                                    </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><span class="icon icon-binoculars"></span></span>
+                                                    <textarea class="form-control" row="8" name="observaciones" placeholder="OBSERVACIONES"></textarea>
                                                 </div>
                                             </div>
-
+                                        </div>
 
                                         <div class="modal-footer">
-                                            <button type="reset"  class="btn btn-primary"><span class="icon icon-fire"></span> Limpiar</button> 
+                                            <button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button> 
                                             <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
-                                            <button type="submit" class="btn btn-success"><span class="icon icon-floppy-disk"></span> Guardar</button>
+                                            <button type="submit" class="btn btn-dark"><span class="icon icon-floppy-disk"></span> Guardar</button>
                                         </div>
-                                        </form>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                    <?php } ?>
+                    <!-- AGREGAR/ELIMINAR DOMICILIOS -->
+                    <div class="modal fade" id="location-<?php echo $cl->id_cliente ?>" tabindex="-1" role="dialog" aria-labelledby="clientes" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="clientes">Domicilios</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-row">
+                                        <div class="col text-center bg-danger text-white" style="font-size:20px;"><b>Eliminación Domicilios</b></div>
+                                    </div>
+                                    <p><b>Si solo desea eliminar un domicilio, presione el botón "<span class="icon icon-bin"></span>" correspondiente (Es importante que al eliminar el Domicilio no habrá forma de recuperarlo).</b></p>
+                                    @foreach($cl->domicilios as $domicilio)
+                                        @if($domicilio->dom_status)
+                                            <div class="form-row">
+                                                <div class="form-group col">
+                                                    <div class="input-group">
+                                                        <input type="text" value="{{$domicilio->dom_calle . ', ' . $domicilio->dom_colonia . ', ' . $domicilio->dom_ciudad . ' - ' . $domicilio->dom_codigo_postal}}" class="form-control form-control-sm" disabled>
+                                                        <div class="input-group-btn">
+                                                            <button type="button" class="btn btn-sm btn-danger BtnEliminarDomicilio" value="{{$domicilio->id_domicilio}}"><span class="icon icon-bin"></span></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                    <div class="form-row">
+                                        <div class="col text-center bg-dark text-white" style="font-size:20px;"><b>Nuevo Domicilio</b></div>
+                                    </div>
+                                    <br>
+                                    <form action="<?php echo route('add_domicilio_cliente',$cl->id_cliente)?>" method="POST">
+                                        {{csrf_field()}}
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><span class="icon icon-location"></span></span>
+                                                    <input class="form-control" name="calle" type="text" placeholder="CALLE" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-md-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><span class="icon icon-location"></span></span>
+                                                    <input class="form-control" name="colonia" type="text" placeholder="COLONIA" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-md-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><span class="icon icon-office"></span></span>
+                                                    <input class="form-control" name="ciudad" type="text" placeholder="CIUDAD" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-md-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><span class="icon icon-location"></span></span>
+                                                    <input class="form-control Numeros" name="codigo_postal" type="text" placeholder="C.P" maxlength="5" required>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button> 
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
+                                            <button type="submit" class="btn btn-dark"><span class="icon icon-floppy-disk"></span> Guardar Nuevo Domicilio</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <?php } ?>
             </tbody>
         </table>
     </div>
@@ -283,7 +337,7 @@
                             <div class="form-group col">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-phone"></span></span>
-                                    <input type="text" class="form-control" name="telefono"  placeholder="TELEFONO" required>
+                                    <input type="text" class="form-control Numeros" name="telefono" maxlength="13" placeholder="TELEFONO" required>
                                 </div>
                             </div>
 
@@ -299,7 +353,7 @@
                             <div class="form-group col">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-user-tie"></span></span>
-                                    <input type="text" class="form-control" name="nombre_dueno"  placeholder="NOMBRE DEL DUEÑO" required>
+                                    <input type="text" class="form-control" name="nombre_dueno" placeholder="NOMBRE DEL DUEÑO" required>
                                 </div>
                             </div>
 
@@ -369,7 +423,7 @@
                             <div class="form-group col-md-2">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-location"></span></span>
-                                    <input class="form-control" name="codigo_postal[]" type="text" placeholder="C.P" required>
+                                    <input class="form-control Numeros" name="codigo_postal[]" type="text" placeholder="C.P" maxlength="5" required>
                                 </div>
                             </div>
 
@@ -379,13 +433,13 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-12 text-center">
-                                <button type="button" class="btn btn-primary btn-sm btn-domicilio"><span class="icon icon-plus"></span><b>Domicilio</b></button>
+                                <button type="button" class="btn btn-dark btn-sm btn-domicilio"><span class="icon icon-plus"></span> <b>Domicilio</b></button>
                             </div>
 
                             <div class="form-group col-md-12">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-binoculars"></span></span>
-                                    <textarea class="form-control" row="8" name="observaciones" placeholder="OBSERVACIONES"></textarea>
+                                    <textarea class="form-control" row="8" name="observaciones" placeholder="OBSERVACIONES">NO HAY OBSERVACIONES</textarea>
                                 </div>
                             </div>
                         </div>
@@ -414,9 +468,9 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="reset"  class="btn btn-primary"><span class="icon icon-fire"></span> Limpiar</button> 
+                            <button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button> 
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
-                            <button type="submit" class="btn btn-success"><span class="icon icon-floppy-disk"></span> Guardar</button>
+                            <button type="submit" class="btn btn-dark"><span class="icon icon-floppy-disk"></span> Guardar</button>
                         </div>
 					</form>
 				</div>
@@ -465,6 +519,17 @@
 
             $(document).on('click','.btn-delete', function(){
                 $(this).parent('div.form-group').parent('div.form-row').remove();
+            });
+
+            $('.BtnEliminarDomicilio').click(function(){
+                var confirmacion = confirm('Esta Realmente Seguro?'), valor = $(this).val();
+                if (!confirmacion) {return false}
+                $.get('/SetEliminacionDomicilioCliente',{id:valor}).done(function(response){
+                    if (response === "OK") {
+                        alert("Se elimino correctamente")
+                    }
+                });
+                $(this).parent('div').parent('div').parent('div').parent('div').fadeOut();
             });
         });
     </script>

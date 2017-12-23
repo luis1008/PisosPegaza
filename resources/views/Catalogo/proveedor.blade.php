@@ -8,7 +8,7 @@
 		<span class="icon icon-exit"></span> Salir
 	</a>
 
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#proveedor">
+    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#proveedor">
 		<span class="icon icon-user-plus"></span> Nuevo
 	</button>
     <br>
@@ -22,12 +22,11 @@
                 <th>Domicilio</th>
                 <th>Correo</th>
                 <th>Opciones</th>
-                <th></th>
             </thead>
             <tbody>
                 <?php if(count($proveedores) < 1) { ?>
                     <tr>
-                        <td colspan="6">NO SE ENCONTRO NINGUN REGISTRO</td>
+                        <td colspan="5">NO SE ENCONTRO NINGÚN REGISTRO</td>
                     </tr>
                 <?php } ?>
                 <?php foreach ($proveedores as $prov) { ?>
@@ -37,22 +36,17 @@
                         <td><?php echo $prov->pv_domicilio ?></td>
                         <td><?php echo $prov->pv_correo ?></td>
                         <td>
-                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#mod-<?php echo $prov->id_proveedor ?>"><span class="icon icon-spinner10"></span></button>
+                            <button type="button" class="btn btn-dark btn-sm tooltips2" title="Agregar/Eliminar Contactos" data-toggle="modal" data-target="#contacto-<?php echo $prov->id_proveedor ?>"><span class="icon icon-phone"></span></button>
 
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#info-<?php echo $prov->id_proveedor ?>"><span class="icon icon-eye"></span></button>
+                            <button type="button" class="btn btn-danger btn-sm tooltips2" title="Modificar" data-toggle="modal" data-target="#mod-<?php echo $prov->id_proveedor ?>"><span class="icon icon-pencil"></span></button>
 
-                            <form action="<?php echo route('put_proveedor') ?>" method="POST" style="display:inline-block;">
-                            <input type="hidden" name="_method" value="PUT">
-                            {{ csrf_field() }}
-                                <input type="hidden" name="proveedor" value="<?php echo $prov->id_proveedor ?>">
-                                <?php if($prov->pv_status){ ?>
-                                    <input type="hidden" name="status" value="0">
-                                    <button type="submit" class="btn btn-danger btn-sm"><span class="icon icon-arrow-down"></span>
-                                <?php } else { ?>
-                                    <input type="hidden" name="status" value="1">
-                                    <button type="submit" class="btn btn-success btn-sm"><span class="icon icon-arrow-up"></span>
-                                <?php } ?>
-                            </form>
+                            <button type="button" class="btn btn-dark btn-sm tooltips2" title="Información" data-toggle="modal" data-target="#info-<?php echo $prov->id_proveedor ?>"><span class="icon icon-info"></span></button>
+                            
+                            <?php if($prov->pv_status){ ?>
+                                <a href="<?php echo route('put_proveedor',$prov->id_proveedor) ?>" class="btn btn-danger btn-sm tooltips2" title="Suspender"><span class="icon icon-arrow-down"></span></a>
+                            <?php } else { ?>
+                                <a href="<?php echo route('put_proveedor',$prov->id_proveedor) ?>" class="btn btn-danger btn-sm tooltips2" title="Activar"><span class="icon icon-arrow-up"></span></a>
+                            <?php } ?>
                         </td>
                     </tr>
                     <!-- INFORMACION PROVEEDOR -->
@@ -60,15 +54,28 @@
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="infos">Informacion de <?php echo $prov->pv_nombre ?></h5>
+                                    <h5 class="modal-title" id="infos">Información</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <p><b>Contacto(s): </b></p>
+                                    <div class="col text-center bg-danger text-white" style="font-size:20px;"><b>Datos Generales</b></div>
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <label>RFC:</label>
+                                            <p>{{$prov->pv_rfc}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <label>Ciudad:</label>
+                                            <p>{{$prov->pv_ciudad}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col text-center bg-dark text-white" style="font-size:20px;"><b>Contactos</b></div>
                                     <?php foreach($prov->contactos as $cont) { ?>
-                                        <p><?php echo "<b>Contacto: </b>" . $cont->cn_nombre . " <br><b>Telefono: </b>" . $cont->cn_telefono . "<hr>"?></p>
+                                        @if($cont->cn_status)
+                                            <p><?php echo "<b>Contacto: </b>" . $cont->cn_nombre . " <br><b>Telefono: </b>" . $cont->cn_telefono ?></p>
+                                        @endif
                                      <?php } ?>
                                 </div>
                                 <div class="modal-footer">
@@ -118,36 +125,74 @@
                                                     <input type="text" class="form-control" name="ciudad"  placeholder="CIUDAD" value="<?php echo $prov->pv_ciudad ?>"  required>
                                                 </div>
                                             </div>
-                                        </div>    
+                                        </div>
 
+                                        <div class="modal-footer">
+                                            <button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button> 
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
+                                            <button type="submit" class="btn btn-dark"><span class="icon icon-floppy-disk"></span> Guardar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AGREGAR/ELIMINAR CONTACTOS -->
+                    <div class="modal fade" id="contacto-<?php echo $prov->id_proveedor ?>" tabindex="-1" role="dialog" aria-labelledby="clientes" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="clientes">Contactos</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-row">
+                                        <div class="col text-center bg-danger text-white" style="font-size:20px;"><b>Eliminación Contactos</b></div>
+                                    </div>
+                                    <p><b>Si solo desea eliminar un contacto, presione el botón "<span class="icon icon-bin"></span>" correspondiente (Es importante que al eliminar el Contacto no habrá forma de recuperarlo).</b></p>
+                                    @foreach($prov->contactos as $contacto)
+                                        @if($contacto->cn_status)
+                                            <div class="form-row">
+                                                <div class="form-group col">
+                                                    <div class="input-group">
+                                                        <input type="text" value="{{'Nombre: ' . $contacto->cn_nombre . ' - Tel: ' . $contacto->cn_telefono }}" class="form-control form-control-sm" disabled>
+                                                        <div class="input-group-btn">
+                                                            <button type="button" class="btn btn-sm btn-danger BtnEliminarContacto" value="{{$contacto->id_contacto}}"><span class="icon icon-bin"></span></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                    <div class="form-row">
+                                        <div class="col text-center bg-dark text-white" style="font-size:20px;"><b>Nuevo Contacto</b></div>
+                                    </div>
+                                    <br>
+                                    <form action="<?php echo route('add_contacto_proveedor',$prov->id_proveedor)?>" method="POST">
+                                        {{csrf_field()}}
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><span class="icon icon-user-tie"></span></span>
-                                                    <input class="form-control" name="contacto[]" type="text" placeholder="NOMBRE DEL CONTACTO" value="<?php echo $cont->cn_nombre ?>"  required>
+                                                    <input class="form-control" name="contacto" type="text" placeholder="NOMBRE CONTACTO" required>
                                                 </div>
                                             </div>
 
                                             <div class="form-group col-md-6">
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><span class="icon icon-phone"></span></span>
-                                                    <input class="form-control" name="telefono[]" type="text" placeholder="TELEFONO" value="<?php echo $cont->cn_telefono ?>"  required>
+                                                    <input class="form-control Numeros" maxlength="13" name="telefono" type="text" placeholder="TELEFONO" required>
                                                 </div>
                                             </div>
+
                                         </div>
-
-                                        <div class="form-row col-md-12 AddContacto"></div>
-
-                                        <div class="form-row">
-                                            <div class="form-group col-md-12 text-center">
-                                                <button type="button" class="btn btn-primary btn-sm btn-contacto"><span class="icon icon-plus"></span><b>Contacto</b></button>
-                                            </div>
-                                        </div>
-
                                         <div class="modal-footer">
-                                            <button type="reset"  class="btn btn-primary"><span class="icon icon-fire"></span> Limpiar</button> 
+                                            <button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button> 
                                             <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
-                                            <button type="submit" class="btn btn-success"><span class="icon icon-floppy-disk"></span> Guardar</button>
+                                            <button type="submit" class="btn btn-dark"><span class="icon icon-floppy-disk"></span> Guardar Nuevo Contacto</button>
                                         </div>
                                     </form>
                                 </div>
@@ -276,6 +321,17 @@
 
             $(document).on('click','.btn-delete', function(){
                 $(this).parent('div.form-group').parent('div.form-row').remove();
+            });
+
+            $('.BtnEliminarContacto').click(function(){
+                var confirmacion = confirm('Esta Realmente Seguro?'), valor = $(this).val();
+                if (!confirmacion) {return false}
+                $.get('/SetEliminacionContactoProveedor',{id:valor}).done(function(response){
+                    if (response === "OK") {
+                        alert("Se elimino correctamente")
+                    }
+                });
+                $(this).parent('div').parent('div').parent('div').parent('div').fadeOut();
             });
         });
     </script>

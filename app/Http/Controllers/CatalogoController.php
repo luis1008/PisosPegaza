@@ -102,17 +102,18 @@ class CatalogoController extends Controller
         }
     }
 
-    public function put_cliente(Request $request){
+    public function put_cliente($id){
 
-        $cliente = Cliente::find($request->cliente);
-        $cliente->cl_status = $request->status;
+        $cliente = Cliente::find($id);
+        $cliente->cl_status = !$cliente->cl_status;
         $cliente->save();
 
         return redirect()->route('cliente');
 
     }
-     public function put_datos_cliente(Request $request,$id){
-            //dd($request);
+    
+    public function put_datos_cliente(Request $request,$id){
+        //dd($request);
         $cli = Cliente::find($id);
         $cli->cl_correo          = $request->correo;
         $cli->cl_telefono        = $request->telefono;
@@ -123,19 +124,21 @@ class CatalogoController extends Controller
         $cli->cl_observacion     = $request->observaciones;
         $cli->save();
 
-        for ($i=0; $i < sizeof($request->calle); $i++) { 
-            $domicilio = new Domicilio();
-            $domicilio->dom_calle         = $request->calle[$i];
-            $domicilio->dom_colonia       = $request->colonia[$i];
-            $domicilio->dom_ciudad        = $request->ciudad[$i];
-            $domicilio->dom_codigo_postal = $request->codigo_postal[$i];
-            $domicilio->cliente_id        = $cli->id_cliente;
-            $domicilio->save();
-        }
-
-
         return redirect()->route('cliente');
 
+    }
+
+    public function add_domicilio_cliente(Request $request, $id){
+        
+        $domicilio = new Domicilio();
+        $domicilio->dom_calle         = $request->calle;
+        $domicilio->dom_colonia       = $request->colonia;
+        $domicilio->dom_ciudad        = $request->ciudad;
+        $domicilio->dom_codigo_postal = $request->codigo_postal;
+        $domicilio->cliente_id        = $id;
+        $domicilio->save();
+        
+        return redirect()->route('cliente');
     }
     
     // MATERIA PRIMA
@@ -317,11 +320,22 @@ class CatalogoController extends Controller
         }
     }
 
+    public function add_contacto_proveedor(Request $request, $id){
+        
+        $contacto = new Contacto();
+        $contacto->cn_nombre    = $request->contacto;
+        $contacto->cn_telefono  = $request->telefono;
+        $contacto->proveedor_id = $id;
+        $contacto->save();
+        
+        return redirect()->route('proveedor');
+    }
 
-     public function put_proveedor(Request $request){
+
+    public function put_proveedor(Request $request, $id){
         //dd($request);
-        $prov = Proveedor::find($request->proveedor);
-        $prov->pv_status = $request->status;
+        $prov = Proveedor::find($id);
+        $prov->pv_status = !$prov->pv_status;
         $prov->save();
 
         return redirect()->route('proveedor');
@@ -336,14 +350,6 @@ class CatalogoController extends Controller
         $prove->pv_ciudad     = $request->ciudad;
         $prove->save();
 
-        for ($i=0; $i < sizeof($request->contacto); $i++) { 
-            $contacto = new Contacto();
-            $contacto->cn_nombre         = $request->contacto[$i];
-            $contacto->cn_telefono       = $request->telefono[$i];
-            $contacto->proveedor_id      = $prove->id_proveedor;
-            $contacto->save();
-        }
-
         return redirect()->route('proveedor');
 
     }
@@ -357,28 +363,27 @@ class CatalogoController extends Controller
 
     public function post_empleado(Request $request){
         //dd($request);
-         $this->validate($request, [
+
+        $this->validate($request, [
                 'password'    => 'confirmed'
             ],[
                 'password.confirmed'    => 'NO COINCIDEN LAS CONTRASEÑAS!'
             ]
-            );
+        );
+
         $empleado =  new Empleado();
-        //Lado izquierdo son los campos del modelo que especifico y del lado derecho son los names de los inputs de la vista del formulario
+
         $empleado->em_nombre            = $request->nombre;
         $empleado->em_curp              = $request->curp;
         $empleado->em_num_seg_social    = $request->seg_social;
-        $empleado->em_fecha_inicio      = $request->fecha_inicio;  
-        $empleado->em_fecha_final       = $request->fecha_final;
+        $empleado->em_fecha_inicio      = $request->fecha_inicio;
         $empleado->em_num_licencia      = $request->num_licencia;
         $empleado->em_vigencia_licencia = $request->vigencia_licencia;
         $empleado->em_tipo              = $request->tipo;
-        $empleado->save();//Guarda los datos en la base
+        $empleado->save();
     
-        //DOBLE INSERCION
-
         $documentos =  new Documentos();
-        //Lado izquierdo son los campos del modelo que especifico y del lado derecho son los names de los inputs de la vista del formulario
+
         $documentos->empleado_id            = $empleado->id_empleado;
         $documentos->acta_nacimiento        = $request->check_nacimiento;
         $documentos->comprobante_domicilio  = $request->check_domicilio;
@@ -386,64 +391,101 @@ class CatalogoController extends Controller
         $documentos->curp                   = $request->check_curp;
         $documentos->ine                    = $request->check_ine;
         $documentos->licencia_conducir      = $request->check_licencia;
-        $documentos->save();//Guarda los datos en la base
+        $documentos->save();
 
-        //INSERCION A USUARIOS
+        $usuarios =  new Usuario();
 
-         $usuarios =  new Usuario();
-        //Lado izquierdo son los campos del modelo que especifico y del lado derecho son los names de los inputs de la vista del formulario
         $usuarios->empleado_id = $empleado->id_empleado;
         $usuarios->perfil      = $request->perfil;
         $usuarios->usuario     = $request->usuario;
         $usuarios->password    = bcrypt ($request->password);
-        $usuarios->save();//Guarda los datos en la base
+        $usuarios->save();
 
-        //INSERCION A CONTRATOS
         if ($request->tipo == 'CONTRATO') {
+
             $contrato =  new Contrato();
-            //Lado izquierdo son los campos del modelo que especifico y del lado derecho son los names de los inputs de la vista del formulario
+
             $contrato->empleado_id          = $empleado->id_empleado;
             $contrato->cont_fecha_inicio    = $empleado->em_fecha_inicio;
-            $contrato->cont_fecha_fin       = $empleado->em_fecha_final;
-            $contrato->save();//Guarda los datos en la base
+            $contrato->cont_fecha_fin       = $request->fecha_final;
+            $contrato->save();
 
-
-        }else{
-            return redirect()->route('empleado');
         }
+
         return redirect()->route('empleado');
     }
 
-    public function put_empleado(Request $request){
-        //dd($request);
-        $emp = Empleado::find($request->empleado);
-        $emp->em_status = $request->status;
+    public function put_empleado($id){
+        $emp = Empleado::find($id);
+        $emp->em_status = !$emp->em_status;
         $emp->save();
 
         return redirect()->route('empleado');
 
     }
 
-       public function put_datos_empleado(Request $request,$id){
-        //dd($request);
+    public function put_datos_empleado(Request $request,$id){
+        
+        $this->validate($request, [
+                'password'    => 'confirmed'
+            ],[
+                'password.confirmed'    => 'NO COINCIDEN LAS CONTRASEÑAS!'
+            ]
+        );
+
         $emp = Empleado::find($id);
+
             $emp->em_fecha_inicio      = $request->fecha_inicio;  
-            $emp->em_fecha_final       = $request->fecha_final;
+            //$emp->em_fecha_final       = $request->fecha_final;
             $emp->em_num_licencia      = $request->num_licencia;
             $emp->em_vigencia_licencia = $request->vigencia_licencia;
+            $emp->em_num_seg_social    = $request->seg_social;
             $emp->em_tipo              = $request->tipo;
+
+            if ($request->curp != null) {
+                $emp->em_curp = $request->curp;            
+            }
+
             $emp->save();
 
-        $documentos =  new Documentos();
+            $emp->documentos->acta_nacimiento        = $request->check_nacimiento;
+            $emp->documentos->comprobante_domicilio  = $request->check_domicilio;
+            $emp->documentos->seguro_social          = $request->check_seguro;
+            $emp->documentos->curp                   = $request->check_curp;
+            $emp->documentos->ine                    = $request->check_ine;
+            $emp->documentos->licencia_conducir      = $request->check_licencia;
+            $emp->documentos->save();
 
-            $documentos->comprobante_domicilio  = $request->check_domicilio;
-            $documentos->licencia_conducir      = $request->check_licencia;
-            $documentos->save();//Guarda los datos en la base
+            $emp->usuario->usuario = $request->usuario;
+            $emp->usuario->perfil  = $request->perfil;
+            if ($request->password != "" || $request->password != null) {
+                $emp->usuario->password = bcrypt ($request->password);
+            }
+            $emp->usuario->save();
 
+            if ($request->tipo != "BASE" && count($emp->contratos) < 1) {
+                $contrato =  new Contrato();
+
+                $contrato->empleado_id          = $emp->id_empleado;
+                $contrato->cont_fecha_inicio    = $emp->em_fecha_inicio;
+                $contrato->cont_fecha_fin       = $request->fecha_final;
+                $contrato->save();
+            }
 
         return redirect()->route('empleado');
 
     }
 
+    public function contrato_empleado(Request $request,$id){
+
+        $contrato =  new Contrato();
+
+        $contrato->empleado_id          = $id;
+        $contrato->cont_fecha_inicio    = $request->fecha_inicio;
+        $contrato->cont_fecha_fin       = $request->fecha_final;
+        $contrato->save();
+
+        return redirect()->route('empleado');
+    }
     
 }

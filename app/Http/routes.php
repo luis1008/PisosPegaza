@@ -30,12 +30,17 @@ Route::group(['middleware' => 'auth'],function(){
 		'as'	=> 'post_cliente'
 	]);
 
+	Route::post('/AgregarDomicilioCliente/{id}',[
+		'uses'  => 'CatalogoController@add_domicilio_cliente',
+		'as'	=> 'add_domicilio_cliente'
+	]);
+
 	Route::put('/Cliente/{id}',[
 		'uses'  => 'CatalogoController@put_datos_cliente',
 		'as'	=> 'put_datos_cliente'
 	]);
 
-	Route::put('/Cliente',[
+	Route::get('/Cliente/{id}',[
 		'uses'  => 'CatalogoController@put_cliente',
 		'as'	=> 'put_cliente'
 	]);
@@ -115,12 +120,17 @@ Route::group(['middleware' => 'auth'],function(){
 		'as'	=> 'post_proveedor'
 	]);
 
+	Route::post('/AgregarContactoProveedor/{id}',[
+		'uses'  => 'CatalogoController@add_contacto_proveedor',
+		'as'	=> 'add_contacto_proveedor'
+	]);
+
 	Route::put('/Proveedor/{id}',[
 		'uses'  => 'CatalogoController@put_datos_proveedor',
 		'as'	=> 'put_datos_proveedor'
 	]);
 
-	Route::put('/Proveedor',[
+	Route::get('/Proveedor/{id}',[
 		'uses'  => 'CatalogoController@put_proveedor',
 		'as'	=> 'put_proveedor'
 	]);
@@ -141,9 +151,14 @@ Route::group(['middleware' => 'auth'],function(){
 		'as'	=> 'put_datos_empleado'
 	]);
 
-	Route::put('/Empleado',[
+	Route::get('/Empleado/{id}',[
 		'uses'  => 'CatalogoController@put_empleado',
 		'as'	=> 'put_empleado'
+	]);
+
+	Route::post('/ContratoEmpleado/{id}',[
+		'uses'  => 'CatalogoController@contrato_empleado', 
+		'as'	=> 'contrato_empleado'
 	]);
 
 	// --------------------
@@ -274,4 +289,6 @@ Route::group(['middleware' => 'auth'],function(){
 	Route::get('/GetKilometrajeFinal', 'AjaxController@GetKilometrajeFinal');
 	Route::get('/GetImporteCompra', 'AjaxController@GetImporteCompra');
 	Route::get('/GetPedidosPendientesPago', 'AjaxController@GetPedidosPendientesPago');
+	Route::get('/SetEliminacionDomicilioCliente', 'AjaxController@SetEliminacionDomicilioCliente');
+	Route::get('/SetEliminacionContactoProveedor', 'AjaxController@SetEliminacionContactoProveedor');
 });// EDN group -> AUTH
