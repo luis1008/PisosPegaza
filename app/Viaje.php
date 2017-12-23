@@ -28,6 +28,10 @@ class Viaje extends Model
         return $this->belongsTo('pegaza\Vehiculo','vehiculo_id');
     }
 
+    public function gastos(){
+        return $this->belongsTo('pegaza\Viaje','viaje_id');
+    }
+
     //MUTATORS
     public function getCreatedAtAttribute($valor){
         return Carbon::parse($valor)->format('d-m-Y');

@@ -2105,16 +2105,18 @@
 			var compras   = $('.multicompra').val();
 			var conceptos = $('.conceptos').val();
 			if(typeof(conceptos) === 'undefined' && compras.length === 0){
-				alert("Debe Seleccionar Compra(s) o Agregar Concepto(s)");
+				alert("Debe Seleccionar al menos una Compra o un Concepto");
 				return false;
-			}
+			}else{
+
 			return true;
+			}
 		}
 
 		function ValidacionAddMovimientos(){
 			var compras   = $('.addcompras').val();
 			var conceptos = $('.addconcept').val();
-			if(conceptos === '' && compras.length === 0){
+			if(conceptos === '' || compras.length === 0){
 				alert("Debe Seleccionar Compra(s) o Agregar Concepto(s)");
 				return false;
 			}
