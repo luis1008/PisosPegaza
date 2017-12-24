@@ -1,5 +1,6 @@
 $(document).ready(function(){
 
+	// Cliente
 	$('#SelectClientePendiente').change(function(){
 		var valor = $(this).val();
 		if (valor != "") {
@@ -10,20 +11,11 @@ $(document).ready(function(){
 	});
 
 	$('#pago').change(function(){
-		var pago = $(this).val(), resto = 0;
-		$('.CheckPagoCliente').prop('checked',false);
-		$('.TdResto').each(function(index){
-			resto += parseFloat($(this).val());
-			if ((resto <= pago) || pago > 0) {
-				$('.CheckPagoCliente').each(function(pos){
-					if (index == pos) {
-						$(this).prop('checked',true);
-						return false;
-					}
-				});	
-			}
-			pago -= resto;
-		});
+		CalcularPagoTecleado($(this).val(), 'CheckPagoCliente', 'TdResto');
+	});
+
+	$('#pago').keyup(function(){
+		CalcularPagoTecleado($(this).val(), 'CheckPagoCliente', 'TdResto');
 	});
 
 	$(document).on('change', '.CheckPagoCliente', function(){
@@ -40,6 +32,40 @@ $(document).ready(function(){
 			}
 		});
 		$('#pago').val(pago);
+	});
+
+	// Proveedor
+	$('#SelectProveedorPendiente').change(function(){
+		var valor = $(this).val();
+		if (valor != "") {
+			var flag = PeticionesAjax("/GetComprasPendientesPago", "GET", {id:valor}, AppendComprasProveedor);
+			$('#BtnPagoProveedorCompra').prop('disabled',!flag);
+			$('#pago_proveedor').prop('readonly',!flag);
+		}
+	});
+
+	$('#pago_proveedor').change(function(){
+		CalcularPagoTecleado($(this).val(), 'CheckPagoProveedor', 'TdRestoProveedor');
+	});
+
+	$('#pago_proveedor').keyup(function(){
+		CalcularPagoTecleado($(this).val(), 'CheckPagoProveedor', 'TdRestoProveedor');
+	});
+
+	$(document).on('change', '.CheckPagoProveedor', function(){
+		var pago = 0;
+		$('#pago_proveedor').val("0");
+		$('.CheckPagoProveedor').each(function(index){
+			if(this.checked){
+				$('.TdRestoProveedor').each(function(pos){
+					if (pos === index) {
+						pago += parseFloat($(this).val());
+						return false;
+					}
+				});
+			}
+		});
+		$('#pago_proveedor').val(pago);
 	});
 
 	function AppendPedidosCliente(respuesta){
@@ -60,6 +86,25 @@ $(document).ready(function(){
 		});
 		$('#BodyPedidosCliente').empty().append(pedidos);
 		$('#pago').prop('max',resto);
+	}
+
+	function AppendComprasProveedor(respuesta){
+		var compras = '', resto = 0;
+		$.each(respuesta, function(index, compra){
+			//required = (index == 0) ? "required" : "";
+			compras += 	'<tr>'+
+							'<input type="hidden" class="TdRestoProveedor" name="resto[]" value="'+(parseFloat(compra.cm_total) - parseFloat(compra.cm_total_abonado))+'"/>'+
+							'<td><input type="checkbox" class="CheckPagoProveedor" name="compras[]" value="'+compra.id_compra+'"/></td>'+
+							'<th class="text-center">'+compra.cm_nota+'</th>'+
+							'<td>'+compra.created_at+'</td>'+
+							'<td>'+compra.cm_termino+'</td>'+
+							'<td>$'+FormatMoney(parseFloat(compra.cm_total) - parseFloat(compra.cm_total_abonado))+'</td>'+
+							'<td>$'+FormatMoney(compra.cm_total_abonado)+'</td>'+
+					    '</tr>';
+					    resto += (parseFloat(compra.cm_total) - parseFloat(compra.cm_total_abonado));
+		});
+		$('#BodyComprasProveedor').empty().append(compras);
+		$('#pago_proveedor').prop('max',resto);
 	}
 
 	function PeticionesAjax(url,tipo,datos = {},funcion = ""){
@@ -84,6 +129,23 @@ $(document).ready(function(){
         });
 
         return flag;
+    }
+
+    function CalcularPagoTecleado(PagoTecleado, CampoCheck, CampoResto){
+    	var pago = PagoTecleado, resto = 0;
+		$('.'+CampoCheck).prop('checked',false);
+		$('.'+CampoResto).each(function(index){
+			resto += parseFloat($(this).val());
+			if ((resto <= pago) || pago > 0) {
+				$('.'+CampoCheck).each(function(pos){
+					if (index == pos) {
+						$(this).prop('checked',true);
+						return false;
+					}
+				});	
+			}
+			pago -= resto;
+		});
     }
 
     function FormatMoney(money){

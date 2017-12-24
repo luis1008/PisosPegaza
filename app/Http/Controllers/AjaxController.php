@@ -43,6 +43,13 @@ class AjaxController extends Controller
         }
     }
 
+    public function GetComprasPendientesPago(Request $request){
+        if ($request->ajax()) {
+            $compras = Compra::where('proveedor_id','=',$request->id)->where('cm_status','!=','PAGADO')->get();
+            return response()->json($compras);
+        }
+    }
+
     public function GetImporteCompra(Request $request){
         if ($request->ajax()) {
             $importe = Compra::find($request->id);
@@ -67,7 +74,7 @@ class AjaxController extends Controller
 
     public function GetProducto(Request $request){
         if ($request->ajax()) {
-            $pd = Producto::where('pd_tipo','=','ENSAMBLADO')->orderBy('pd_nombre')->get();
+            $pd = Producto::where('pd_tipo','=','ENSAMBLADO')->where('pd_status','=','1')->orderBy('pd_nombre')->get();
             return response()->json($pd);
         }
     }
@@ -85,6 +92,14 @@ class AjaxController extends Controller
             $mp = MateriaPrima::find($request->id);
             //$mp = $mp->mp_precio;
             return response()->json($mp);
+        }
+    }
+
+    public function GetPrecioProductoSelected(Request $request){
+        if ($request->ajax()) {
+            $pd = Producto::find($request->id);
+            //$mp = $mp->mp_precio;
+            return response()->json($pd);
         }
     }
 

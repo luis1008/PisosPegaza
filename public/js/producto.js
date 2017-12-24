@@ -4,8 +4,9 @@ $(document).ready(function(){
         var tipo = $(this).val();
         if(tipo == "ENSAMBLADO"){
             $('.input-costo').prop('readonly',true);
-            GetAjaxMateriaPrima(0);
+            //GetAjaxMateriaPrima(0);
             $('.AppendBtn').append('<button type="button" class="btn btn-dark btn-AddMaterial"><span class="icon icon-plus"></span> Material</button>');
+            $('.AppendBtn').append('<button type="button" class="btn btn-danger btn-AddProducto" style="margin-left:5px;"><span class="icon icon-plus"></span> Producto</button>');
         } else {
             $('.AddEnsamblado,.AppendBtn').empty();
             $('.input-costo').val('').prop('readonly',false);
@@ -13,10 +14,41 @@ $(document).ready(function(){
     });
 
     $(document).on('click','.btn-AddMaterial',function(){
-        GetAjaxMateriaPrima(1);
+        var campos = GetAjaxMateriaPrima(1);
+        $('.AddEnsamblado').append(campos);
+    });
+
+    $(document).on('click','.btn-AddProducto',function(){
+        var campos = GetAjaxProducto(1);
+        $('.AddEnsamblado').append(campos);
+    });
+
+    $(document).on('click','.BtnUpdatedMaterial',function(){
+        var campos = GetAjaxMateriaPrima(1);
+        $(this).parent('div').parent('div').parent('div').find('div.AddRequisitos').append(campos);
+        $(this).parent('div').parent('div').parent('div').find('div.modal-footer').find('button[type="submit"]').prop('disabled',false);
+
+    });
+
+    $(document).on('click','.BtnUpdatedProducto',function(){
+        var campos = GetAjaxProducto(1);
+        $(this).parent('div').parent('div').parent('div').find('div.AddRequisitos').append(campos);
+        $(this).parent('div').parent('div').parent('div').find('div.modal-footer').find('button[type="submit"]').prop('disabled',false);
+
     });
 
     $(document).on('click','.btn-delete', function(){
+        var cont = 0;
+        // Ver cuantos campos hay en updated de cada modal
+        $(this).parent('div.form-group').parent('div.form-row').parent('div.AddRequisitos').find('div.form-row').each(function(){
+            cont++;
+        });
+        
+        // si cont es uno o menor de 2 -> se eliminara el ultimo campo y bloqueamos el boton por que no existiran campos que enviar
+        if (cont < 2) {
+            $(this).parent('div.form-group').parent('div.form-row').parent('div.AddRequisitos').parent('div').find('div.modal-footer').find('button[type="submit"]').prop('disabled',true);
+        }
+        // borrar campo 
         $(this).parent('div.form-group').parent('div.form-row').remove();
         CalcularCosto();
     });
@@ -49,20 +81,43 @@ $(document).ready(function(){
         CalcularCosto();
     });
 
-    $(document).on('keyup','input[name="precio[]"]', function(){
+    $(document).on('change','.select-producto',function(){
+        var id    = $(this).val();
+        var valor = 0;
+        var cantidad = 0;
+        $.ajax({
+            url:'/GetPrecioProductoSelected',
+            dataType:'json',
+            type:'GET',
+            async: false,
+            data: {id:id},
+            success:function(data){
+                if(data != ""){
+                    valor = data.pd_precio_venta;
+                    cantidad = data.pd_cantidad;
+                }
+            }
+        });
+        $(this).parent('div.form-group').parent('div.form-row').find('div.DivPrecio').find('input').val(valor);
+        $(this).parent('div.form-group').parent('div.form-row').find('input.cantidad_materiaprima').val(cantidad);
         CalcularSubTotal();
         CalcularCosto();
     });
 
-    $(document).on('keyup','input[name="cantidad[]"]', function(){
+    $(document).on('keyup','input[name="precio[]"],input[name="precio_producto[]"]', function(){
         CalcularSubTotal();
         CalcularCosto();
     });
 
-      $(document).on('keyup','input[name="unidad[]"]', function(){
+    $(document).on('keyup','input[name="cantidad[]"],input[name="cantidad_producto[]"]', function(){
         CalcularSubTotal();
         CalcularCosto();
     });
+
+    /*$(document).on('keyup','input[name="unidad[]"]', function(){
+        CalcularSubTotal();
+        CalcularCosto();
+    });*/
 
     function CalcularCosto(){
         var subtotal = 0;
@@ -84,9 +139,18 @@ $(document).ready(function(){
             oper = (parseFloat(cantidad) * parseFloat(precio)) / parseFloat(unidades);
             $(this).parent('div.form-group').parent('div.form-row').find('div.DivSub').find('input.subtotal').val(oper);
         });
+
+        $.each($('input[name="precio_producto[]"]'),function(){
+            precio   = $(this).val();
+            unidades = $(this).parent('div.form-group').parent('div.form-row').find('input.cantidad_materiaprima').val();
+            cantidad = $(this).parent('div.form-group').parent('div.form-row').find('div.DivCantidad').find('input[name="cantidad_producto[]"]').val();
+            oper = (parseFloat(cantidad) * parseFloat(precio)) / parseFloat(unidades);
+            $(this).parent('div.form-group').parent('div.form-row').find('div.DivSub').find('input.subtotal').val(oper);
+        });
     }
 
     function GetAjaxMateriaPrima(btn){
+        var form = '';
         $.ajax({
             url:'/GetMateriaPrima',
             dataType:'json',
@@ -94,11 +158,10 @@ $(document).ready(function(){
             async: false,
             success:function(data){
                 if(data != ""){
-                    var form = '';
                     form += '<div class="form-row">'+
                                 '<div class="form-group col-md-1 DivCantidad">'+
                                     '<label>Cant.</label>'+
-                                    '<input type="number" name="cantidad[]" class="form-control" value="1" placeholder="NECESITA" required>'+
+                                    '<input step="0.01" type="number" name="cantidad[]" class="form-control" value="1" placeholder="NECESITA" required>'+
                                 '</div>'+
                                 '<div class="form-group col-md-6">'+
                                     '<label>Material</label>'+
@@ -128,10 +191,61 @@ $(document).ready(function(){
 
                     form += '</div>';
 
-                    $('.AddEnsamblado').append(form);
+                    //$('.AddEnsamblado').append(form);
                 }
             }
         });
+        return form;
+    }
+
+    function GetAjaxProducto(btn){
+        var form = '';
+        $.ajax({
+            url:'/GetProducto',
+            dataType:'json',
+            type:'GET',
+            async: false,
+            success:function(data){
+                if(data != ""){
+                    form += '<div class="form-row">'+
+                                '<div class="form-group col-md-1 DivCantidad">'+
+                                    '<label>Cant.</label>'+
+                                    '<input step="0.01" type="number" name="cantidad_producto[]" class="form-control" value="1" placeholder="NECESITA" required>'+
+                                '</div>'+
+                                '<div class="form-group col-md-6">'+
+                                    '<label>Producto</label>'+
+                                    '<select name="productos[]" class="form-control select-producto" required>'+
+                                        '<option value="" selected>Seleccionar</option>';
+                    
+                    $.each(data,function(index, producto){
+                        form += '<option value="'+producto.id_producto+'">'+producto.pd_nombre+'</option>';
+                    });
+                    
+                    form +=         '</select>'+
+                                '</div>'+
+                                '<input type="hidden" class="cantidad_materiaprima" value="0">'+
+                                '<div class="form-group col-md-2 DivPrecio">'+
+                                    '<label>Precio</label>'+
+                                    '<input type="number" name="precio_producto[]" class="form-control" value="0" placeholder="$" required>'+
+                                '</div>'+
+                                '<div class="form-group col-md-2 DivSub">'+
+                                    '<label>Sub. Total</label>'+
+                                    '<input type="text" class="form-control subtotal" name="subtotal_producto[]" value="0" readonly>'+
+                                '</div>';
+                    if(btn){
+                        form += '<div class="form-group col-md-1">'+   
+                                    '<button type="button" class="btn btn-danger btn-delete" style="margin-top:32px;"><span class="icon icon-bin2"></span></button>'+
+                                '</div>';
+                    }
+
+                    form += '</div>';
+
+                    //$('.AddEnsamblado').append(form);
+                }
+            }
+        });
+
+        return form;
     }
 
     function FormatMoney(money){

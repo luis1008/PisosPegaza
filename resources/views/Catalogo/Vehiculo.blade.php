@@ -79,7 +79,7 @@
                                             <div class="form-group col-md-12">
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><span class="icon icon-eye"></span></span>
-                                                    <input type="text" class="form-control" name="caracteristicas" value="{{$vh->vh_caracteristicas}}" placeholder="CARACTERISTICAS" required>
+                                                    <input type="text" class="form-control" name="caracteristicas" value="{{$vh->vh_caracteristicas}}" placeholder="CARACTERISTICAS">
                                                 </div>
                                             </div>                        
                                         </div>
@@ -174,7 +174,7 @@
                             <div class="form-group col-md-12">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-eye"></span></span>
-									<input type="text" class="form-control" name="caracteristicas"  placeholder="CARACTERISTICAS" required>
+									<input type="text" class="form-control" name="caracteristicas"  placeholder="CARACTERISTICAS">
 								</div>
 							</div>                        
                         </div>

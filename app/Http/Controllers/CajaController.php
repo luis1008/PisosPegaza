@@ -50,6 +50,8 @@ class CajaController extends Controller
         $pend = \DB::table('detalle_viaje')->join('pedidos','pedidos.id_pedido','=','detalle_viaje.pedido_id')->select('pedidos.id_pedido')->where('detalle_viaje.det_status','PENDIENTE')->get();
         $pedidos_pendientes_produccion = Pedido::where('pe_status','PENDIENTE PARA PRODUCCION')->get();
         $ClientesPendientesPorPagar    = Pedido::where('pe_pago_status','!=','PAGADO')->where('pe_status','ENTREGADO')->orderBy('pe_fecha_pedido')->groupBy('cliente_id')->get();
+        $ProveedoresPendientesPorPagar = Compra::where('cm_status','!=','PAGADO')->orderBy('created_at')->groupBy('proveedor_id')->get();
+        $CatalogoCuentas = Cuenta::where('ct_status','1')->orderBy('ct_nombre')->get();
         //dd($pend);
         return view('Caja.Caja')->with('empleados',$emp)
                                 ->with('vehiculos',$veh)
@@ -59,6 +61,7 @@ class CajaController extends Controller
                                 ->with('PPendientes',$prp)
                                 ->with('clientes',$cli)
                                 ->with('ClientesPendientes',$ClientesPendientesPorPagar)
+                                ->with('ProveedoresPendientes',$ProveedoresPendientesPorPagar)
                                 ->with('pedidos',$ped)
                                 ->with('ultima_nota',$u_pe)
                                 ->with('cobranza',$cob)
@@ -70,6 +73,7 @@ class CajaController extends Controller
                                 ->with('pedidos_adeuda',$ped_ade)
                                 ->with('mov_compras',$mov_comp)
                                 ->with('mat_primas',$mp)
+                                ->with('cuentas',$CatalogoCuentas)
                                 ->with('pendientes',$pedidos_pendientes_produccion)
                                 ->with('productos',$prod);
 
@@ -467,7 +471,7 @@ class CajaController extends Controller
 
     //COBRANZA
     public function post_pago_pedido(Request $request){
-        
+
         $v_pago  = $request->pago_total;
 
         for ($i = 0; $i < sizeof($request->pedidos); $i++) {
@@ -475,9 +479,29 @@ class CajaController extends Controller
             $v_resto = $request->resto[$i];
 
             if ($v_resto <= $v_pago) {
-                $this->AbonarPedidoCliente($request->pedidos[$i], $v_resto);
+                $this->AbonarPedidoCliente($request->pedidos[$i], $v_resto, $request->cuenta);
             } elseif ($v_pago > 0){
-                $this->AbonarPedidoCliente($request->pedidos[$i], $v_pago);
+                $this->AbonarPedidoCliente($request->pedidos[$i], $v_pago, $request->cuenta);
+            }
+
+            $v_pago -= $v_resto;
+        }
+
+        return redirect()->route('caja');
+    }
+
+    public function post_pago_compra(Request $request){
+        
+        $v_pago  = $request->pago_total;
+
+        for ($i = 0; $i < sizeof($request->compras); $i++) {
+
+            $v_resto = $request->resto[$i];
+
+            if ($v_resto <= $v_pago) {
+                $this->AbonarCompraProveedor($request->compras[$i], $v_resto, $request->cuenta);
+            } elseif ($v_pago > 0){
+                $this->AbonarCompraProveedor($request->compras[$i], $v_pago, $request->cuenta);
             }
 
             $v_pago -= $v_resto;
@@ -487,7 +511,7 @@ class CajaController extends Controller
     }
 
     // FUNCION RECICLABLES
-    public function AbonarPedidoCliente($id, $pago){
+    public function AbonarPedidoCliente($id, $pago, $cuenta){
 
         $pedido = Pedido::find($id);
         $pedido->pe_total_abonado += $pago;
@@ -502,8 +526,28 @@ class CajaController extends Controller
         $abonos->ap_abono     = $pago;
         $abonos->ap_numero    = $pedido->abonos->count() + 1;
         $abonos->pedido_id    = $id;
-        $abonos->ap_pago      = 'EFECTIVO';
+        $abonos->ap_pago      = $cuenta;
         $abonos->ap_folio     = $pedido->pe_nota;//AQUI QUE ONDA?
+        $abonos->save();
+    }
+
+    public function AbonarCompraProveedor($id, $pago, $cuenta){
+
+        $compra = Compra::find($id);
+        $compra->cm_total_abonado += $pago;
+        if (($compra->cm_total_abonado >= $compra->cm_total) && $compra->cm_status != "PAGADO") {
+            $compra->cm_status = "PAGADO";
+        } elseif (($compra->cm_total_abonado < $compra->cm_total) && $compra->cm_status == "PENDIENTE"){
+            $compra->cm_status = "ABONADO";
+        }
+        $compra->save();
+
+        $abonos = new AbonoCompra();
+        $abonos->ab_abono     = $pago;
+        $abonos->ab_numero    = $compra->abonos->count() + 1;
+        $abonos->compra_id    = $id;
+        $abonos->ab_pago      = $cuenta;
+        //$abonos->ap_folio     = $pedido->pe_nota;//AQUI QUE ONDA?
         $abonos->save();
     }
 }

@@ -274,18 +274,18 @@
                             </div>
                         </div>
 
-                        <div class="form-row col-md-12 AddContacto"></div>
+                        <div class="AddContacto"></div>
 
                         <div class="form-row">
                             <div class="form-group col-md-12 text-center">
-                                <button type="button" class="btn btn-primary btn-sm btn-contacto"><span class="icon icon-plus"></span><b>Contacto</b></button>
+                                <button type="button" class="btn btn-dark btn-sm btn-contacto"><span class="icon icon-plus"></span><b>Contacto</b></button>
                             </div>
 						</div>
 
                         <div class="modal-footer">
-                            <button type="reset"  class="btn btn-primary"><span class="icon icon-fire"></span> Limpiar</button> 
+                            <button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button> 
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
-                            <button type="submit" class="btn btn-success"><span class="icon icon-floppy-disk"></span> Guardar</button>
+                            <button type="submit" class="btn btn-dark"><span class="icon icon-floppy-disk"></span> Guardar</button>
                         </div>
 					</form>
 				</div>
@@ -300,9 +300,6 @@
             $('.btn-contacto').click(function(){
                 var formulario = "";
                 formulario +=   '<div class="form-row">'+
-                                    '<div class="form-group col-md-1">'+
-                                        '<button type="button" class="btn btn-danger btn-delete"><span class="icon icon-bin2"></span></button>'+
-                                    '</div>'+
                                     '<div class="form-group col">'+
                                         '<div class="input-group">'+
                                             '<span class="input-group-addon"><span class="icon icon-user-tie"></span></span>'+
@@ -314,6 +311,9 @@
                                             '<span class="input-group-addon"><span class="icon icon-phone"></span></span>'+
                                             '<input class="form-control" name="telefono[]" type="text" placeholder="TELEFONO" required>'+
                                         '</div>'+
+                                    '</div>'+
+                                    '<div class="form-group col-md-1">'+
+                                        '<button type="button" class="btn btn-danger btn-delete"><span class="icon icon-bin2"></span></button>'+
                                     '</div>'+
                                 '</div>';
                 $('.AddContacto').append(formulario);

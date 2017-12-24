@@ -19,6 +19,7 @@
             <thead>
                 <th width="50" class="text-center">Clave</th>
                 <th width="100">Nombre</th>
+                <th width="50">Unidad</th>
                 <th width="50">Precio</th>
                 <th width="100">Observación</th>
                 <th width="50">Opciones</th>
@@ -32,7 +33,8 @@
                 <?php foreach ($mat_primas as $mp) { ?>
                     <tr class='<?php if($mp->mp_status){ echo "table-success"; } else { echo "table-danger"; } ?>'>
                         <th class="text-center"><?php echo str_pad($mp->id_materia_prima, 2, "0", STR_PAD_LEFT) ?></th>
-                        <td><?php echo $mp->mp_nombre . " " . $mp->mp_cantidad . " " . $mp->mp_unidad?></td>
+                        <td><?php echo $mp->mp_nombre /*. " " . $mp->mp_cantidad . " " .$mp->mp_unidad*/ ?></td>
+                        <td><?php echo $mp->mp_unidad ?></td>
                         <td>$<?php echo number_format($mp->mp_precio,2) ?></td>
                         <td><?php echo $mp->mp_observacion ?></td>
                         <td>
@@ -67,12 +69,12 @@
                                                 </div>
                                             </div>
                                             
-                                            <div class="form-group col-md-3">
+                                            <!--<div class="form-group col-md-3">
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><span class="icon icon-stack"></span></span>
                                                     <input type="number" class="form-control" step="0.01" min="0.1" name="cantidad" value="{{$mp->mp_cantidad}}" placeholder="CANTIDAD" required>
                                                 </div>
-                                            </div>
+                                            </div>-->
 
                                             <div class="form-row">
                                                     <div class="form-group col">
@@ -144,13 +146,14 @@
 								</div>
 							</div>
                             
-							<div class="form-group col-md-3">
+							<!--<div class="form-group col-md-3">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-stack"></span></span>
                                     <input type="number" class="form-control" name="cantidad" min="0.1" step="0.01" placeholder="CANTIDAD" required>
                                 </div>
-                            </div>
-
+                            </div>-->
+                            
+                            <input type="hidden" name="cantidad" value="1">
 
                             <div class="form-row">
                                     <div class="form-group col">
@@ -179,7 +182,7 @@
                             <div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-binoculars"></span></span>
-                                    <textarea class="form-control" name="observacion" placeholder="OBSERVACIONES" row="5" required>ninguna observación</textarea>
+                                    <textarea class="form-control" name="observacion" placeholder="OBSERVACIONES" row="5">ninguna observación</textarea>
 								</div>
 							</div>
                         
@@ -195,8 +198,4 @@
 			</div>
 		</div>
 	</div>
-@stop
-
-@section('js')
-
 @stop

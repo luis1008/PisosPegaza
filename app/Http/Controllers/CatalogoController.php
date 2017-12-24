@@ -12,6 +12,7 @@ use pegaza\Vehiculo; //Agregar Modelo
 use pegaza\Cliente;
 use pegaza\Domicilio;
 use pegaza\Proveedor;
+use pegaza\Cuenta;
 use pegaza\Contacto;
 use pegaza\DocumentosCl;
 use pegaza\Usuario;
@@ -148,6 +149,42 @@ class CatalogoController extends Controller
         
         return redirect()->route('cliente');
     }
+
+    // CUENTA
+    public function cuentas(){
+        $cuentas = Cuenta::paginate(25);
+        return view('Catalogo.cuentas')->with('cuentas',$cuentas);
+    }
+
+    public function post_cuenta(Request $request){
+
+        $cuenta = new Cuenta();
+        $cuenta->ct_nombre = $request->nombre;
+        $cuenta->save();
+        
+        return redirect()->route('cuentas');
+        
+    }
+
+    public function put_cuenta($id){
+
+        $cuenta = Cuenta::find($id);
+        $cuenta->ct_status = !$cuenta->ct_status;
+        $cuenta->save();
+
+        return redirect()->route('cuentas');
+
+    }
+
+    public function put_datos_cuenta(Request $request, $id){
+
+        $cuenta = Cuenta::find($id);
+        $cuenta->ct_nombre = $request->nombre;
+        $cuenta->save();
+
+        return redirect()->route('cuentas');
+
+    }
     
     // MATERIA PRIMA
     public function mat_prima(){
@@ -204,7 +241,7 @@ class CatalogoController extends Controller
 
         $mat_prima = MateriaPrima::find($id);
         $mat_prima->mp_nombre      = $request->nombre;
-        $mat_prima->mp_cantidad    = $request->cantidad;
+        //$mat_prima->mp_cantidad    = $request->cantidad;
         $mat_prima->mp_unidad      = $request->unidad;
         $mat_prima->mp_precio      = $request->precio;
         $mat_prima->mp_observacion = $request->observacion;
@@ -280,20 +317,26 @@ class CatalogoController extends Controller
     }
 
     public function post_producto(Request $request){
-        //dd($request);
+        
         $producto = new Producto();
         $producto->pd_nombre        = $request->nombre;
         $producto->pd_tipo          = $request->tipo;
-        $producto->pd_cantidad      = $request->cantidad_producto;
+        $producto->pd_cantidad      = $request->cantidad_unidad;
         $producto->pd_costo         = $request->costo;
         $producto->pd_precio_venta  = $request->precio_venta;
         $producto->save();
         
-        //Guardar Tabla detalle
+        //Guardar Tabla detalle -> Materia Prima
         for ($i=0; $i < sizeof($request->cantidad); $i++) { 
             $producto->materiasprimas()->attach($request->material[$i], ['det_cantidad'=>$request->cantidad[$i],'det_precio'=>$request->precio[$i],'det_subtotal'=>$request->subtotal[$i]]);
         }
-        return redirect()->route('producto');//Lo redirecciona a la vista
+
+        //Guardar Tabla detalle -> Producto
+        for ($i=0; $i < sizeof($request->cantidad_producto); $i++) { 
+            $producto->productos()->attach($request->productos[$i], ['det_pd_cantidad'=>$request->cantidad_producto[$i],'det_pd_precio'=>$request->precio_producto[$i],'det_pd_subtotal'=>$request->subtotal_producto[$i]]);
+        }
+
+        return redirect()->route('producto');
     }
 
     public function put_datos_producto(Request $request, $id){
@@ -315,6 +358,26 @@ class CatalogoController extends Controller
 
         return redirect()->route('producto');
 
+    }
+
+    public function put_requisitos(Request $request, $id){
+        //dd($request);
+        $producto = Producto::find($id);
+        // Vacias Tablas 
+        $producto->materiasprimas()->detach();
+        $producto->productos()->detach();
+
+        //Guardar Tabla detalle -> Materia Prima
+        for ($i=0; $i < sizeof($request->cantidad); $i++) { 
+            $producto->materiasprimas()->attach($request->material[$i], ['det_cantidad'=>$request->cantidad[$i],'det_precio'=>$request->precio[$i],'det_subtotal'=>$request->subtotal[$i]]);
+        }
+
+        //Guardar Tabla detalle -> Producto
+        for ($i=0; $i < sizeof($request->cantidad_producto); $i++) { 
+            $producto->productos()->attach($request->productos[$i], ['det_pd_cantidad'=>$request->cantidad_producto[$i],'det_pd_precio'=>$request->precio_producto[$i],'det_pd_subtotal'=>$request->subtotal_producto[$i]]);
+        }
+
+        return redirect()->route('producto');
     }
 
     // PROVEEDOR

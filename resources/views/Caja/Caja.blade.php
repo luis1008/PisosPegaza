@@ -48,7 +48,7 @@
 	  <li class="nav-item dropdown">
 	    <a class="nav-link dropdown-toggle tooltips2" data-toggle="dropdown" href="#" data-placement="top" title="Cobranza"><span class="icon icon-coin-dollar"></span> <!-- Información --></a>
 	    <div class="dropdown-menu">
-	      <a class="dropdown-item" data-toggle="pill" href="#pills-pagos" role="tab"><span class="icon icon-eye"></span> Pagos</a>
+	      <a class="dropdown-item" data-toggle="pill" href="#pills-pagos" role="tab" style="padding-bottom:35px;"><span class="icon icon-eye"></span> Pagos</a>
 	    </div>
 	  </li>
 	  <!-- li Pedido -->
@@ -155,8 +155,9 @@
 			            </tbody>
 		        	</table>
 		        </div>
+		    </div>
 			<br>
-
+			<div class="card">
 	  			<div class="card-header text-center text-white bg-danger" data-toggle="collapse" href="#CollapseMateria" aria-expanded="true" aria-controls="CollapseMateria"><b><span class="icon icon-circle-down"></span> Materia Prima en Existencia</b></div>
 	  			<div id="CollapseMateria" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
 		        	<table class="table table-hover table-sm">
@@ -187,6 +188,7 @@
  		</div>
  		<!-- Tab Cobranza -->
 	  	<div class="tab-pane fade" id="pills-pagos" role="tabpanel">
+	  		<!-- PAGOS DEL CLIENTE -> PEDIDOS -->
 		  	<div class="card">
 		  		<div class="card-header text-center text-white bg-danger" data-toggle="collapse" href="#CollapseCliente" aria-expanded="true" aria-controls="CollapseCliente"><b><span class="icon icon-circle-down"></span> Cobranza a Cliente</b></div>
 			  	<div id="CollapseCliente" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
@@ -202,12 +204,25 @@
 									<?php } ?> 
 								</select>
 					  		</div>
-					  		<div class="col-md-6">
-					  			<label>Total a Pagar</label>
+					  		<div class="col-md-3">
+					  			<label>Cuenta</label>
+					  			<div class="input-group">
+					  				<div class="input-group-addon"><span class="icon icon-credit-card"></span></div>
+					  				<select name="cuenta" required class="form-control">
+					  					<option value="">Seleccionar</option>
+					  					<option value="CAJA">CAJA</option>
+					  					@foreach($cuentas as $cuenta)
+					  						<option value="{{$cuenta->ct_nombre}}">{{$cuenta->ct_nombre}}</option>
+					  					@endforeach
+					  				</select>
+					  			</div>
+					  		</div>
+					  		<div class="col-md-3">
+					  			<label>Total a Cobrar</label>
 					  			<div class="input-group">
 					  				<input type="number" class="form-control" name="pago_total" step="0.01" min="0.1" value="0" id="pago" readonly>
 					  				<div class="input-group-btn">
-					  					<button type="submit" class="btn btn-dark" id="BtnPagoClientePedidos" disabled><span class="icon icon-coin-dollar"></span> Pagar</button>
+					  					<button type="submit" class="btn btn-dark" id="BtnPagoClientePedidos" disabled><span class="icon icon-coin-dollar"></span> Cobrar</button>
 					  				</div>
 					  			</div>
 					  		</div>
@@ -223,6 +238,66 @@
 						                <th class="text-center">Total Abonado</th>
 						            </thead>
 						            <tbody id="BodyPedidosCliente">
+					                    <tr>
+					                        <td colspan="6">NO SE ENCONTRO NINGÚN PEDIDO</td>
+					                    </tr>
+						            </tbody>
+						        </table>
+						  	</div>
+			        	</div>
+				  	</form>
+		        </div>
+		  	</div>
+		  	<br><br>
+		  	<!-- PAGOS AL PROVEEDOR -> COMPRAS -->
+		  	<div class="card">
+		  		<div class="card-header text-center text-white bg-dark" data-toggle="collapse" href="#CollapseProveedor" aria-expanded="true" aria-controls="CollapseProveedor"><b><span class="icon icon-circle-down"></span> Pago a Proveedor</b></div>
+			  	<div id="CollapseProveedor" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+				  	<form action="{{ route('post_pago_compra') }}" method="POST">
+				  		{{ csrf_field() }}
+				  		<div class="row card-body">
+					  		<div class="col-md-6">
+					  			<label>Proveedores</label>
+							  	<select name="proveedor" required class="form-control" id="SelectProveedorPendiente">
+									<option value="">Seleccionar</option>
+									<?php foreach($ProveedoresPendientes as $pv){ ?>
+										<option value="<?php echo $pv->proveedor->id_proveedor?>"><?php echo $pv->proveedor->pv_nombre ?></option>
+									<?php } ?> 
+								</select>
+					  		</div>
+					  		<div class="col-md-3">
+					  			<label>Cuenta</label>
+					  			<div class="input-group">
+					  				<div class="input-group-addon"><span class="icon icon-credit-card"></span></div>
+					  				<select name="cuenta" required class="form-control">
+					  					<option value="">Seleccionar</option>
+					  					<option value="CAJA">CAJA</option>
+					  					@foreach($cuentas as $cuenta)
+					  						<option value="{{$cuenta->ct_nombre}}">{{$cuenta->ct_nombre}}</option>
+					  					@endforeach
+					  				</select>
+					  			</div>
+					  		</div>
+					  		<div class="col-md-3">
+					  			<label>Total a Pagar</label>
+					  			<div class="input-group">
+					  				<input type="number" class="form-control" name="pago_total" step="0.01" min="0.1" value="0" id="pago_proveedor" readonly>
+					  				<div class="input-group-btn">
+					  					<button type="submit" class="btn btn-danger" id="BtnPagoProveedorCompra" disabled><span class="icon icon-coin-dollar"></span> Pagar</button>
+					  				</div>
+					  			</div>
+					  		</div>
+						  	<div class="col-md-12" style="margin-top:15px;">
+						        <table class="table table-hover table-sm text-center">
+						            <thead>
+						            	<th class="text-center"></th>
+						                <th class="text-center">No. Nota</th>
+						                <th class="text-center">Compra</th>
+						                <th class="text-center">Termino</th>
+						                <th class="text-center">Resto</th>
+						                <th class="text-center">Total Abonado</th>
+						            </thead>
+						            <tbody id="BodyComprasProveedor">
 					                    <tr>
 					                        <td colspan="6">NO SE ENCONTRO NINGÚN PEDIDO</td>
 					                    </tr>
@@ -367,7 +442,6 @@
 							<th class="text-center">Estatus</th>
 							<th class="text-center">Bodega</th>
 							<th class="text-center">Ver</th>
-							<th></th>
 					</thead>
 					<tbody>
 						<?php if (count($compras) < 1): ?>
@@ -687,7 +761,7 @@
 					</thead>
 					<tbody>
 						<?php if(count($mtPendientes) < 1){ ?>
-							<tr class="table-dark"><td colspan="4">NO HAY MOVIMIENTOS TEMPORALES PENDIENTES</td></tr>
+							<tr class="table-dark"><td colspan="7">NO HAY MOVIMIENTOS TEMPORALES PENDIENTES</td></tr>
 						<?php } ?>
 						<?php foreach($mtPendientes as $mt){ ?>
 							<tr>
@@ -890,7 +964,7 @@
 					<tbody>
 						<?php if (count($viajes) < 1): ?>
 							<tr>
-								<td colspan="5" class="table-dark">NO SE ENCONTRO NINGUN REGISTRO</td>
+								<td colspan="6" class="table-dark">NO SE ENCONTRO NINGUN REGISTRO</td>
 							</tr>
 						<?php endif ?>
 						@foreach($viajes as $viaje)
@@ -1796,11 +1870,11 @@
 						</div>
 						<div id="ComprasMP"></div>
 						<div class="col-md-12 text-center DivBtnMp" style="margin-bottom:15px;display:none;">
-							<button type="button" class="btn-AddMP btn btn-primary"><span class="icon icon-plus"></span> Agregar</button>
+							<button type="button" class="btn-AddMP btn btn-dark"><span class="icon icon-plus"></span> Agregar</button>
 						</div>
 						<div id="ComprasArt"></div>
 						<div class="col-md-12 text-center DivBtnArt" style="margin-bottom:15px;display:none;">
-							<button type="button" class="btn-AddArt btn btn-primary"><span class="icon icon-plus"></span> Agregar</button>
+							<button type="button" class="btn-AddArt btn btn-dark"><span class="icon icon-plus"></span> Agregar</button>
 						</div>
 						<div class="modal-footer">
 							<button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button>

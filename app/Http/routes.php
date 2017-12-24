@@ -45,7 +45,26 @@ Route::group(['middleware' => 'auth'],function(){
 		'as'	=> 'put_cliente'
 	]);
 
+	// CUENTAS
+	Route::get('/Cuenta',[
+		'uses'  => 'CatalogoController@cuentas',
+		'as'	=> 'cuentas'
+	]);
 
+	Route::post('/Cuenta',[
+		'uses'  => 'CatalogoController@post_cuenta',
+		'as'	=> 'post_cuenta'
+	]);
+
+	Route::get('/Cuenta/{id}',[
+		'uses'  => 'CatalogoController@put_cuenta',
+		'as'	=> 'put_cuenta'
+	]);
+
+	Route::put('/Cuenta/{id}',[
+		'uses'  => 'CatalogoController@put_datos_cuenta',
+		'as'	=> 'put_datos_cuenta'
+	]);
 
 	// MATERIA PRIMA
 	Route::get('/MateriaPrima',[
@@ -119,6 +138,11 @@ Route::group(['middleware' => 'auth'],function(){
 	Route::get('/Producto/{id}',[
 		'uses'  => 'CatalogoController@put_producto', //A que controlador y despues del @ es a que funcion dentro del controlador
 		'as'	=> 'put_producto' //Nombre de la ruta
+	]);
+
+	Route::post('/RequisitosProducto/{id}',[
+		'uses'  => 'CatalogoController@put_requisitos', //A que controlador y despues del @ es a que funcion dentro del controlador
+		'as'	=> 'put_requisitos' //Nombre de la ruta
 	]);
 
 	// PROVEEDOR
@@ -291,6 +315,11 @@ Route::group(['middleware' => 'auth'],function(){
 		'as'   => 'post_pago_pedido'
 	]);
 
+	Route::post('/PagoCompraProveedor',[
+		'uses' => 'CajaController@post_pago_compra',
+		'as'   => 'post_pago_compra'
+	]);
+
 	//PDF
 	Route::get('/NotaPedido/{id}/{preorden?}/{copia?}', 'PdfController@pdf_pedido')->name('pdf_pedido');
 	Route::get('/TicketViaje/{id}/{copia?}', 'PdfController@ticket_viaje')->name('ticket_viaje');
@@ -298,6 +327,7 @@ Route::group(['middleware' => 'auth'],function(){
 	
 	//AJAX
 	Route::get('/GetMateriaPrima', 'AjaxController@GetMateriaPrima');
+	Route::get('/GetPrecioProductoSelected', 'AjaxController@GetPrecioProductoSelected');
 	Route::get('/GetPrecioMateriaPrimaSelected', 'AjaxController@GetPrecioMateriaPrimaSelected');
 	Route::get('/GetProveedor', 'AjaxController@GetProveedor');
 	Route::get('/GetCliente', 'AjaxController@GetCliente');
@@ -312,6 +342,7 @@ Route::group(['middleware' => 'auth'],function(){
 	Route::get('/GetKilometrajeFinal', 'AjaxController@GetKilometrajeFinal');
 	Route::get('/GetImporteCompra', 'AjaxController@GetImporteCompra');
 	Route::get('/GetPedidosPendientesPago', 'AjaxController@GetPedidosPendientesPago');
+	Route::get('/GetComprasPendientesPago', 'AjaxController@GetComprasPendientesPago');
 	Route::get('/SetEliminacionDomicilioCliente', 'AjaxController@SetEliminacionDomicilioCliente');
 	Route::get('/SetEliminacionContactoProveedor', 'AjaxController@SetEliminacionContactoProveedor');
 });// EDN group -> AUTH
