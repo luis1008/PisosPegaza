@@ -14,11 +14,8 @@ class MovimientoTemporal extends Model
                                 'mt_firma', 
                                 'mt_status',
                                 'mt_gasto',
-                                'empleado_id'];
+                                'empleado'];
 
-    public function empleado(){
-        return $this->belongsTo('pegaza\Empleado','empleado_id');
-    }
 
     public function prestamo(){
         return $this->hasOne('pegaza\Prestamo','movimiento_temporal_id');

@@ -34,7 +34,7 @@ class CajaController extends Controller
         $pre = Pedido::where('pe_status','PREPARADO PARA ENTREGAR')->get();
         $ciu = Pedido::select('pe_destino_ciudad')->distinct()->get();
         $mtp = MovimientoTemporal::where('mt_status','=','PENDIENTE')->get();
-        $prp = Prestamo::/*where('pres_status','=','LISTO')->*/get();
+        $prp = Prestamo::where('pres_status','=','PENDIENTE')->get();
         $prv = Proveedor::where('pv_status','=','1')->get();
         $com = Compra:: where ('cm_bodega','=','0')->get();
         $cli = Cliente::where('cl_status','=','1')->orderBy('cl_nombre')->get();
@@ -45,7 +45,7 @@ class CajaController extends Controller
         $u_pe = Pedido::select('pe_nota')->orderBy('id_pedido','DESC')->first();
         $u_pe = ($u_pe) ? $u_pe->pe_nota+1 : "0";
         $viaj = Viaje::where('vi_status','0')->get();
-        $pega = PedidoPegaza::where('pp_status','PENDIENTE')->get();
+        /*$pega = PedidoPegaza::where('pp_status','PENDIENTE')->get();*/
         $mov_comp = Compra::where('cm_status','PENDIENTE')->where('cm_movimiento','0')->where('cm_proveedor','0')->get();
         $pend = \DB::table('detalle_viaje')->join('pedidos','pedidos.id_pedido','=','detalle_viaje.pedido_id')->select('pedidos.id_pedido')->where('detalle_viaje.det_status','PENDIENTE')->get();
         $pedidos_pendientes_produccion = Pedido::where('pe_status','PENDIENTE PARA PRODUCCION')->get();
@@ -69,7 +69,7 @@ class CajaController extends Controller
                                 ->with('ciudades',$ciu)
                                 ->with('viajes',$viaj)
                                 ->with('pedidos_asignados',$pend)
-                                ->with('pedidos_pegaza',$pega)
+                                /*->with('pedidos_pegaza',$pega)*/
                                 ->with('pedidos_adeuda',$ped_ade)
                                 ->with('mov_compras',$mov_comp)
                                 ->with('mat_primas',$mp)
@@ -139,7 +139,7 @@ class CajaController extends Controller
             $pre->pres_descripcion       = "PRESTAMO POR MOVIMIENTOS TEMPORALES";
             $pre->movimiento_temporal_id = $mov->id_movimiento_temporal;
             $pre->pres_tipo              = "GASTO";
-            $pre->empleado_id            = $mov->empleado_id;
+            $pre->empleado               = $mov->empleado;
             $pre->save();
         }
 
@@ -168,8 +168,7 @@ class CajaController extends Controller
         $pre->pres_cantidad     = $request->prestamo;
         $pre->pres_descripcion  = $request->descripcion;
         $pre->pres_tipo         = $request->tipo;
-        $pre->pres_status       = "LISTO";
-        $pre->empleado_id       = $request->empleado;
+        $pre->empleado          = $request->empleado;
         $pre->save();
 
         return redirect()->route('caja');

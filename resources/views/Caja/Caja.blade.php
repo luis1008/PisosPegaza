@@ -121,7 +121,7 @@
 	                		<td><?php echo '$'. number_format($total,2) ?></td>  
 
 	                		<!-- TOTAL DE EGRESOS -->
-	                        <?php $total=\DB::table('compras')->SUM('cm_total'); ?>
+	                        <?php $total=\DB::table('compras')->SUM('cm_total_abonado'); ?>
 	                		<td><?php echo '$'. number_format($total,2) ?></td>  		      
 	                    </tr>
 		        </tbody>
@@ -644,7 +644,7 @@
 							<tr>
 								<th><?php echo str_pad($pre->id_prestamo , 2, "0", STR_PAD_LEFT) ?></th>
 								<td><?php echo $pre->created_at ?></td>
-								<td><?php echo $pre->empleado->em_nombre ?></td>
+								<td><?php echo $pre->empleado ?></td>
 								<td><?php echo number_format($pre->pres_cantidad,2) ?></td>
 								<td><?php echo $pre->pres_descripcion ?></td>
 	                            <td><?php echo $pre->pres_tipo ?></td>
@@ -723,7 +723,7 @@
 														<div class="form-group col">
 															<select class="form-control" name="estatus" required>
 																<option value="">Seleccionar</option>
-																<option value="LISTO">SI APRUEBO EL PRESTAMO</option>
+																<option value="APROBADO">SI APRUEBO EL PRESTAMO</option>
 																<option value="NO APROBADO"> NO APRUEBO EL PRESTAMO</option>
 															</select>
 														</div>
@@ -767,7 +767,7 @@
 							<tr>
 								<th class="text-center"><?php echo str_pad($mt->id_movimiento_temporal, 2, "0", STR_PAD_LEFT) ?></th>
 								<td><?php echo $mt->created_at ?></td>
-								<td><?php echo $mt->empleado_id ?></td>
+								<td><?php echo $mt->empleado ?></td>
 								<td>$<?php echo number_format($mt->mt_entregado,2)?></td>
 								<td class="text-left">
 									<?php $conceptos = \DB::table('detalle_movimientos')->select('ct_concepto','id_concepto')->where('movimiento_temporal_id',$mt->id_movimiento_temporal)->where('compra_id','0')->get(); ?>
@@ -842,7 +842,7 @@
 														<div class="form-group col">
 															<div class="input-group">
 																<span class="input-group-addon"><span class="icon icon-price-tag"></span></span>
-																<input type="text" class="form-control" value="Compra No° <?php echo str_pad($con->id_compra, 2, "0", STR_PAD_LEFT)?>" readonly>
+																<input type="text" class="form-control" value="Compra No° <?php echo str_pad($con->cm_nota, 2, "0", STR_PAD_LEFT)?>" readonly>
 															</div>
 														</div>
 														<div class="form-group col">
@@ -918,7 +918,7 @@
 														<label>Compras</label>
 														<select name="compras[]" class="form-control addcompras multicompra" multiple>
 															@foreach($mov_compras as $compra)
-																<option value="{{$compra->id_compra}}">Compra No° {{str_pad($compra->id_compra, 2, "0", STR_PAD_LEFT)}}</option>
+																<option value="{{$compra->id_compra}}">Compra No° {{str_pad($compra->cm_nota, 2, "0", STR_PAD_LEFT)}}</option>
 															@endforeach
 														</select>
 													</div>
@@ -993,39 +993,6 @@
 	  	<!-- Tab Produccion -->
 	  	<div class="tab-pane fade" id="pills-produccion" role="tabpanel">
 			<div class="card text-black bg-light">
-				<div class="card-header text-center text-white bg-danger"><b>PEDIDOS PEGAZA PENDIENTES</b></div>
-				<table class="table table-hover table-sm text-center">
-					<thead>
-						<th>No. Nota</th>
-						<th class="text-center">Memo</th>
-						<th class="text-center">Fecha</th>
-					</thead>
-					<tbody>
-						@if(count($pedidos_pegaza) < 1)
-							<tr>
-								<td colspan="3" class="table-dark">NO SE ENCONTRO NINGUN PEDIDO PENDIENTE</td>
-							</tr>
-						@endif
-						@foreach($pedidos_pegaza as $pedido)
-							<tr>
-								<th><?php echo $pedido->pp_nota ?></th>
-								<td><?php echo $pedido->pp_memo ?></td>
-								<td><?php echo $pedido->created_at ?></td>
-								<td width="50">
-									<a class="btn btn-danger btn-sm" href="#"><span class="icon icon-eye"></span></a>
-								</td>
-								<td width="50">
-									<a class="btn btn-dark btn-sm" href="#"><span class="icon icon-pencil"></span></a>
-								</td>
-								<td width="50">
-									<a class="btn btn-danger btn-sm" href="#"><span class="icon icon-cross"></span></a>
-								</td>
-							</tr>
-						@endforeach
-					</tbody>
-				</table>
-			</div>
-			<br>
 			<div class="card text-black bg-light">
 				<div class="card-header text-center text-white bg-dark"><b>PEDIDOS A PRODUCCION</b></div>
 				<table class="table table-hover table-sm text-center">
@@ -1035,12 +1002,12 @@
 						<th class="text-center">Fecha</th>
 					</thead>
 					<tbody>
-						@if(count($pedidos_pegaza) < 1)
+						@if(count($pedidos) < 1)
 							<tr>
 								<td colspan="3">NO SE ENCONTRO NINGUN PEDIDO PENDIENTE</td>
 							</tr>
 						@endif
-						@foreach($pedidos_pegaza as $pedido)
+						@foreach($pedidos as $pedido)
 							<tr>
 								<th><?php echo $pedido->pp_nota ?></th>
 								<td><?php echo $pedido->pp_memo ?></td>
@@ -1079,7 +1046,7 @@
 						<div class="form-row">
 							<div class="form-group col">
 								<label>Repartidor</label>
-								<select name="repartidor" id="" class="form-control">
+								<select name="repartidor" id="" class="form-control" required>
 									<option value="">Seleccionar</option>
 									@foreach($empleados as $emp)
 										<option value="{{$emp->id_empleado}}">{{$emp->em_nombre}}</option>
@@ -1220,7 +1187,7 @@
 							<div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-clock"></span></span>
-									<select name="turno">
+									<select name="turno" class="form-control">
 										<option>Selecciona Turno</option>
 										<option value="MATUTINO">MATUTINO</option>
 										<option value="VESPERTINO">VESPERTINO</option>
@@ -1238,7 +1205,7 @@
 							<div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-calendar"></span></span>
-									<input type="text" class="form-control" value="<?php echo date('d-m-Y') ?>" readonly>
+									<input type="text" class="form-control readonly" value="<?php echo date('d-m-Y') ?>">
 								</div>
 							</div>
 							<div class="form-group col-md-12">
@@ -1349,7 +1316,7 @@
 								<!--<label>No. Nota</label>-->
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-profile"></span></span>
-									<input type="text" class="form-control" name="nota" value="{{$ultima_nota}}" placeholder="No. NOTA" required>
+									<input type="number" class="form-control" name="nota" value="{{$ultima_nota}}" placeholder="No. NOTA" required>
 								</div>
 							</div>
 							<div class="form-group col">
@@ -1382,7 +1349,7 @@
 							<div class="fomr-group col input-cheque" style="display:none;">
 								<div class="input-group">
 									<span class="input-group-addon">NO. CHEQUE</span>
-									<input type="text" class="form-control" value="0" placeholder="No. Cheque" name="no_cheque">
+									<input type="number" class="form-control" value="0" placeholder="No. Cheque" name="no_cheque">
 								</div>
 							</div>
 							<div class="form-group col">
@@ -1424,7 +1391,7 @@
 						   <div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-coin-dollar"></span></span>
-									<input type="text" class="form-control input-subtotal" name="importe"  placeholder="IMPORTE" readonly required>
+									<input type="number" class="form-control input-subtotal" name="importe"  placeholder="IMPORTE" readonly required>
 								</div>
 							</div>
 							<div class="form-group col">
@@ -1561,12 +1528,7 @@
 							<div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-user"></span></span>
-									<select name="empleado" required class="form-control">
-										<option value="">Seleccionar Empleado</option>
-										<?php foreach($empleados as $emp){ ?>
-											<option value="<?php echo $emp->id_empleado?>"><?php echo $emp->em_nombre ?></option>
-										<?php } ?>
-									</select>
+									<input type="text" class="form-control" name="empleado" placeholder="¿A QUIEN LE PRESTA?" required>
 								</div>
 							</div>
 							<div class="form-group col">
@@ -1586,11 +1548,12 @@
 							<div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-user"></span></span>
-									<select name="tipo" required class="form-control">
+									<input type="text" value="PERSONAL" class="form-control" name="tipo" readonly>
+									<!--<select name="tipo" required class="form-control">
 										<option value="">Seleccionar Tipo</option>
 										<option value="GASTO">GASTO</option>
 										<option value="PERSONAL">PERSONAL</option>
-									</select>
+									</select>-->
 								</div>
 							</div>
 						</div>

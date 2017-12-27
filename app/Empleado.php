@@ -24,14 +24,6 @@ class Empleado extends Model
         return $this->hasOne('pegaza\Documentos','empleado_id');
     }
 
-    public function prestamos(){
-        return $this->hasMany('pegaza\Prestamo','empleado_id');
-    }
-
-    public function movimientos(){
-        return $this->hasMany('pegaza\MovimientoTemporal','empleado_id');
-    }
-
     public function usuario(){
         return $this->hasOne('pegaza\Usuario','empleado_id');
     }

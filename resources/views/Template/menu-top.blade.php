@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-	<a class="navbar-brand" href="#">Pegaza</a>
+	<a class="navbar-brand" href="{{route('caja')}}">Pegaza</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
@@ -27,7 +27,18 @@
 	          <span class="icon icon-drawer"></span>	Modulos
 	        </a>
 	        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-	          <a class="dropdown-item" href="{{route('caja')}}"><span class="icon icon-users"></span> Caja</a>
+	          <a class="dropdown-item" href="{{route('caja')}}"><span class="icon icon-users"></span> Caja</a></div>
+	      </li>
+	    </ul>
+	    <ul class="navbar-nav">
+	      <li class="nav-item dropdown">
+	        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	          <span class="icon icon-stats-dots"></span>	Reportes
+	        </a>
+	        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+	          <a class="dropdown-item" href="{{route('caja')}}"><span class="icon icon-coin-dollar"></span> Cobranza</a>
+	          <a class="dropdown-item" href="{{route('caja')}}"><span class="icon icon-hammer"></span> Producción</a>
+	          <a class="dropdown-item" href="{{route('caja')}}"><span class="icon icon-price-tag"></span> Compras</a></div>
 	      </li>
 	    </ul>
 	    <ul class="navbar-nav ml-auto">
@@ -36,7 +47,7 @@
 	          <span class="icon icon-user"></span>	<?php echo Auth::user()->usuario ?>
 	        </a>
 	        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-	          <a class="dropdown-item" href="{{route('logout')}}"><span class="icon icon-exit"></span> Salir</a>
+	          <a class="dropdown-item" href="{{route('logout')}}"><span class="icon icon-exit"></span> Salir</a></div>
 	        </div>
 	      </li>
 	    </ul>

@@ -57,7 +57,7 @@
 		    });
 
 		    //Solo numerico y punto
-		    $(document).on('keydown','.Numeros','input[type="number"]',function(e){
+		    $(document).on('keydown','.Numeros,input[type="number"]',function(e){
 		        // Disponible: borrar, Enter
 		        if ($.inArray(e.keyCode, [110, 190, 9, 8, 13]) !== -1 ||
 		             // Disponible: inicio, fin, izquierda, derecha

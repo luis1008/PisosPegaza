@@ -15,20 +15,16 @@ class Prestamo extends Model
                             'pres_status', 
                             'pres_descripcion', 
                             'viaje_id', 
-                            'empleado_id',
+                            'empleado',
                             'pres_tipo',
                             'movimiento_temporal_id'];
 
     public function viaje(){
-        return $this->hasOne('pegaza\Viaje','viaje_id'); //FALTA RELACIONAR EL belongsTo
+        return $this->hasOne('pegaza\Viaje','viaje_id');
     }
 
     public function movimiento(){
         return $this->belongsTo('pegaza\MovimientoTemporal','movimiento_temporal_id');
-    }
-
-    public function empleado(){
-        return $this->belongsTo('pegaza\Empleado','empleado_id');
     }
 
     //MUTATORS

@@ -229,20 +229,18 @@ $(document).ready(function(){
 							'<input type="number" name="cantidad[]" class="form-control" value="1" min="1" placeholder="NECESITA" required>'+
 						'</div>'+
 						'<div class="form-group col-md-6">'+
-							'<label>Material</label>'+
-							'<select name="material[]" class="form-control select-gasto" required>'+
-								'<option value="" selected>SELECCIONAR</option>'+
-								'<option value="add">NUEVA GASTO</option>';
+							'<label>Concepto</label>'+
+							'<input type="text" class="form-control" name="material" placeholder="CONCEPTO" required>';
 
-			$.each(data,function(index, gasto){
+			/*$.each(data,function(index, gasto){
 				form += '<option value="'+gasto.id_cuentas+'">'+gasto.ct_nombre+'</option>';
-			});
+			});*/
 
 			form +=         '</select>'+
 						'</div>'+
 						'<div class="form-group col-md-2 DivPrecio">'+
-							'<label>Precio</label>'+
-							'<input type="number" name="precio[]" class="form-control" value="0" min="1" placeholder="$" required>'+
+							'<label>Importe</label>'+
+							'<input type="number" name="importe" class="form-control" value="0" min="1" placeholder="$" required>'+
 						'</div>'+
 						'<div class="form-group col-md-2 DivSub">'+
 							'<label>Sub. Total</label>'+
