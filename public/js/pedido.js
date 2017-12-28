@@ -370,4 +370,23 @@ $(document).ready(function(){
             });
         });
     }
+
+    $('input[name="cobrar[]"]').change(function(){
+        var cont = 0;
+        $('input[name="cobrar[]"]').each(function(){
+            if (this.checked) {
+                cont++;
+            }
+        });
+        $('.PedidoCheck').each(function(){
+            if (this.checked) {
+                cont++;
+            }
+        });
+        if (cont > 0) {
+            $('.BtnPedidoNuevo').prop('disabled',false);
+        } else {
+            $('.BtnPedidoNuevo').prop('disabled',true);
+        }
+    });
 });

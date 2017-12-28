@@ -5,8 +5,8 @@
 	<title>Nota Pedido</title>
 	<style>
 		body{
-			width: 85%;
-			margin-left: 10%;
+			width: 100%;
+			/* margin-left: 10%; */
             /* border: 1px solid black; */
 		}
 
@@ -103,7 +103,7 @@
 	</style>
 </head>
 <body>
-	<?php for($i = 0; $i < 3; $i++) { ?>
+	<?php for($i = 0; $i < 1; $i++) { ?>
 		<div style="margin-bottom:25%;">
 			<div class="text-center">
 				<?php if($i == 0){ ?>

@@ -320,6 +320,11 @@ Route::group(['middleware' => 'auth'],function(){
 		'as'   => 'post_pago_compra'
 	]);
 
+	Route::post('/PagoPrestamo',[
+		'uses' => 'CajaController@post_pago_prestamo',
+		'as'   => 'post_pago_prestamo'
+	]);
+
 	//PDF
 	Route::get('/NotaPedido/{id}/{preorden?}/{copia?}', 'PdfController@pdf_pedido')->name('pdf_pedido');
 	Route::get('/TicketViaje/{id}/{copia?}', 'PdfController@ticket_viaje')->name('ticket_viaje');
@@ -343,6 +348,7 @@ Route::group(['middleware' => 'auth'],function(){
 	Route::get('/GetImporteCompra', 'AjaxController@GetImporteCompra');
 	Route::get('/GetPedidosPendientesPago', 'AjaxController@GetPedidosPendientesPago');
 	Route::get('/GetComprasPendientesPago', 'AjaxController@GetComprasPendientesPago');
+	Route::get('/GetPrestamosPendientes', 'AjaxController@GetPrestamosPendientes');
 	Route::get('/SetEliminacionDomicilioCliente', 'AjaxController@SetEliminacionDomicilioCliente');
 	Route::get('/SetEliminacionContactoProveedor', 'AjaxController@SetEliminacionContactoProveedor');
 });// EDN group -> AUTH

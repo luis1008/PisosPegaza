@@ -11,8 +11,4 @@ class Cuenta extends Model
     protected $primaryKey = "id_cuentas";
 
     protected $fillable   = ['ct_nombre, ct_status'];
-
-    public function compras(){
-        return $this->belongsToMany('pegaza\Compra', 'compra_cuentas', 'cuentas_id', 'compra_id')->withPivot('det_cantidad','det_precio','det_subtotal');        
-    }
 }

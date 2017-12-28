@@ -15,6 +15,7 @@ use pegaza\Viaje;
 use pegaza\Domicilio;
 use pegaza\Compra;
 use pegaza\Contacto;
+use pegaza\Prestamo;
 
 class AjaxController extends Controller
 {
@@ -47,6 +48,13 @@ class AjaxController extends Controller
         if ($request->ajax()) {
             $compras = Compra::where('proveedor_id','=',$request->id)->where('cm_status','!=','PAGADO')->get();
             return response()->json($compras);
+        }
+    }
+
+    public function GetPrestamosPendientes(Request $request){
+        if ($request->ajax()) {
+            $prestamo = Prestamo::find($request->id);
+            return response()->json($prestamo);
         }
     }
 

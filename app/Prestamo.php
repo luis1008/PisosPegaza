@@ -27,6 +27,10 @@ class Prestamo extends Model
         return $this->belongsTo('pegaza\MovimientoTemporal','movimiento_temporal_id');
     }
 
+    public function abonos(){
+        return $this->hasMany('pegaza\AbonoPrestamo','prestamo_id');
+    }
+
     //MUTATORS
     public function getCreatedAtAttribute($valor){
         return Carbon::parse($valor)->format('d-m-Y');

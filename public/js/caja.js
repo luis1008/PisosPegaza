@@ -33,6 +33,7 @@ $(document).ready(function(){
 	// COMPRAS -> TIPO DE COMPRAS
 	$('.TypeCompra').change(function(){
 		var tipo = $(this).val();
+		$('.input-costo').val('0');
 		if (tipo === "MATERIA PRIMA") {
 			$('#ComprasMP, #ComprasArt').empty();
 			$('.DivBtnArt').hide();
@@ -221,7 +222,7 @@ $(document).ready(function(){
 	});
 
 	function GetAjaxCuentas(btn){
-		$.get('/GetCuentas').done(function(data){
+		//$.get('/GetCuentas').done(function(data){
 			var form = '';
 			form += '<div class="form-row">'+
 						'<div class="form-group col-md-1 DivCantidad">'+
@@ -230,17 +231,17 @@ $(document).ready(function(){
 						'</div>'+
 						'<div class="form-group col-md-6">'+
 							'<label>Concepto</label>'+
-							'<input type="text" class="form-control" name="material" placeholder="CONCEPTO" required>';
+							'<input type="text" class="form-control" name="material[]" placeholder="CONCEPTO" required>';
 
 			/*$.each(data,function(index, gasto){
 				form += '<option value="'+gasto.id_cuentas+'">'+gasto.ct_nombre+'</option>';
 			});*/
 
-			form +=         '</select>'+
+			form +=         //'</select>'+
 						'</div>'+
 						'<div class="form-group col-md-2 DivPrecio">'+
 							'<label>Importe</label>'+
-							'<input type="number" name="importe" class="form-control" value="0" min="1" placeholder="$" required>'+
+							'<input type="number" name="precio[]" class="form-control" value="0" min="1" placeholder="$" required>'+
 						'</div>'+
 						'<div class="form-group col-md-2 DivSub">'+
 							'<label>Sub. Total</label>'+
@@ -254,7 +255,7 @@ $(document).ready(function(){
 
 			form += '</div>';
 			$('#ComprasArt').append(form);
-		});
+		//});
 	}
 
 	// SCRIPT PARA AGREGAR NUEVO PROVEEDOR EN COMPRAS
@@ -302,8 +303,6 @@ $(document).ready(function(){
 			$('.select-prov').append(options);
 		});
 	}
-
-	
 
 	// FUNCIONES QUE CALCULAN DE LOS PRECIOS Y SUBTOTALES
 	$(document).on('change','input[name="precio[]"]', function(){

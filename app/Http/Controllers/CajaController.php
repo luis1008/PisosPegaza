@@ -14,6 +14,7 @@ use pegaza\Cuenta;
 use pegaza\Compra;
 use pegaza\AbonoCompra;
 use pegaza\AbonoPedido;
+use pegaza\AbonoPrestamo;
 use pegaza\Cliente;
 use pegaza\Producto;
 use pegaza\Pedido;
@@ -24,6 +25,7 @@ use pegaza\Viaje;
 use pegaza\MateriaPrima;
 use pegaza\Produccion;
 use pegaza\Gastos;
+use pegaza\GastoFijo;
 
 class CajaController extends Controller
 {
@@ -43,15 +45,16 @@ class CajaController extends Controller
         $prod = Producto::where('pd_status','=','1')->orderBy('pd_nombre')->get();
         $mp = MateriaPrima::where('mp_status','=','1')->orderBy('mp_nombre')->get();
         $u_pe = Pedido::select('pe_nota')->orderBy('id_pedido','DESC')->first();
-        $u_pe = ($u_pe) ? $u_pe->pe_nota+1 : "0";
+        $u_pe = ($u_pe) ? $u_pe->pe_nota + 1 : "0";
         $viaj = Viaje::where('vi_status','0')->get();
         /*$pega = PedidoPegaza::where('pp_status','PENDIENTE')->get();*/
         $mov_comp = Compra::where('cm_status','PENDIENTE')->where('cm_movimiento','0')->where('cm_proveedor','0')->get();
         $pend = \DB::table('detalle_viaje')->join('pedidos','pedidos.id_pedido','=','detalle_viaje.pedido_id')->select('pedidos.id_pedido')->where('detalle_viaje.det_status','PENDIENTE')->get();
         $pedidos_pendientes_produccion = Pedido::where('pe_status','PENDIENTE PARA PRODUCCION')->get();
         $ClientesPendientesPorPagar    = Pedido::where('pe_pago_status','!=','PAGADO')->where('pe_status','ENTREGADO')->orderBy('pe_fecha_pedido')->groupBy('cliente_id')->get();
-        $ProveedoresPendientesPorPagar = Compra::where('cm_status','!=','PAGADO')->orderBy('created_at')->groupBy('proveedor_id')->get();
-        $CatalogoCuentas = Cuenta::where('ct_status','1')->orderBy('ct_nombre')->get();
+        $ProveedoresPendientesPorPagar = Compra::where('cm_bodega','1')->where('cm_status','!=','PAGADO')->orderBy('created_at')->groupBy('proveedor_id')->get();
+        $EmpleadosPendientesPorPagar   = Prestamo::where('pres_tipo','=','PERSONAL')->where('pres_status','=','APROBADO')->whereRaw('pres_abonado < pres_cantidad')->orderBy('created_at')->get();
+        $CatalogoCuentas               = Cuenta::where('ct_status','1')->orderBy('ct_nombre')->get();
         //dd($pend);
         return view('Caja.Caja')->with('empleados',$emp)
                                 ->with('vehiculos',$veh)
@@ -62,6 +65,7 @@ class CajaController extends Controller
                                 ->with('clientes',$cli)
                                 ->with('ClientesPendientes',$ClientesPendientesPorPagar)
                                 ->with('ProveedoresPendientes',$ProveedoresPendientesPorPagar)
+                                ->with('EmpleadosPendientes',$EmpleadosPendientesPorPagar)
                                 ->with('pedidos',$ped)
                                 ->with('ultima_nota',$u_pe)
                                 ->with('cobranza',$cob)
@@ -202,7 +206,13 @@ class CajaController extends Controller
                 $compra->materiasprimas()->attach($request->material[$i], ['det_cantidad'=>$request->cantidad[$i],'det_precio'=>$request->precio[$i],'det_subtotal'=>$request->subtotal[$i]]);
             } else {
                 // GUARDAR TABLA DETALLE compra_cuenta
-                $compra->cuentas()->attach($request->material[$i], ['det_cantidad'=>$request->cantidad[$i],'det_precio'=>$request->precio[$i],'det_subtotal'=>$request->subtotal[$i]]);
+                $gasto = new GastoFijo();
+                $gasto->gf_concepto = $request->material[$i];
+                $gasto->gf_cantidad = $request->cantidad[$i];
+                $gasto->gf_importe  = $request->precio[$i];
+                $gasto->gf_subtotal = $request->subtotal[$i];
+                $gasto->compra_id   = $compra->id_compra;
+                $gasto->save();
             }
         }
 
@@ -505,6 +515,21 @@ class CajaController extends Controller
 
             $v_pago -= $v_resto;
         }
+
+        return redirect()->route('caja');
+    }
+
+    public function post_pago_prestamo(Request $request){
+        
+        $m_prestamo = Prestamo::find($request->deudor);
+        $m_prestamo->pres_abonado += $request->pago_total;
+        $m_prestamo->save();
+
+        $m_abono = new AbonoPrestamo();
+        $m_abono->ab_abono    = $request->pago_total;
+        $m_abono->ab_numero   = $m_prestamo->abonos->count() + 1;
+        $m_abono->prestamo_id = $request->deudor;
+        $m_abono->save();
 
         return redirect()->route('caja');
     }

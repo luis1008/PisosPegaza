@@ -28,8 +28,8 @@ class Compra extends Model
         return $this->belongsToMany('pegaza\MateriaPrima', 'compra_mp', 'compra_id', 'mp_id')->withPivot('det_cantidad','det_precio','det_subtotal');        
     }
 
-    public function cuentas(){
-        return $this->belongsToMany('pegaza\Cuenta', 'compra_cuentas', 'compra_id', 'cuentas_id')->withPivot('det_cantidad','det_precio','det_subtotal');        
+    public function gastos(){
+        return $this->hasMany('pegaza\GastoFijo', 'compra_id');        
     }
 
     public function proveedor(){

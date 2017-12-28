@@ -169,7 +169,7 @@
 			            <tbody>
 			                <?php if(count($mat_primas) < 1) { ?>
 			                    <tr>
-			                        <td colspan="3">NO SE ENCONTRO NINGUN REGISTRO</td>
+			                        <td colspan="3">NO SE ENCONTRO NINGÚN REGISTRO</td>
 			                    </tr>
 			                <?php } ?>
 			                <?php foreach ($mat_primas as $mp) { ?>
@@ -239,7 +239,7 @@
 						            </thead>
 						            <tbody id="BodyPedidosCliente">
 					                    <tr>
-					                        <td colspan="6">NO SE ENCONTRO NINGÚN PEDIDO</td>
+					                        <td colspan="6">NO SE ENCONTRO NINGÚN REGISTRO</td>
 					                    </tr>
 						            </tbody>
 						        </table>
@@ -299,7 +299,65 @@
 						            </thead>
 						            <tbody id="BodyComprasProveedor">
 					                    <tr>
-					                        <td colspan="6">NO SE ENCONTRO NINGÚN PEDIDO</td>
+					                        <td colspan="6">NO SE ENCONTRO NINGÚN REGISTRO</td>
+					                    </tr>
+						            </tbody>
+						        </table>
+						  	</div>
+			        	</div>
+				  	</form>
+		        </div>
+		  	</div>
+		  	<br><br>
+		  	<!-- PAGOS DEL EMPLEADO -> PRESTAMO -->
+		  	<div class="card">
+		  		<div class="card-header text-center text-white bg-danger" data-toggle="collapse" href="#CollapseEmpleado" aria-expanded="true" aria-controls="CollapseEmpleado"><b><span class="icon icon-circle-down"></span> Pago al Prestamo</b></div>
+			  	<div id="CollapseEmpleado" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+				  	<form action="{{ route('post_pago_prestamo') }}" method="POST">
+				  		{{ csrf_field() }}
+				  		<div class="row card-body">
+					  		<div class="col-md-8">
+					  			<label>Deudores</label>
+							  	<select name="deudor" required class="form-control" id="SelectEmpleadoPendiente">
+									<option value="">Seleccionar</option>
+									<?php foreach($EmpleadosPendientes as $prestamo){ ?>
+										<option value="<?php echo $prestamo->id_prestamo ?>"><?php echo $prestamo->empleado ?></option>
+									<?php } ?> 
+								</select>
+					  		</div>
+					  		<!-- <div class="col-md-3">
+					  			<label>Cuenta</label>
+					  			<div class="input-group">
+					  				<div class="input-group-addon"><span class="icon icon-credit-card"></span></div>
+					  				<select name="cuenta" required class="form-control">
+					  					<option value="">Seleccionar</option>
+					  					<option value="CAJA">CAJA</option>
+					  					@foreach($cuentas as $cuenta)
+					  						<option value="{{$cuenta->ct_nombre}}">{{$cuenta->ct_nombre}}</option>
+					  					@endforeach
+					  				</select>
+					  			</div>
+					  		</div> -->
+					  		<div class="col">
+					  			<label>Total a Pagar</label>
+					  			<div class="input-group">
+					  				<input type="number" class="form-control" name="pago_total" step="0.01" min="0.1" value="0" id="pago_empleado" readonly>
+					  				<div class="input-group-btn">
+					  					<button type="submit" class="btn btn-danger" id="BtnPagoEmpleado" disabled><span class="icon icon-coin-dollar"></span> Cobrar</button>
+					  				</div>
+					  			</div>
+					  		</div>
+						  	<div class="col-md-12" style="margin-top:15px;">
+						        <table class="table table-hover table-sm">
+						            <thead>
+						                <th class="text-center">No. Prestamo</th>
+						                <th>Resto</th>
+						                <th>Total Abonado</th>
+						                <th>Memo</th>
+						            </thead>
+						            <tbody id="BodyEmpleadoPrestamo">
+					                    <tr>
+					                        <td colspan="4" class="text-center">NO SE ENCONTRO NINGÚN REGISTRO</td>
 					                    </tr>
 						            </tbody>
 						        </table>
@@ -320,12 +378,11 @@
 		                <th>Entrega</th>
 		                <th>Cliente</th>
 		                <th>Destino</th>
-		                <th>Opciones</th>
 		            </thead>
 		            <tbody>
 		                <?php if(count($pedidos) < 1) { ?>
 		                    <tr>
-		                        <td colspan="5">NO SE ENCONTRO NINGUN PEDIDO</td>
+		                        <td colspan="5">NO SE ENCONTRO NINGÚN REGISTRO</td>
 		                    </tr>
 		                <?php } ?>
 		                <?php foreach ($pedidos as $pe) { ?>
@@ -336,17 +393,13 @@
 		                        <td><?php echo $pe->cliente->cl_nombre ?></td>
 		                        <td><?php echo $pe->pe_destino_pedido ?></td>
 		                        <td>
-		                            <button type="button" class="btn btn-dark btn-sm" data-toggle="modal" data-target="#info-<?php echo $pe->id_pedido ?>"><span class="icon icon-info"></span></button>
-		                        </td>
-		                        <td>
+		                            <button type="button" class="btn btn-dark btn-sm tooltips2" title="Información" data-toggle="modal" data-target="#info-<?php echo $pe->id_pedido ?>"><span class="icon icon-info"></span></button>
 		                        	<?php if ($pe->pe_status != "PREPARADO PARA ENTREGAR"): ?>
-		                        		<a href="<?php echo route('pdf_pedido',['id'=>$pe->id_pedido,'preorden'=>1,'copia'=>1]) ?>" class="btn btn-danger btn-sm"><span class="icon icon-file-pdf"></span></a>
+		                        		<a target="_blank()" href="<?php echo route('pdf_pedido',['id'=>$pe->id_pedido,'preorden'=>1,'copia'=>1]) ?>" class="btn btn-danger btn-sm tooltips2" title="Nota"><span class="icon icon-file-pdf"></span></a>
 		                        	<?php else : ?>
-		                        		<a target="_blank()" href="<?php echo route('pdf_pedido',['id'=>$pe->id_pedido,'preorden'=>0,'copia'=>1]) ?>" class="btn btn-danger btn-sm"><span class="icon icon-file-pdf"></span></a>
+		                        		<a target="_blank()" href="<?php echo route('pdf_pedido',['id'=>$pe->id_pedido,'preorden'=>0,'copia'=>1]) ?>" class="btn btn-danger btn-sm tooltips2" title="Nota"><span class="icon icon-file-pdf"></span></a>
 		                        	<?php endif ?>
-		                        </td>
-		                        <td>
-		                            <a href="<?php echo route('get_view_update_pedido',$pe->id_pedido) ?>" class="btn btn-dark btn-sm">Editar</a>
+		                            <a href="<?php echo route('get_view_update_pedido',$pe->id_pedido) ?>" class="btn btn-dark btn-sm tooltips2" title="Modificar"><span class="icon icon-pencil"></span></a>
 		                        </td>
 		                    </tr>
 		                    <!-- INFORMACION DE PEDIDO -->
@@ -430,23 +483,20 @@
 	  	<!-- Tab Compra -->
 	  	<div class="tab-pane fade" id="pills-compra" role="tabpanel">
 			<div class="card text-black bg-light">
-				<div class="card-header text-center text-white bg-danger"><b>Compras</b></div>
-				<table class="table table-hover table-sm text-center">
+				<div class="card-header text-center text-white bg-danger"><b>COMPRAS PENDIENTES A BODEGA</b></div>
+				<table class="table table-hover table-sm">
 					<thead>
 							<th>No. Nota</th>
-							<th class="text-center">Fecha</th>
-							<th class="text-center">Total</th>
-							<th class="text-center">Proveedor</th>
-							<th class="text-center">Termino</th>
-							<th class="text-center">Tipo Compra</th>
-							<th class="text-center">Estatus</th>
-							<th class="text-center">Bodega</th>
-							<th class="text-center">Ver</th>
+							<th>Fecha</th>
+							<th>Total</th>
+							<th>Proveedor</th>
+							<th>Termino</th>
+							<th>Tipo Compra</th>
 					</thead>
 					<tbody>
 						<?php if (count($compras) < 1): ?>
 							<tr>
-								<td colspan="9" class="table-dark">NO SE ENCONTRO NINGUN REGISTRO</td>
+								<td colspan="6">NO SE ENCONTRO NINGÚN REGISTRO</td>
 							</tr>
 						<?php endif ?>
 						<?php foreach($compras as $compra){ ?>
@@ -458,20 +508,8 @@
 				 				<td><?php echo $compra->cm_termino ?></td>
 				 				<td><?php echo $compra->cm_tipo ?></td>
 				 				<td>
-				 					<span class="badge badge-dark" >
-				 						<?php echo $compra->cm_status ?>
-				 					</span>
-				 				</td>
-				 				<td>
-				 					<?php if(!$compra->cm_bodega){ ?>
-				 						 <button type="button" class="btn btn-dark btn-sm" data-toggle="modal" data-target="#bodega-<?php echo $compra->id_compra ?>"><span class="icon icon-checkmark"></span></button>
-
-				 					<?php } else{ ?>
-				 						<span class="badge badge-dark">SI</span>
-				 					<?php } ?>
-				 				</td>
-				 				<td>
-				 					<button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#ModalInfoCompra-<?php echo $compra->id_compra?>"><span class="icon icon-eye"></span></button>
+				 					<button type="button" class="btn btn-dark btn-sm tooltips2" title="Bodega" data-toggle="modal" data-target="#bodega-<?php echo $compra->id_compra ?>"><span class="icon icon-checkmark"></span></button>
+				 					<button type="button" class="btn btn-sm btn-danger tooltips2" title="Detalle" data-toggle="modal" data-target="#ModalInfoCompra-<?php echo $compra->id_compra?>"><span class="icon icon-eye"></span></button>
 				 				</td>
 					 		</tr>
 					 		<!-- MODAL DATOS DE ENTRADA A BODEGA -->
@@ -479,7 +517,7 @@
 								<div class="modal-dialog modal-lg" role="document">
 									<div class="modal-content">
 										<div class="modal-header">
-											<h5 class="modal-title" id="movimientos">Datos de Entrada en Bodega</h5>
+											<h5 class="modal-title" id="movimientos">Datos de Entrada a Bodega</h5>
 											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 												<span aria-hidden="true">&times;</span>
 											</button>
@@ -493,7 +531,7 @@
 														<div class="input-group">
 															<span class="input-group-addon"><span class="icon icon-user"></span></span>
 															<select name="empleado" required class="form-control">
-																<option value="">Empleado Que Recibe</option>
+																<option value="">Recibe</option>
 																<?php foreach($empleados as $emp){ ?>
 																	<option value="<?php echo $emp->id_empleado?>"><?php echo $emp->em_nombre ?></option>
 																<?php } ?>
@@ -502,8 +540,8 @@
 													</div>
 													<div class="form-group col">
 														<div class="input-group">
-															<span class="input-group-addon"><span class="icon icon-calendar"></span></span>
-															<input type="text" class="form-control" placeholder="NUMERO DE ENTRADA" name="num_entrada" required>
+															<span class="input-group-addon"><span class="icon icon-pen"></span></span>
+															<input type="number" class="form-control" placeholder="NUMERO DE ENTRADA" name="num_entrada" required>
 														</div>
 													</div>
 												</div>
@@ -596,7 +634,23 @@
 															<p>$<?php echo number_format($material->pivot->det_subtotal,2) ?></p>
 														</div>
 													</div>
-													<?php } ?>
+												<?php } ?>
+												<?php foreach($compra->gastos as $gasto) { ?>
+													<div class="form-row">
+														<div class="col-md-2 text-center">
+															<p><?php echo $gasto->gf_cantidad ?></p>
+														</div>
+														<div class="col-md-6">
+															<p><?php echo $gasto->gf_concepto ?></p>
+														</div>
+														<div class="col-md-2">
+															<p>$<?php echo number_format($gasto->gf_importe,2) ?></p>
+														</div>
+														<div class="col-md-2">
+															<p>$<?php echo number_format($gasto->gf_subtotal,2) ?></p>
+														</div>
+													</div>
+												<?php } ?>
 											<br>
 											<br>
 											<div class="row" style="border-top: 1px solid black;">
@@ -624,34 +678,34 @@
     	<!-- Tab Prestamo -->
 	  	<div class="tab-pane fade" id="pills-prestamo" role="tabpanel">
 			<div class="card text-black bg-light">
-				<div class="card-header text-center text-white bg-danger"><b>PRESTAMOS</b></div>
+				<div class="card-header text-center text-white bg-danger"><b>PRESTAMOS PENDIENTES</b></div>
 				<!-- <div class="card-body"> -->
-				<table class="table table-hover table-sm text-center">
+				<table class="table table-hover table-sm">
 					<thead>
 						<th>#</th>
-						<th class="text-center">Fecha</th>
-						<th class="text-center">Empleado</th>
-						<th class="text-center">Cantidad</th>
-						<th class="text-center">Descripcion</th>
-	                    <th class="text-center">Tipo</th>
-						<th class="text-center">Estatus</th>
+						<th>Fecha</th>
+						<th>Deudor</th>
+						<th>Cantidad</th>
+						<th>Descripción</th>
+	                    <th>Tipo</th>
+						<th></th>
 					</thead>
 					<tbody>
 						<?php if(count($PPendientes) < 1){ ?>
-							<tr><td colspan="7" class="table-dark">NO HAY PRESTAMOS PENDIENTES</td></tr>
+							<tr><td colspan="7">NO HAY NINGÚN REGISTRO</td></tr>
 						<?php } ?>
 						<?php foreach($PPendientes as $pre){ ?>
 							<tr>
 								<th><?php echo str_pad($pre->id_prestamo , 2, "0", STR_PAD_LEFT) ?></th>
 								<td><?php echo $pre->created_at ?></td>
 								<td><?php echo $pre->empleado ?></td>
-								<td><?php echo number_format($pre->pres_cantidad,2) ?></td>
+								<td>$<?php echo number_format($pre->pres_cantidad,2) ?></td>
 								<td><?php echo $pre->pres_descripcion ?></td>
 	                            <td><?php echo $pre->pres_tipo ?></td>
-								<td><span class="badge badge-pill badge-success" data-toggle="modal" data-target="#prestamo_pendiente-<?php echo $pre->id_prestamo ?>">Pendiente</span></td>
 								<td>
+									<button type="button" class="btn btn-dark btn-sm tooltips2" title="Aprobación" data-toggle="modal" data-target="#prestamo_pendiente-<?php echo $pre->id_prestamo ?>"><span class="icon icon-spinner9"></span></button>
 									<?php if($pre->movimiento_temporal_id > 0){ ?>
-										<Button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#prestamo_movimiento-<?php echo $pre->id_prestamo ?>"><span class="icon icon-eye"></span></Button>
+										<Button type="button" class="btn btn-danger btn-sm tooltips2" title="Movimiento Temporal" data-toggle="modal" data-target="#prestamo_movimiento-<?php echo $pre->id_prestamo ?>"><span class="icon icon-upload"></span></Button>
 										<!-- Modal INFO DEL PRESTAMO DE MOVIMIENTO -->
 										<div class="modal fade" id="prestamo_movimiento-<?php echo $pre->id_prestamo ?>" tabindex="-1" role="dialog" aria-labelledby="pres_mov" aria-hidden="true">
 											<div class="modal-dialog modal-lg" role="document">
@@ -687,7 +741,7 @@
 														<p><b>Concepto(s) Utilizado:</b></p>
 														<?php $conceptos = \DB::table('detalle_movimientos')->select('ct_concepto','id_concepto')->where('movimiento_temporal_id',$pre->movimiento_temporal_id)->get(); ?>
 														<?php foreach($pre->movimiento->compras as $con){ ?>
-															<li>Compra No° <?php echo str_pad($con->id_compra, 2, "0", STR_PAD_LEFT) ?></li>
+															<li>Compra No° <?php echo str_pad($con->cm_nota, 2, "0", STR_PAD_LEFT) ?></li>
 														<?php } ?>
 														<?php foreach($conceptos as $con){ ?>
 															<li><?php echo $con->ct_concepto ?></li>
@@ -700,7 +754,7 @@
 											</div>
 										</div>
 									<?php } else if ($pre->viaje_id > 0) { ?>
-										<Button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#prestamo_viaje"><span class="icon icon-eye"></span></Button>
+										<Button type="button" class="btn btn-danger btn-sm tooltips2" title="Viaje" data-toggle="modal" data-target="#prestamo_viaje"><span class="icon icon-truck"></span></Button>
 										<!-- FALTA HACER EL MODAL DE INFO DEL VIAJE -->
 									<?php } ?>
 								</td>
@@ -724,7 +778,7 @@
 															<select class="form-control" name="estatus" required>
 																<option value="">Seleccionar</option>
 																<option value="APROBADO">SI APRUEBO EL PRESTAMO</option>
-																<option value="NO APROBADO"> NO APRUEBO EL PRESTAMO</option>
+																<option value="NO APROBADO">NO APRUEBO EL PRESTAMO</option>
 															</select>
 														</div>
 													</div>
@@ -757,11 +811,10 @@
 						<th>Efectivo Entregado</th>
 						<th>Concepto(s)</th>
 						<th>Estatus</th>
-						<th>Opciones</th>
 					</thead>
 					<tbody>
 						<?php if(count($mtPendientes) < 1){ ?>
-							<tr class="table-dark"><td colspan="7">NO HAY MOVIMIENTOS TEMPORALES PENDIENTES</td></tr>
+							<tr><td colspan="6" class="text-center">NO HAY NINGÚN REGISTRO</td></tr>
 						<?php } ?>
 						<?php foreach($mtPendientes as $mt){ ?>
 							<tr>
@@ -964,7 +1017,7 @@
 					<tbody>
 						<?php if (count($viajes) < 1): ?>
 							<tr>
-								<td colspan="6" class="table-dark">NO SE ENCONTRO NINGUN REGISTRO</td>
+								<td colspan="6">NO SE ENCONTRO NINGÚN REGISTRO</td>
 							</tr>
 						<?php endif ?>
 						@foreach($viajes as $viaje)
@@ -994,7 +1047,7 @@
 	  	<div class="tab-pane fade" id="pills-produccion" role="tabpanel">
 			<div class="card text-black bg-light">
 			<div class="card text-black bg-light">
-				<div class="card-header text-center text-white bg-dark"><b>PEDIDOS A PRODUCCION</b></div>
+				<div class="card-header text-center text-white bg-danger"><b>PEDIDOS A PRODUCCION</b></div>
 				<table class="table table-hover table-sm text-center">
 					<thead>
 						<th>No. Nota</th>
@@ -1004,7 +1057,7 @@
 					<tbody>
 						@if(count($pedidos) < 1)
 							<tr>
-								<td colspan="3">NO SE ENCONTRO NINGUN PEDIDO PENDIENTE</td>
+								<td colspan="3">NO SE ENCONTRO NINGÚN REGISTRO</td>
 							</tr>
 						@endif
 						@foreach($pedidos as $pedido)
@@ -1012,13 +1065,9 @@
 								<th><?php echo $pedido->pp_nota ?></th>
 								<td><?php echo $pedido->pp_memo ?></td>
 								<td><?php echo $pedido->created_at ?></td>
-								<td width="50">
+								<td>
 									<a class="btn btn-danger btn-sm" href="#"><span class="icon icon-eye"></span></a>
-								</td>
-								<td width="50">
 									<a class="btn btn-dark btn-sm" href="#"><span class="icon icon-pencil"></span></a>
-								</td>
-								<td width="50">
 									<a class="btn btn-danger btn-sm" href="#"><span class="icon icon-cross"></span></a>
 								</td>
 							</tr>
@@ -1109,9 +1158,14 @@
 									<th>Destino</th>
 								</thead>
 								<tbody>
+									@if(count($preparados) < 1)
+										<tr>
+											<td colspan="4" class="text-center">NO SE ENCONTRO NINGÚN REGISTRO</td>
+										</tr>
+									@endif
 									@foreach($preparados as $index=>$pedido)
 										<tr>
-											<td><input type="checkbox" name="pedidos[]" value="<?php echo $pedido->id_pedido ?>" <?php if($index == 0) echo 'checked'; ?>></td>
+											<td><input type="checkbox" class="PedidoCheck" name="pedidos[]" value="<?php echo $pedido->id_pedido ?>"></td>
 											<th><?php echo $pedido->pe_nota?></th>
 											<td><?php echo $pedido->cliente->cl_nombre?></td>
 											<!-- <td><?php echo $pedido->pe_fecha_pedido ?></td> -->
@@ -1133,9 +1187,14 @@
 									<th>Resto</th>
 								</thead>
 								<tbody>
+									@if(count($cobranza) < 1)
+										<tr>
+											<td colspan="6" class="text-center">NO SE ENCONTRO NINGÚN REGISTRO</td>
+										</tr>
+									@endif
 									@foreach($cobranza as $index=>$pedido)
 										<tr>
-											<td><input type="checkbox" name="cobrar[]" value="<?php echo $pedido->id_pedido ?>" <?php if($index == 0) echo 'checked'; ?>></td>
+											<td><input type="checkbox" name="cobrar[]" value="<?php echo $pedido->id_pedido ?>"></td>
 											<th><?php echo $pedido->pe_nota ?></th>
 											<td><?php echo $pedido->cliente->cl_nombre ?></td>
 											<td><?php echo $pedido->pe_fecha_pedido ?></td>
@@ -1149,7 +1208,7 @@
 						<div class="modal-footer">
 							<button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button>
 							<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
-							<button type="submit" class="btn btn-dark"><span class="icon icon-floppy-disk"></span> Guardar</button>
+							<button type="submit" class="btn btn-dark BtnPedidoNuevo" disabled><span class="icon icon-floppy-disk"></span> Guardar</button>
 						</div>
 					</form>
 				</div>
@@ -1542,7 +1601,7 @@
 							<div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-coin-dollar"></span></span>
-									<input type="text" class="form-control" name="prestamo" placeholder="EFECTIVO A PRESTAR" required>
+									<input type="number" class="form-control" name="prestamo" placeholder="EFECTIVO A PRESTAR" required>
 								</div>
 							</div>
 							<div class="form-group col">
@@ -1561,7 +1620,7 @@
 							<div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-eye"></span></span>
-									<textarea class="form-control" row="5" name="descripcion" placeholder="MEMO"></textarea>
+									<textarea class="form-control" row="5" name="descripcion" placeholder="MEMO" required></textarea>
 								</div>
 							</div>
 						</div>
@@ -1712,7 +1771,7 @@
                             <div class="form-group col-md-12">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-binoculars"></span></span>
-                                    <textarea class="form-control form-clearCli" row="8" name="observaciones" placeholder="OBSERVACIONES"></textarea>
+                                    <textarea class="form-control form-clearCli" row="8" name="observaciones" placeholder="OBSERVACIONES">NO HAY OBSERVACIONES</textarea>
                                 </div>
                             </div>
                         </div>
@@ -1741,9 +1800,9 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="reset"  class="btn btn-primary"><span class="icon icon-fire"></span> Limpiar</button> 
+                            <button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button> 
                             <button type="button" class="btn btn-danger btn-closeCli" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
-                            <button type="button" class="btn btn-success btn-SubmitCli"><span class="icon icon-floppy-disk"></span> Guardar</button>
+                            <button type="button" class="btn btn-dark btn-SubmitCli"><span class="icon icon-floppy-disk"></span> Guardar</button>
                         </div>
 					</form>
 				</div>
@@ -1867,18 +1926,21 @@
                             <div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-droplet"></span></span>
-									<input type="text" class="form-control form-clearMP" name="nombre" placeholder="NOMBRE" required>
+									<input type="text" class="form-control" name="nombre" placeholder="NOMBRE" required>
 								</div>
 							</div>
                             
-							<div class="form-group col">
-								<div class="input-group">
-									<span class="input-group-addon"><span class="icon icon-stack"></span></span>
-									<input type="text" class="form-control form-clearMP" name="cantidad"  placeholder="CANTIDAD (UNIDAD)" required>
-								</div>
-							</div>
+							<!--<div class="form-group col-md-3">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="icon icon-stack"></span></span>
+                                    <input type="number" class="form-control" name="cantidad" min="0.1" step="0.01" placeholder="CANTIDAD" required>
+                                </div>
+                            </div>-->
+                            
+                            <input type="hidden" name="cantidad" value="1">
 
-							<div class="form-group col">
+                            <div class="form-row">
+                                    <div class="form-group col">
                                         <div class="input-group">
                                             <span class="input-group-addon"><span class="icon icon-profile"></span></span>
                                             <select class="form-control select-tipo" required name="unidad">
@@ -1890,11 +1952,12 @@
                                             </select>
                                         </div>
                                     </div>
+                                </div>
 
-                            <div class="form-group col">
+                            <div class="form-group col-md-3">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-coin-dollar"></span></span>
-									<input type="number" min="1" class="form-control form-clearMP" name="precio" placeholder="PRECIO" required>
+									<input type="number" class="form-control" name="precio" min="0.1" step="0.01" placeholder="PRECIO" required>
 								</div>
 							</div>
                         </div>
@@ -1903,15 +1966,15 @@
                             <div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-binoculars"></span></span>
-                                    <textarea class="form-control form-clearMP" name="observacion" placeholder="MEMO" row="5"></textarea>
+                                    <textarea class="form-control" name="observacion" placeholder="OBSERVACIONES" row="5">ninguna observación</textarea>
 								</div>
 							</div>
                         
                         </div>
 						<div class="modal-footer">
-							<button type="reset"  class="btn btn-primary"><span class="icon icon-fire"></span> Limpiar</button>
+							<button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button>
 							<button type="button" class="btn btn-danger btn-closeMP"><span class="icon icon-cross"></span> Cerrar</button>
-							<button type="button" class="btn btn-success btn-SubmitMP"><span class="icon icon-floppy-disk"></span> Guardar</button>
+							<button type="button" class="btn btn-dark btn-SubmitMP"><span class="icon icon-floppy-disk"></span> Guardar</button>
 						</div>
 					</form>
 				</div>
@@ -1920,7 +1983,7 @@
 	</div>
 
 	<!-- Modal COMPRA -> AGREGAR NUEVO GASTO <OPTION> -->
-	<div class="modal fade" id="NewGasto" tabindex="-1" role="dialog" aria-labelledby="NewGastos" aria-hidden="true">
+	<!-- <div class="modal fade" id="NewGasto" tabindex="-1" role="dialog" aria-labelledby="NewGastos" aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -1933,7 +1996,7 @@
 					<form method="POST" id="form-Gast">
 						{{ csrf_field() }}
 						<div class="form-row">
-                            <div class="form-group col">
+	                            <div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-pencil"></span></span>
 									<input type="text" class="form-control form-clearGast" name="nombre" placeholder="NOMBRE GASTO" required>
@@ -1941,15 +2004,15 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="reset"  class="btn btn-primary"><span class="icon icon-fire"></span> Limpiar</button>
+							<button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button>
 							<button type="button" class="btn btn-danger btn-closeGast"><span class="icon icon-cross"></span> Cerrar</button>
-							<button type="button" class="btn btn-success btn-SubmitGast"><span class="icon icon-floppy-disk"></span> Guardar</button>
+							<button type="button" class="btn btn-dark btn-SubmitGast"><span class="icon icon-floppy-disk"></span> Guardar</button>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 
 	<!-- Modal COMPRA -> INSERTAR NUEVO PROVEEDOR <OPTION> -->
 	<div class="modal fade" id="proveedor" tabindex="-1" role="dialog" aria-labelledby="proveedores" aria-hidden="true">
@@ -1975,7 +2038,7 @@
 							<div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-mail4"></span></span>
-									<input type="email" class="form-control form-clearProv" name="correo"  placeholder="CORREO">
+									<input type="email" class="form-control form-clearProv" name="correo" required placeholder="CORREO">
 								</div>
 							</div>
                         </div>
@@ -2020,9 +2083,9 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="reset"  class="btn btn-primary"><span class="icon icon-fire"></span> Limpiar</button> 
+                            <button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button> 
                             <button type="button" class="btn btn-danger btn-closeProv"><span class="icon icon-cross"></span> Cerrar</button>
-                            <button type="button" class="btn btn-success btn-SubmitProv"><span class="icon icon-floppy-disk"></span> Guardar</button>
+                            <button type="button" class="btn btn-dark btn-SubmitProv"><span class="icon icon-floppy-disk"></span> Guardar</button>
                         </div>
 					</form>
 				</div>
@@ -2159,9 +2222,6 @@
 			}
 			return true;
 		}
-
-		// tooltips2
-		$('.tooltips2').tooltip();
 			
 		/* Modal normal */
       	$('.fecha_pedido').datepicker({
