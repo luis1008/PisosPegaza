@@ -29,7 +29,11 @@ class Pedido extends Model
 
     public function productos(){
         return $this->belongsToMany('pegaza\Producto', 'detalle_pedido','pedido_id','producto_id')->withPivot('det_prod_cantidad','det_prod_precio','det_prod_subtotal','det_prod_status');
-    }  
+    }
+
+    public function producciones(){
+        return $this->belongsToMany('pegaza\Produccion', 'detalle_produccion','pedido_id','produccion_id');
+    } 
 
     public function viajes(){
         return $this->belongsToMany('pegaza\Viaje', 'detalle_viaje','pedido_id','viaje_id')->withPivot('det_tipo','det_status');

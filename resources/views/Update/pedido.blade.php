@@ -170,19 +170,19 @@
         </div>
         <div class="form-row" style="margin-bottom:15px;">
             <div class="text-center col">
-                <button type="button" class="btn btn-primary btn-AddProducto2" value="<?php echo $pedido->id_pedido?>"><span class="icon icon-plus" ></span>Agregar</button>
+                <button type="button" class="btn btn-dark btn-AddProducto2" value="<?php echo $pedido->id_pedido?>"><span class="icon icon-plus" ></span>Agregar</button>
             </div>
         </div>
         <hr>
         <div class="form-row">
             <div class="text-left col-md-4">
-                <a href="<?php echo URL::previous() ?>" class="btn btn-info" data-dismiss="modal"><span class="icon icon-undo2"></span> Cancelar</a>
+                <button type="reset" class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button>
             </div>
             <div class="text-center col-md-4">
-                <button type="reset" class="btn btn-danger"><span class="icon icon-fire"></span> Limpiar</button>
+                <a href="<?php echo URL::previous() ?>" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-undo2"></span> Cancelar</a>
             </div>
             <div class="text-right col-md-4">
-                <button type="submit" class="btn btn-dark"><span class="icon icon-pencil"></span> Guardar</button>
+                <button type="submit" class="btn btn-dark"><span class="icon icon-pencil"></span> Modificar</button>
             </div>
         </div>
         <br><br>

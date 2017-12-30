@@ -57,6 +57,7 @@
 	    <div class="dropdown-menu">
 	      <a class="dropdown-item" data-toggle="pill" href="#pills-pedido" role="tab"><span class="icon icon-eye"></span> Ver</a>
 	      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#pedido"><span class="icon icon-plus"></span> Nuevo</a>
+	      <!-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#devolucion_pedido"><span class="icon icon-cross"></span> Devolución</a> -->
 	    </div>
 	  </li>
 	  <!-- li Compra -->
@@ -96,8 +97,8 @@
 	    <a class="nav-link dropdown-toggle tooltips2" data-toggle="dropdown" href="#" data-placement="top" title="Produccion"><span class="icon icon-hammer"></span> <!-- Produccion --></a>
 	    <div class="dropdown-menu">
 	      <a class="dropdown-item" data-toggle="pill" href="#pills-produccion" role="tab"><span class="icon icon-eye"></span> Ver</a>
-	      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#produccion_bodega"><span class="icon icon-plus"></span> Produccion Bodega</a>
-	       <a class="dropdown-item" href="#" data-toggle="modal" data-target="#produccion_pedido"><span class="icon icon-plus"></span> Producccion Pedido</a>
+	      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#produccion_pedido"><span class="icon icon-forward"></span> Enviar</a>
+	      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ajuste_inventario"><span class="icon icon-cog"></span> Ajuste Inventario</a>
 	    </div>
 	  </li>
 	</ul> <!-- /ul nav -->
@@ -835,15 +836,13 @@
 									<?php echo $mt->mt_status ?>
 								</th>
 								<td>
-									<button type="button" class="btn btn-dark btn-sm btn-addConcepto" data-toggle="modal" data-target="#new_concepto-<?php echo $mt->id_movimiento_temporal ?>">
+									<button type="button" class="btn btn-dark btn-sm btn-addConcepto tooltips2" title="Agregar" data-toggle="modal" data-target="#new_concepto-<?php echo $mt->id_movimiento_temporal ?>">
 										<span class="icon icon-plus"></span>
 									</button>
-									<button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#mov_pendiente-<?php echo $mt->id_movimiento_temporal ?>">
-										<!-- <span class="icon icon-checkmark"></span> -->
-										<b>Finalizar</b>
-									</button>
 
-									<a class="btn btn-dark btn-sm" target="_blank()" href="<?php echo route('ticket_movimiento',['id'=>$mt->id_movimiento_temporal,'copia'=>1]) ?>"><span class="icon icon-ticket"></span></a>
+									<button type="button" class="btn btn-danger btn-sm tooltips2" title="Finalizar" data-toggle="modal" data-target="#mov_pendiente-<?php echo $mt->id_movimiento_temporal ?>"><span class="icon icon-checkmark"></span></button>
+
+									<a class="btn btn-dark btn-sm tooltips2" title="Ticket" target="_blank()" href="<?php echo route('ticket_movimiento',['id'=>$mt->id_movimiento_temporal,'copia'=>1]) ?>"><span class="icon icon-ticket"></span></a>
 								
 								</td>
 							</tr>
@@ -1047,28 +1046,48 @@
 	  	<div class="tab-pane fade" id="pills-produccion" role="tabpanel">
 			<div class="card text-black bg-light">
 			<div class="card text-black bg-light">
-				<div class="card-header text-center text-white bg-danger"><b>PEDIDOS A PRODUCCION</b></div>
-				<table class="table table-hover table-sm text-center">
+				<div class="card-header text-center text-white bg-danger"><b>PEDIDOS EN PRODUCCION</b></div>
+				<table class="table table-hover table-sm">
 					<thead>
-						<th>No. Nota</th>
-						<th class="text-center">Memo</th>
-						<th class="text-center">Fecha</th>
+						<th>Fecha</th>
+						<th class="text-center">Productos</th>
+						<th class="text-center">Materiales</th>
+						<th>Memo</th>
 					</thead>
 					<tbody>
-						@if(count($pedidos) < 1)
+						@if(count($PedidosProduccion) < 1)
 							<tr>
-								<td colspan="3">NO SE ENCONTRO NINGÚN REGISTRO</td>
+								<td colspan="4" class="text-center">NO SE ENCONTRO NINGÚN REGISTRO</td>
 							</tr>
 						@endif
-						@foreach($pedidos as $pedido)
+						@foreach($PedidosProduccion as $pr)
 							<tr>
-								<th><?php echo $pedido->pp_nota ?></th>
-								<td><?php echo $pedido->pp_memo ?></td>
-								<td><?php echo $pedido->created_at ?></td>
+								<td><?php echo $pr->created_at ?></td>
+								<th>
+									<ul>
+										<?php 
+											$PrProductos = explode('|', $pr->pr_productos);
+											foreach ($PrProductos as $pd) {
+												echo "<li>".$pd."</li>";
+											}
+										?>
+									</ul>
+								</th>
+								<th>
+									<ul>
+										<?php 
+											$PrMateriales = explode('|', $pr->pr_materiales);
+											foreach ($PrMateriales as $mat) {
+												echo "<li>".$mat."</li>";
+											}
+										?>
+									</ul>
+								</th>
+								<td><?php echo $pr->pr_memo ?></td>
 								<td>
-									<a class="btn btn-danger btn-sm" href="#"><span class="icon icon-eye"></span></a>
-									<a class="btn btn-dark btn-sm" href="#"><span class="icon icon-pencil"></span></a>
-									<a class="btn btn-danger btn-sm" href="#"><span class="icon icon-cross"></span></a>
+									<button type="button" class="btn btn-dark btn-sm tooltips2" title="Finalizar" data-target="#FinalizarProduccion-{{$pr->id_produccion}}" data-toggle="modal"><span class="icon icon-checkmark"></span></button>
+									<a class="btn btn-danger btn-sm tooltips2" title="Cancelar" href="{{route('cancelacion_produccion',$pr->id_produccion)}}" onClick="return confirm('Seguro que desea cancelar?')"><span class="icon icon-cancel-circle"></span></a>
+									<a href="{{route('pdf_produccion',$pr->id_produccion)}}" class="btn btn-dark btn-sm tooltips2" title="Nota" target="_blank"><span class="icon icon-file-pdf"></span></a>
 								</td>
 							</tr>
 						@endforeach
@@ -1216,74 +1235,39 @@
 		</div>
 	</div>
 
-	<!-- Modal PRODUCCION BODEGA-->
-	<div class="modal fade" id="produccion_bodega" tabindex="-1" role="dialog" aria-labelledby="produccion" aria-hidden="true">
+	<!-- Modal AJUSTE DE INVENTARIO -->
+	<div class="modal fade" id="ajuste_inventario" tabindex="-1" role="dialog" aria-labelledby="produccion" aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="produccion">Pedido Sin Cliente</h5>
+					<h5 class="modal-title" id="produccion">Ajuste de Inventario</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
-					<form action="{{route('post_pedido_produccion')}}" method="POST">
+					<form action="{{route('ajuste_inventario')}}" method="POST">
 						{{csrf_field()}}
-						<div class="form-row">
-							<div class="form-group col">
+						<div>
+					        <div class="form-row" style="margin-bottom:15px;">
+					            <div class="text-center col">
+					                <button type="button" class="btn btn-dark BtnAjusteProducto"><span class="icon icon-plus" ></span> Producto</button>
+					                <button type="button" class="btn btn-danger BtnAjusteMaterial"><span class="icon icon-plus" ></span> Material</button>
+					            </div>
+					        </div>
+							<div class="AddAjuste"></div>
+							<div class="form-row">
+								<label>Memo:</label>
 								<div class="input-group">
-									<span class="input-group-addon"><span class="icon icon-user"></span></span>
-									<input type="text" class="form-control" name="encargado" placeholder="ENCARGADO" required>
+									<div class="input-group-addon"><span class="icon icon-pen"></span></div>
+									<textarea name="memo" rows="3" class="form-control" required>NO HAY NINGÚN COMENTARIO</textarea>
 								</div>
 							</div>
-							<div class="form-group col">
-								<div class="input-group">
-									<span class="input-group-addon"><span class="icon icon-user"></span></span>
-									<input type="text" class="form-control" placeholder="AYUDANTE" name="ayudante">
-								</div>
+							<div class="modal-footer">
+								<button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button>
+								<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
+								<button type="submit" class="btn btn-dark BtnAjusteInventario" disabled><span class="icon icon-floppy-disk"></span> Guardar</button>
 							</div>
-
-							<div class="form-group col">
-								<div class="input-group">
-									<span class="input-group-addon"><span class="icon icon-clock"></span></span>
-									<select name="turno" class="form-control">
-										<option>Selecciona Turno</option>
-										<option value="MATUTINO">MATUTINO</option>
-										<option value="VESPERTINO">VESPERTINO</option>
-									</select>
-								</div>
-							</div>
-						</div>
-						<div class="form-row">
-							<div class="form-group col">
-								<div class="input-group">
-									<span class="input-group-addon"><span class="icon icon-profile"></span></span>
-									<input type="text" class="form-control" name="nota" placeholder="NO. NOTA" required>
-								</div>
-							</div>
-							<div class="form-group col">
-								<div class="input-group">
-									<span class="input-group-addon"><span class="icon icon-calendar"></span></span>
-									<input type="text" class="form-control readonly" value="<?php echo date('d-m-Y') ?>">
-								</div>
-							</div>
-							<div class="form-group col-md-12">
-								<div class="input-group">
-									<span class="input-group-addon"><span class="icon icon-pencil"></span></span>
-									<textarea name="memo" rows="3" class="form-control" placeholder="MEMO" required></textarea>
-								</div>
-							</div>
-						</div>
-						<div class="AddProductoProduccion"></div>
-				        <div class="form-row" style="margin-bottom:15px;">
-				            <div class="text-center col">
-				                <button type="button" class="btn btn-dark btn-AddProductoProduccion"><span class="icon icon-plus" ></span>Agregar</button>
-				            </div>
-				        </div>
-						<div class="modal-footer">
-							<button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button>
-							<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
-							<button type="submit" class="btn btn-dark"><span class="icon icon-floppy-disk"></span> Guardar</button>
 						</div>
 					</form>
 				</div>
@@ -1296,7 +1280,7 @@
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="produccion">Producción Bajo Pedido</h5>
+					<h5 class="modal-title" id="produccion">Pedidos para Producción</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -1304,32 +1288,113 @@
 				<div class="modal-body">
 					<form action="{{route('post_pedido_produccion')}}" method="POST">
 						{{csrf_field()}}
-						<table class="table table-hover">
-							<thead>
-								<th><input type="checkbox" id="check_all"></th>
-								<th>No. Nota</th>
-								<th>Pedido</th>
-								<th>Entrega</th>
-								<th>Cliente</th>
-							</thead>
-							<tbody>
-								<?php foreach ($pendientes as $pedido): ?>
+						<div class="card" style="margin-left:7px;margin-bottom:20px;">
+							<table class="table table-hover" style="width:100%;">
+								<thead class="bg-danger text-white">
+									<th><!-- <input type="checkbox" id="check_all"> --></th>
+									<th>Cliente</th>
+									<th class="text-center">Productos</th>
+									<th class="text-center">Material</th>
+								</thead>
+								<tbody>
+									@if(count($pendientes) < 1)
+										<tr>
+											<td class="text-center" colspan="4">NO SE ENCONTRO NINGÚN REGISTRO</td>
+										</tr>
+									@endif
+									<?php foreach ($pendientes as $pedido): ?>
+										<?php 
+											$material_array = []; 
+											$producto_array = []; 
+										?>
+										<tr>
+											<td><input type="checkbox" name="pedidos[]" class="CheckPedido" value="<?php echo $pedido->pe_nota ?>" required></td>
+											<td><?php echo $pedido->cliente->cl_nombre ?></td>
+											<td class="li-productos">
+												<ul>
+													<?php foreach ($pedido->productos as $producto){ ?>
+														<li>
+															{{$producto->pivot->det_prod_cantidad}} <b>{{$producto->pd_nombre}}</b>
+															<input type="hidden" value="{{$producto->pivot->det_prod_cantidad}}" class="CantProducto">
+															<input type="hidden" value="{{$producto->pd_nombre}}" class="NomProducto">
+														</li>
+														<?php foreach ($producto->materiasprimas as $material){
+															$existe = array_key_exists($material->id_materia_prima, $material_array);
+															if ($existe) {
+																$suma_cantidades = $material_array[$material->id_materia_prima]['cantidad'] + ($material->pivot->det_cantidad * $producto->pivot->det_prod_cantidad);
+																$material_array[$material->id_materia_prima]['cantidad'] = $suma_cantidades;
+															} else {
+																$material_array[$material->id_materia_prima] = ['nombre' => $material->mp_nombre, 'cantidad' => ($material->pivot->det_cantidad * $producto->pivot->det_prod_cantidad), 'unidad' => $material->mp_unidad];
+															}
+														}
+														foreach ($producto->productos as $pd){
+															$existe = array_key_exists($pd->id_producto, $producto_array);
+															if ($existe) {
+																$suma_cantidades = $producto_array[$pd->id_producto]['cantidad'] + ($pd->pivot->det_pd_cantidad * $producto->pivot->det_prod_cantidad);
+																$producto_array[$pd->id_producto]['cantidad'] = $suma_cantidades;
+															} else {
+																$producto_array[$pd->id_producto] = ['nombre' => $pd->pd_nombre, 'cantidad' => ($pd->pivot->det_pd_cantidad * $producto->pivot->det_prod_cantidad)];
+															}
+														}
+														/*foreach ($producto->productos as $pd){
+															foreach ($pd->materiasprimas as $mp){
+																$existe = array_key_exists($mp->id_materia_prima, $material_array);
+																if ($existe) {
+																	$suma_cantidades = $material_array[$mp->id_materia_prima]['cantidad'] + $mp->pivot->det_cantidad;
+																	$material_array[$mp->id_materia_prima]['cantidad'] = $suma_cantidades;
+																} else {
+																	$material_array[$mp->id_materia_prima] = ['nombre' => $mp->mp_nombre, 'cantidad' => $mp->pivot->det_cantidad, 'unidad' => $mp->mp_unidad];
+																}
+															} 
+														}*/
+													} ?>
+												</ul>
+											</td>
+											<td class="li-requisitos">
+												<ul class="ul-material">
+													<?php foreach ($material_array as $value => $material): ?>
+														<li>
+															{{$material['cantidad'] . " " . $material['unidad']}} <b>{{$material['nombre']}}</b>
+															
+															<input type="hidden" class="CantidadMaterial" value="{{$material['cantidad']}}">
+															<input type="hidden" class="NombreMaterial" value="{{$material['nombre']}}">
+															<input type="hidden" class="UnidadMaterial" value="{{$material['unidad']}}">
+														</li>
+													<?php endforeach ?>
+												</ul>
+												<ul class="ul-producto" style="margin-top:-15px;">
+													<?php foreach ($producto_array as $value => $product): ?>
+														<li>
+															{{$product['cantidad']}} <b>{{$product['nombre']}}</b>
+															
+															<input type="hidden" class="CantidadProducto" value="{{$product['cantidad']}}">
+															<input type="hidden" class="NombreProducto" value="{{$product['nombre']}}">
+														</li>
+													<?php endforeach ?>
+												</ul>
+											</td>
+										</tr>
+									<?php endforeach ?>
 									<tr>
-										<td><input type="checkbox" name="pedidos[]" class="CheckPedido" value="<?php echo $pedido->pe_nota ?>" required></td>
-										<td><?php echo $pedido->pe_nota ?></td>
-										<td><?php echo $pedido->pe_fecha_pedido ?></td>
-										<td><?php echo $pedido->pe_fecha_entrega ?></td>
-										<td><?php echo $pedido->cliente->cl_nombre ?></td>
+										<td colspan="2" class="text-danger">
+											<b>Total:</b>
+										</td>
+										<td>
+											<ul class="AppendListProductos"></ul>
+										</td>
+										<td>
+											<ul class="AppendListMateriales"></ul>
+										</td>
 									</tr>
-								<?php endforeach ?>
-							</tbody>
-						</table>
+								</tbody>
+							</table>
+						</div>
 						<div class="form-group col-md-12">
-								<div class="input-group">
-									<span class="input-group-addon"><span class="icon icon-pencil"></span></span>
-									<textarea name="memo" rows="3" class="form-control" placeholder="MEMO" required></textarea>
-								</div>
+							<div class="input-group">
+								<span class="input-group-addon"><span class="icon icon-pen"></span></span>
+								<textarea name="memo" rows="3" class="form-control" placeholder="MEMO" required>NO HAY NINGÚN COMENTARIO</textarea>
 							</div>
+						</div>
 						<div class="modal-footer">
 							<button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button>
 							<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
@@ -2178,6 +2243,72 @@
 			</div>
 		</div>
 	</div>
+
+	@foreach($PedidosProduccion as $pr)
+		<!-- Modal Finalizar-->
+		<div class="modal fade" id="FinalizarProduccion-{{$pr->id_produccion}}" tabindex="-1" role="dialog" aria-labelledby="viaticos" aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="viaticos">Finalizar Producción</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form action="{{route('finalizar_produccion',$pr->id_produccion)}}" method="POST">
+							<input type="hidden" name="_token" value="{{csrf_token()}}">
+							<input type="hidden" name="_method" value="PUT">
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Encargado</label>
+									<div class="input-group">
+										<div class="input-group-addon"><span class="icon icon-user-tie"></span></div>
+										<input type="text" name="encargado" class="form-control" placeholder="Encargado" required>
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Ayudante</label>
+									<div class="input-group">
+										<div class="input-group-addon"><span class="icon icon-user"></span></div>
+										<input type="text" name="ayudante" class="form-control" placeholder="Ayudante">
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Turno</label>
+									<div class="input-group">
+										<div class="input-group-addon"><span class="icon icon-clock"></span></div>
+										<select name="turno" class="form-control" required>
+											<option value="">Seleccionar</option>
+											<option value="MATUTINO">MATUTINO</option>
+											<option value="VESPERTINO">VESPERTINO</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col text-center bg-danger text-white" style="font-size:20px;"><b>Exceso de Producto</b></div>
+								<div class="col-md-12">
+									<p><b>Si se excede de productos solicitados, favor de especificar los productos excedidos para afectar inventario, caso al contrario omitir este proceso.</b></p>
+								</div>
+							</div>
+							<div class="form-row" style="margin-bottom:25px;">
+								<div class="text-center col-md-12">
+									<button type="button" class="btn btn-dark BtnAddProductoExceso"><span class="icon icon-plus"></span> Producto</button>
+								</div>
+							</div>
+							<div class="AppendProductoExceso"></div>
+							<div class="modal-footer">
+								<button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button>
+								<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
+								<button type="submit" class="btn btn-dark"><span class="icon icon-floppy-disk"></span> Guardar</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	@endforeach
 @stop
 
 @section('js')
@@ -2187,6 +2318,7 @@
 	<script src="<?php echo asset('js/produccion.js') ?>"></script>
 	<script src="<?php echo asset('js/movimiento_temporal.js') ?>"></script>
 	<script src="<?php echo asset('js/cobranza.js') ?>"></script>
+	<script src="<?php echo asset('js/ajuste_inventario.js') ?>"></script>
 	<script>
 		// PAGAR COMPRA
 		function ValidarCantidadPagar(num){

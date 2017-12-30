@@ -162,7 +162,7 @@ class AjaxController extends Controller
         }
     }
 
-    public function SetCuentas(Request $request){
+    /*public function SetCuentas(Request $request){
         if ($request->ajax()) {
             //Validar campos required
             $this->validate($request, ['nombre' => 'required'],['nombre.required' => 'EL CAMPO NOMBRE ES OBLIGATORIO']);
@@ -173,7 +173,7 @@ class AjaxController extends Controller
 
             return response()->json("exito");
         }
-    }
+    }*/
 
     public function SetDomicilios(Request $request){
         if ($request->ajax()) {

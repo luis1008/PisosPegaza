@@ -24,4 +24,8 @@ class MateriaPrima extends Model
     public function compras(){
         return $this->belongsToMany('pegaza\Compra', 'compra_mp', 'mp_id', 'compra_id')->withPivot('det_cantidad','det_precio','det_subtotal');        
     }
+
+    public function inventarios(){
+        return $this->hasMany('pegaza\Inventario', 'mp_id');
+    } 
 }

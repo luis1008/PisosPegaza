@@ -309,6 +309,22 @@ Route::group(['middleware' => 'auth'],function(){
 		'as'   => 'post_pedido_produccion'
 	]);
 
+	Route::get('/PedidoProduccion/{id}',[
+		'uses' => 'CajaController@cancelacion_produccion',
+		'as'   => 'cancelacion_produccion'
+	]);
+
+	Route::put('/PedidoProduccion/{id}',[
+		'uses' => 'CajaController@finalizar_produccion',
+		'as'   => 'finalizar_produccion'
+	]);
+
+	// AJUSTE DE INVENTARIO
+	Route::post('/AjusteInventario',[
+		'uses' => 'CajaController@ajuste_inventario',
+		'as'   => 'ajuste_inventario'
+	]);
+
 	//COBRANZA
 	Route::post('/PagoPedidoCliente',[
 		'uses' => 'CajaController@post_pago_pedido',
@@ -329,6 +345,7 @@ Route::group(['middleware' => 'auth'],function(){
 	Route::get('/NotaPedido/{id}/{preorden?}/{copia?}', 'PdfController@pdf_pedido')->name('pdf_pedido');
 	Route::get('/TicketViaje/{id}/{copia?}', 'PdfController@ticket_viaje')->name('ticket_viaje');
 	Route::get('/TicketMovimiento/{id}/{copia?}', 'PdfController@ticket_movimiento')->name('ticket_movimiento');
+	Route::get('/NotaProduccion/{id}', 'PdfController@pdf_produccion')->name('pdf_produccion');
 	
 	//AJAX
 	Route::get('/GetMateriaPrima', 'AjaxController@GetMateriaPrima');
@@ -339,7 +356,7 @@ Route::group(['middleware' => 'auth'],function(){
 	Route::get('/GetClienteSelected', 'AjaxController@GetClienteSelected');
 	Route::get('/GetPrecioUltimaCompra', 'AjaxController@GetPrecioUltimaCompra');
 	Route::get('/GetCuentas', 'AjaxController@GetCuentas');
-	Route::post('/SetCuentas', 'AjaxController@SetCuentas');
+	//Route::post('/SetCuentas', 'AjaxController@SetCuentas');
 	Route::post('/SetDomicilios', 'AjaxController@SetDomicilios');
 	Route::get('/GetProducto', 'AjaxController@GetProducto');
 	Route::get('/GetPrecioUltimaVenta', 'AjaxController@GetPrecioUltimaVenta');

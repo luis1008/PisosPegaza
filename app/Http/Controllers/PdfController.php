@@ -8,6 +8,7 @@ use pegaza\Http\Requests;
 use pegaza\Pedido;
 use pegaza\Viaje;
 use pegaza\MovimientoTemporal;
+use pegaza\Produccion;
 
 class PdfController extends Controller
 {
@@ -29,14 +30,20 @@ class PdfController extends Controller
         //return $pdf->download('Viaje'.$viaje->created_at.'.pdf');  
     }
 
-      public function ticket_movimiento($id, $copia = 0){
+    public function ticket_movimiento($id, $copia = 0){
     	$tipo_ticket = ($copia != 0) ? "COPIA" : "ORIGINAL";
     	$movimiento = MovimientoTemporal::find($id);
         $pdf = \PDF::loadview('Pdf.Modulos.ticket_movimiento',['movimiento'=>$movimiento,'nota'=>$tipo_ticket]);
         return $pdf->stream();
         //return $pdf->download('Viaje'.$viaje->created_at.'.pdf');
+    }
 
-       
+    public function pdf_produccion($id){
+    	$produccion = Produccion::find($id);
+    	$productos  = explode('|', $produccion->pr_productos);
+    	$materiales = explode('|', $produccion->pr_materiales);
+        $pdf = \PDF::loadview('Pdf.Modulos.nota_produccion',['produccion'=>$produccion,'productos'=>$productos,'materiales'=>$materiales]);
+        return $pdf->stream();
     }
 
     function num2letras($num, $fem = false, $dec = true) { 

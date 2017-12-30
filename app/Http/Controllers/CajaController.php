@@ -18,7 +18,7 @@ use pegaza\AbonoPrestamo;
 use pegaza\Cliente;
 use pegaza\Producto;
 use pegaza\Pedido;
-use pegaza\PedidoPegaza;
+use pegaza\Inventario;
 use pegaza\Domicilio;
 use pegaza\Vehiculo;
 use pegaza\Viaje;
@@ -55,6 +55,7 @@ class CajaController extends Controller
         $ProveedoresPendientesPorPagar = Compra::where('cm_bodega','1')->where('cm_status','!=','PAGADO')->orderBy('created_at')->groupBy('proveedor_id')->get();
         $EmpleadosPendientesPorPagar   = Prestamo::where('pres_tipo','=','PERSONAL')->where('pres_status','=','APROBADO')->whereRaw('pres_abonado < pres_cantidad')->orderBy('created_at')->get();
         $CatalogoCuentas               = Cuenta::where('ct_status','1')->orderBy('ct_nombre')->get();
+        $PedidosProduccion             = Produccion::where('pr_completo','PENDIENTE')->orderBy('created_at')->get();
         //dd($pend);
         return view('Caja.Caja')->with('empleados',$emp)
                                 ->with('vehiculos',$veh)
@@ -66,6 +67,7 @@ class CajaController extends Controller
                                 ->with('ClientesPendientes',$ClientesPendientesPorPagar)
                                 ->with('ProveedoresPendientes',$ProveedoresPendientesPorPagar)
                                 ->with('EmpleadosPendientes',$EmpleadosPendientesPorPagar)
+                                ->with('PedidosProduccion',$PedidosProduccion)
                                 ->with('pedidos',$ped)
                                 ->with('ultima_nota',$u_pe)
                                 ->with('cobranza',$cob)
@@ -459,21 +461,80 @@ class CajaController extends Controller
     
     // PRODUCCION
     public function post_pedido_produccion(Request $request){
-        //dd($request->producto3);
-        $pedido = new PedidoPegaza();
-        $pedido->pp_nota = $request->nota;
-        $pedido->pp_memo = $request->memo;
-        $pedido->save();
+        $produccion = new Produccion();
+        $produccion->pr_memo       = $request->memo;
+        $produccion->pr_productos  = collect($request->productos)->implode('|');
+        $produccion->pr_materiales = collect($request->materiales)->implode('|') . '|' . collect($request->requisitos)->implode('|');
+        $produccion->save();
 
-        for ($i=0; $i < sizeof($request->cantidad3); $i++) { 
-            $pedido->productos()->attach($request->producto3[$i],['det_prod_cantidad'=>$request->cantidad3[$i]]);
+        for ($i=0; $i < sizeof($request->pedidos); $i++) { 
+            $produccion->pedidos()->attach($request->pedidos[$i]);
+            $ped = Pedido::find($request->pedidos[$i]);
+            $ped->pe_status = "EN PRODUCCION";
+            $ped->save();
         }
 
-        $produccion = new Produccion();
-        $produccion->pr_encargado   = $request->encargado;
-        $produccion->pr_ayudante    = $request->ayudante;
-        $produccion->pr_turno       = $request->turno;
+        return redirect()->route('caja');
+    }
+
+    public function cancelacion_produccion($id){
+        $produccion = Produccion::find($id);
+        $produccion->pr_completo = "CANCELADO";
         $produccion->save();
+
+        $produccion->pedidos->each(function($pedido,$pos){
+            $pedido->pe_status = "PENDIENTE PARA PRODUCCION";
+            $pedido->save();
+        });
+
+        return redirect()->route('caja');
+    }
+
+    public function finalizar_produccion(Request $request, $id){
+        $produccion = Produccion::find($id);
+        $produccion->pr_encargado = $request->encargado;
+        $produccion->pr_ayudante  = $request->ayudante;
+        $produccion->pr_turno     = $request->turno;
+        $produccion->pr_completo  = "FINALIZADO";
+        $produccion->save();
+
+        $produccion->pedidos->each(function($pedido,$pos){
+            $pedido->pe_status = "PREPARADO PARA ENTREGAR";
+            $pedido->save();
+        });
+
+        for ($i=0; $i < sizeof($request->CantidadExcesos); $i++) { 
+            $inv = new Inventario();
+            $inv->producto_id   = $request->ProductosExcesos[$i];
+            $inv->produccion_id = $id;
+            $inv->in_cantidad   = $request->CantidadExcesos[$i];
+            $inv->in_operacion  = "SUMA";
+            $inv->save();
+        }
+
+        return redirect()->route('caja');
+    }
+
+    // AJUSTE DE INVENTARIO
+    public function ajuste_inventario(Request $request){
+
+        for ($i=0; $i < sizeof($request->CantProducto); $i++) { 
+            $inv = new Inventario();
+            $inv->producto_id  = $request->AjusteProducto[$i];
+            $inv->in_cantidad  = $request->CantProducto[$i];
+            $inv->in_operacion = $request->OperacionProducto[$i];
+            $inv->in_memo      = $request->memo;
+            $inv->save();
+        }
+
+        for ($i=0; $i < sizeof($request->CantMaterial); $i++) { 
+            $inv = new Inventario();
+            $inv->mp_id        = $request->AjusteMaterial[$i];
+            $inv->in_cantidad  = $request->CantMaterial[$i];
+            $inv->in_operacion = $request->OperacionMaterial[$i];
+            $inv->in_memo      = $request->memo;
+            $inv->save();
+        }
 
         return redirect()->route('caja');
     }
