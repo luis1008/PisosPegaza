@@ -464,7 +464,11 @@ class CajaController extends Controller
         $produccion = new Produccion();
         $produccion->pr_memo       = $request->memo;
         $produccion->pr_productos  = collect($request->productos)->implode('|');
-        $produccion->pr_materiales = collect($request->materiales)->implode('|') . '|' . collect($request->requisitos)->implode('|');
+        if (sizeof($request->materiales) < 1) {
+            $produccion->pr_materiales = collect($request->requisitos)->implode('|');
+        } else {
+            $produccion->pr_materiales = collect($request->materiales)->implode('|') . '|' . collect($request->requisitos)->implode('|');
+        }
         $produccion->save();
 
         for ($i=0; $i < sizeof($request->pedidos); $i++) { 
