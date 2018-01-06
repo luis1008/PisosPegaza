@@ -27,5 +27,19 @@ class Produccion extends Model
 
     public function getCreatedAtAttribute($valor){
         return Carbon::parse($valor)->format('d-m-Y');
+    }
+
+      //Scope
+    public function scopeFechas($query, $Inicio , $Final)
+    {
+        if(trim($Inicio) != "" && trim($Final) == ""){
+            
+            return $query->whereRaw("created_at >= '$Inicio'");
+
+        } elseif(trim($Inicio) != "" && trim($Final) != "") {
+
+            return $query->whereRaw("created_at BETWEEN '$Inicio' AND '$Final'");
+
+        }
     } 
 }

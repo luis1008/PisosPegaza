@@ -56,4 +56,18 @@ class Compra extends Model
      public function setCmProveedorAttribute($valor){
         $this->attributes['cm_proveedor'] = ($valor == null) ? "0" : "1";
     }
+
+     //Scope
+    public function scopeFechas($query, $Inicio , $Final)
+    {
+        if(trim($Inicio) != "" && trim($Final) == ""){
+            
+            return $query->whereRaw("created_at >= '$Inicio'");
+
+        } elseif(trim($Inicio) != "" && trim($Final) != "") {
+
+            return $query->whereRaw("created_at BETWEEN '$Inicio' AND '$Final'");
+
+        }
+    }
 }
