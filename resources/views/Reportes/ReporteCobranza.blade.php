@@ -53,7 +53,7 @@
                          <td>{{$pedido->cliente->cl_nombre}}</td>
                         <td>{{'$'.number_format($pedido->pe_importe,2)}}</td>
                         <td>{{'$'.number_format($pedido->pe_total_abonado,2)}}</td>
-                        <td>{{$pedido->created_at}}</td>
+                        <td>{{$pedido->pe_fecha_pedido}}</td>
                         <td>{{$pedido->pe_fecha_entrega}}</td>
                     </tr>
                 <?php } ?>

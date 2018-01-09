@@ -109,15 +109,12 @@
 	<br>
 	<div class="card">
 		<div class="card-header bg-danger text-center text-white"><b>Egresos</b></div>
-			<table class="table table-sm">
-			
-		</table>
+			<div class="AddEgreso" style="padding: 25px 0 0 25px"></div>	
 	</div> 
 	<br>
 	<div class="col-md-12 text-center">
 		<Button type="button" class="btn btn-egreso btn-dark"> <span class="icon icon-plus"></span> <b>Egreso</b></Button>
 	</div>
-	<div class="form-row AddEgreso" style="margin-top:25px;"></div>
 	
 	<div class="form-row">
 		<div class="form-group col-md-3">
@@ -190,5 +187,5 @@
 
 @section('js')
 	<script src="<?php echo asset('js/viaje.js') ?>"></script>
-
+@stop
 	

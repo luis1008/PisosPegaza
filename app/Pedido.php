@@ -62,11 +62,11 @@ class Pedido extends Model
     {
         if(trim($Inicio) != "" && trim($Final) == ""){
             
-            return $query->whereRaw("created_at >= '$Inicio'");
+            return $query->whereRaw("pe_fecha_pedido >= '$Inicio'");
 
         } elseif(trim($Inicio) != "" && trim($Final) != "") {
 
-            return $query->whereRaw("created_at BETWEEN '$Inicio' AND '$Final'");
+            return $query->whereRaw("pe_fecha_pedido BETWEEN '$Inicio' AND '$Final'");
 
         }
     }            
