@@ -72,6 +72,13 @@ class AjaxController extends Controller
         }
     }
 
+    public function GetProductoInventario(Request $request){
+         if ($request->ajax()) {
+            $pd = Producto::where('pd_status','=','1')->orderBy('pd_nombre')->get();
+            return response()->json($pd);
+        }
+    }
+
     public function GetKilometrajeFinal(Request $request){
         if ($request->ajax()) {
             $viaje = Viaje::select('vi_kilometraje_final')->where('vehiculo_id',$request->placa)->orderBy('id_viaje','DESC')->first();
@@ -83,6 +90,13 @@ class AjaxController extends Controller
     public function GetProducto(Request $request){
         if ($request->ajax()) {
             $pd = Producto::where('pd_tipo','=','ENSAMBLADO')->where('pd_status','=','1')->orderBy('pd_nombre')->get();
+            return response()->json($pd);
+        }
+    }
+
+    public function GetProductoNoEnsamblado(Request $request){
+        if ($request->ajax()) {
+            $pd = Producto::where('pd_tipo','=','NO ENSAMBLADO')->where('pd_status','=','1')->orderBy('pd_nombre')->get();
             return response()->json($pd);
         }
     }

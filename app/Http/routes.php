@@ -365,6 +365,7 @@ Route::group(['middleware' => 'auth'],function(){
 	
 	//AJAX
 	Route::get('/GetMateriaPrima', 'AjaxController@GetMateriaPrima');
+	Route::get('/GetProductoNoEnsamblado', 'AjaxController@GetProductoNoEnsamblado');
 	Route::get('/GetPrecioProductoSelected', 'AjaxController@GetPrecioProductoSelected');
 	Route::get('/GetPrecioMateriaPrimaSelected', 'AjaxController@GetPrecioMateriaPrimaSelected');
 	Route::get('/GetProveedor', 'AjaxController@GetProveedor');
@@ -375,6 +376,7 @@ Route::group(['middleware' => 'auth'],function(){
 	//Route::post('/SetCuentas', 'AjaxController@SetCuentas');
 	Route::post('/SetDomicilios', 'AjaxController@SetDomicilios');
 	Route::get('/GetProducto', 'AjaxController@GetProducto');
+	Route::get('/GetProductoInventario', 'AjaxController@GetProductoInventario');
 	Route::get('/GetPrecioUltimaVenta', 'AjaxController@GetPrecioUltimaVenta');
 	Route::get('/GetDomicilioCliente', 'AjaxController@GetDomicilioCliente');
 	Route::get('/GetKilometrajeFinal', 'AjaxController@GetKilometrajeFinal');

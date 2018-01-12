@@ -35,18 +35,25 @@ $(document).ready(function(){
 		var tipo = $(this).val();
 		$('.input-costo').val('0');
 		if (tipo === "MATERIA PRIMA") {
-			$('#ComprasMP, #ComprasArt').empty();
+			$('#ComprasMP, #ComprasArt, #ComprasPD').empty();
 			$('.DivBtnArt').hide();
 			$('.DivBtnMp').show();
 			GetAjaxMateriaPrima(0);
-		} else if(tipo === "GASTOS"){
-			$('#ComprasMP, #ComprasArt').empty();
+
+		} else if(tipo === "PRODUCTO NO ENSAMBLADO"){
+			$('#ComprasMP, #ComprasArt, #ComprasPD').empty();
 			$('.DivBtnMp').hide();
+			$('.DivBtnPd').show();
+			GetAjaxProducto(0);
+		}
+		else if(tipo === "GASTOS"){
+			$('#ComprasMP, #ComprasArt, #ComprasPD').empty();
+			$('.DivBtnPd').hide();
 			$('.DivBtnArt').show();
 			GetAjaxCuentas(0);
 		} else {
-			$('.DivBtnArt, .DivBtnMp').hide();
-			$('#ComprasMP, #ComprasArt').empty();			
+			$('.DivBtnArt, .DivBtnMp, DivBtnPd').hide();
+			$('#ComprasMP, #ComprasArt, #ComprasPD').empty();			
 		}
 	});
 
@@ -102,7 +109,59 @@ $(document).ready(function(){
             }
         });
 	}
-	
+
+	// SCRIPT DE AGREGAR, ELIMINAR, SELECCIONAR Y ENTRE OTRAS FUNCIONES QUE APLICA LA MATERIA PRIMA EN COMPRAS
+	$('.btn-AddPD').click(function(){
+		GetAjaxProducto(1);
+	});
+
+	function GetAjaxProducto(btn){
+        $.ajax({
+            url:'/GetProductoNoEnsamblado',
+            dataType:'json',
+            type:'GET',
+            async: false,
+            success:function(data){
+                if(data != ""){
+                    var form = '';
+                    form += '<div class="form-row">'+
+                                '<div class="form-group col-md-1 DivCantidad">'+
+                                    '<label>Cant.</label>'+
+                                    '<input type="number" name="cantidad[]" class="form-control" value="1" min="1" placeholder="NECESITA" required>'+
+                                '</div>'+
+                                '<div class="form-group col-md-6">'+
+                                    '<label>Producto</label>'+
+                                    '<select name="material[]" class="form-control select-producto" required>'+
+                                        '<option value="" selected>Seleccionar</option>'+
+                                        '<option value="add">NUEVO PRODUCTO</option>';
+                    
+                    $.each(data,function(index, producto){
+                        form += '<option value="'+producto.id_producto+'">'+producto.pd_nombre+' '+producto.pd_cantidad+' '+"PIEZAS"+'</option>';
+                    });
+                    
+                    form +=         '</select>'+
+                                '</div>'+
+                                '<div class="form-group col-md-2 DivPrecio">'+
+                                    '<label>Precio</label>'+
+                                    '<input type="number" name="precio[]" class="form-control" value="0" min="1" placeholder="$" required>'+
+                                '</div>'+
+                                '<div class="form-group col-md-2 DivSub">'+
+                                    '<label>Sub. Total</label>'+
+                                    '<input type="text" class="form-control subtotal" name="subtotal[]" value="0" readonly>'+
+                                '</div>';
+                    if(btn){
+                        form += '<div class="form-group col-md-1">'+   
+                                    '<button type="button" class="btn btn-danger btn-delete2" style="margin-top:32px;"><span class="icon icon-bin2"></span></button>'+
+                                '</div>';
+                    }
+
+                    form += '</div>';
+
+                    $('#ComprasPD').append(form);
+                }
+            }
+        });
+	}
 	// ELMINA TANTO MATERIA PRIMA/GASTO
 	$(document).on('click','.btn-delete2', function(){
 		$(this).parent('div.form-group').parent('div.form-row').remove();
@@ -136,12 +195,40 @@ $(document).ready(function(){
 			CalcularCosto();
 		}
 	});
+
+//AGREGAR NUEVO PRODUCTO
+		$(document).on('change','.select-producto',function(){
+        var id    = $(this).val();
+		var valor = 0;
+		var tipo  = "producto";
+		if (id === "add") {
+			$('#NewProducto').modal('show');
+			$('#compra_material').modal('hide');
+			$(this).val("");
+		} else {
+			$.ajax({
+				url:'/GetPrecioUltimaCompra',
+				dataType:'json',
+				type:'GET',
+				async: false,
+				data: {id:id,tipo:tipo},
+				success:function(data){
+					if(data != ""){
+						valor = data;
+					}
+				}
+			});
+			$(this).parent('div.form-group').parent('div.form-row').find('div.DivPrecio').find('input').val(valor);
+			CalcularSubTotal();
+			CalcularCosto();
+		}
+	});
 	
 	$('.btn-SubmitMP').click(function(){
 		$.post('/MateriaPrima',$('#form-MP').serialize()).done(function(data){
 			if (data === "exito") {
 				$('#NewMateriaPrima').modal('hide');
-				$('#ComprasMP, #ComprasArt').empty();
+				$('#ComprasMP, #ComprasArt, #ComprasPD').empty();
 				$('.TypeCompra, .form-clearMP').val("");
 				$('#compra_material').modal('show');
 			}
@@ -156,12 +243,18 @@ $(document).ready(function(){
 
 	$('button[type="reset"]').click(function(){
 		$('.DivBtnArt, .DivBtnMp').hide();
-		$('#ComprasMP, #ComprasArt').empty();
+		$('#ComprasMP, #ComprasArt, #ComprasPD').empty();
 		$('.multicompra').val('').trigger('chosen:updated');
 	});
 
 	$('.btn-closeMP').click(function(){
 		$('#NewMateriaPrima').modal('hide');
+		$('.form-clearMP').val("");
+		$('#compra_material').modal('show');
+	});
+
+	$('.btn-closePD').click(function(){
+		$('#NewProducto').modal('hide');
 		$('.form-clearMP').val("");
 		$('#compra_material').modal('show');
 	});
@@ -202,7 +295,7 @@ $(document).ready(function(){
 		$.post('/SetCuentas',$('#form-Gast').serialize()).done(function(data){
 			if (data === "exito") {
 				$('#NewGasto').modal('hide');
-				$('#ComprasMP, #ComprasArt').empty();
+				$('#ComprasMP, #ComprasArt, #ComprasPD').empty();
 				$('.TypeCompra, .form-clearGast').val("");
 				$('#compra_material').modal('show');
 			}

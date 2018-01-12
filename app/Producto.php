@@ -21,6 +21,11 @@ class Producto extends Model
       return $this->belongsToMany('pegaza\MateriaPrima', 'detalle_requisitos', 'producto_id', 'mp_id')->withPivot('det_cantidad','det_precio','det_subtotal','det_status');
     }
 
+
+    public function compras(){
+        return $this->belongsToMany('pegaza\Compra', 'compra_producto', 'producto_id', 'compra_id')->withPivot('det_cantidad','det_precio','det_subtotal');        
+    }
+
     public function productos(){
       return $this->belongsToMany('pegaza\Producto', 'detalle_requisito_producto', 'producto_id', 'pd_id')->withPivot('det_pd_cantidad','det_pd_precio','det_pd_subtotal','det_pd_status');
     }

@@ -203,10 +203,11 @@ class CajaController extends Controller
         $compra->save();
 
         for ($i=0; $i < sizeof($request->cantidad); $i++) { 
-            if ($request->tipo_compra != "GASTOS") {
+            if ($request->tipo_compra == "MATERIA PRIMA") {
+                //dd($request);
                 // GUARDAR TABLA DETALLE compra_mp
                 $compra->materiasprimas()->attach($request->material[$i], ['det_cantidad'=>$request->cantidad[$i],'det_precio'=>$request->precio[$i],'det_subtotal'=>$request->subtotal[$i]]);
-            } else {
+            } elseif($request->tipo_compra == "GASTO") {
                 // GUARDAR TABLA DETALLE compra_cuenta
                 $gasto = new GastoFijo();
                 $gasto->gf_concepto = $request->material[$i];
@@ -215,6 +216,10 @@ class CajaController extends Controller
                 $gasto->gf_subtotal = $request->subtotal[$i];
                 $gasto->compra_id   = $compra->id_compra;
                 $gasto->save();
+            }  else{
+                //dd($request);
+                 // GUARDAR TABLA DETALLE compra_producto
+                $compra->productoscompra()->attach($request->material[$i], ['det_cantidad'=>$request->cantidad[$i],'det_precio'=>$request->precio[$i],'det_subtotal'=>$request->subtotal[$i]]);
             }
         }
 

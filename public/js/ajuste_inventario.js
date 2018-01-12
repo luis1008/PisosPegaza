@@ -61,7 +61,7 @@ $(document).ready(function(){
     function GetAjaxProducto(btn){
         var form = '';
         $.ajax({
-            url:'/GetProducto',
+            url:'/GetProductoInventario',
             dataType:'json',
             type:'GET',
             async: false,

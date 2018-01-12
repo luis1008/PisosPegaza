@@ -1950,6 +1950,7 @@
 									<select name="tipo_compra" required class="form-control TypeCompra">
 										<option value="">Seleccionar Tipo de Compra</option>
 										<option value="MATERIA PRIMA">MATERIA PRIMA</option>
+										<option value="PRODUCTO NO ENSAMBLADO">PRODUCTO NO ENSAMBLADO</option>
 										<option value="GASTOS">GASTOS</option>
 									</select>
 								</div>
@@ -1958,6 +1959,10 @@
 						<div id="ComprasMP"></div>
 						<div class="col-md-12 text-center DivBtnMp" style="margin-bottom:15px;display:none;">
 							<button type="button" class="btn-AddMP btn btn-dark"><span class="icon icon-plus"></span> Agregar</button>
+						</div>
+						<div id="ComprasPD"></div>
+						<div class="col-md-12 text-center DivBtnPd" style="margin-bottom:15px;display:none;">
+							<button type="button" class="btn-AddPD btn btn-dark"><span class="icon icon-plus"></span> Agregar</button>
 						</div>
 						<div id="ComprasArt"></div>
 						<div class="col-md-12 text-center DivBtnArt" style="margin-bottom:15px;display:none;">
@@ -2041,6 +2046,76 @@
 							<button type="button" class="btn btn-danger btn-closeMP"><span class="icon icon-cross"></span> Cerrar</button>
 							<button type="button" class="btn btn-dark btn-SubmitMP"><span class="icon icon-floppy-disk"></span> Guardar</button>
 						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+		<!-- Modal COMPRA -> AGREGAR NUEVO PRODUCTO <OPTION> -->
+	<div class="modal fade" id="NewProducto" tabindex="-1" role="dialog" aria-labelledby="productos" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="productos">Nuevo Producto</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form action="<?php echo route('post_producto')?>" method="POST">
+                        {{csrf_field()}}
+						<div class="form-row">
+                            <div class="form-group col">
+								<div class="input-group">
+									<span class="input-group-addon"><span class="icon icon-briefcase"></span></span>
+									<input type="text" class="form-control" name="nombre" placeholder="NOMBRE" required>
+								</div>
+							</div>
+                            
+							<div class="form-group col">
+								<div class="input-group">
+									<span class="input-group-addon"><span class="icon icon-hammer"></span></span>
+									<select class="form-control" name="tipo" id="type" required>
+                                        <option value="NO ENSAMBLADO">NO ENSAMBLADO</option>
+                                        <option value="ENSAMBLADO">ENSAMBLADO</option>
+                                    </select>
+								</div>
+							</div>
+                            <!-- <div class="form-group col">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="icon icon-stack"></span></span>
+                                    <input type="text" class="form-control" name="cantidad_producto" value="1" placeholder="CANTIDAD" readonly>
+                                </div>
+                            </div> -->
+                            <input type="hidden" name="cantidad_unidad" value="1">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col">
+								<div class="input-group">
+									<span class="input-group-addon"><span class="icon icon-coin-dollar"></span></span>
+									<input type="number" class="form-control input-costo" name="costo"  placeholder="COSTO" required>
+								</div>
+							</div>
+                            
+                             <div class="form-group col">
+								<div class="input-group">
+									<span class="input-group-addon"><span class="icon icon-coin-dollar"></span></span>
+									<input type="number" class="form-control" name="precio_venta"  placeholder="PRECIO DE VENTA" required>
+								</div>
+							</div>
+                        
+                        </div>
+
+                        <div class="AddEnsamblado"></div>
+
+                        <div class="col-md-12 AppendBtn text-center" style="margin-bottom:15px;"></div>
+
+                        <div class="modal-footer">
+                            <button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button> 
+                            <button type="button" class="btn btn-danger btn-closePD" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
+                            <button type="submit" class="btn btn-dark"><span class="icon icon-floppy-disk"></span> Guardar</button>
+                        </div>
 					</form>
 				</div>
 			</div>
