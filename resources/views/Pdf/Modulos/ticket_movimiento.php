@@ -26,13 +26,13 @@
 		<p align="center" style="font-size: 40px">Fecha</p>
 		<p class="text-center" style="font-size:40px;"><b><?php echo $movimiento->created_at ?></b></p>
 		<p class="text-center"><b><?php echo $nota ?></b></p>
-		<p>Al repartidor <?php echo $movimiento->empleado_id ?> se le entrego $ <?php echo number_format($movimiento->mt_entregado,2) ?> para ir a comprar a los diferentes lugares lo siguiente:</p>
+		<p>A la persona: <?php echo $movimiento->empleado ?> se le entregó la cantidad de: $ <?php echo number_format($movimiento->mt_entregado,2) ?> para ir a comprar a los diferentes lugares lo siguiente:</p>
 		<p class="text-center"><b>Concepto</b></p>
 
 		<?php $conceptos = \DB::table('detalle_movimientos')->select('ct_concepto','id_concepto')->where('movimiento_temporal_id',$movimiento->id_movimiento_temporal)->where('compra_id','0')->get(); ?>
 
 		<?php foreach ($movimiento->compras as $compra){ ?>
-			<li>Compra No° <?php echo str_pad($compra->id_compra, 2, "0", STR_PAD_LEFT) ?></li>
+			<li>Compra No° <?php echo str_pad($compra->cm_nota, 2, "0", STR_PAD_LEFT) ?></li>
 		<?php } ?>
 		<?php foreach($conceptos as $con){ ?>
 										<li><?php echo $con->ct_concepto ?></li>
@@ -51,13 +51,13 @@
 		<p align="center" style="font-size: 40px">Fecha</p>  				 
 			<p class="text-center" style="font-size:40px;"><b><?php echo $movimiento->created_at ?></b></p>
 		<p class="text-center"><b>COPIA</b></p>
-		<p>Al repartidor <?php echo $movimiento->empleado_id ?> se le entrego $ <?php echo number_format($movimiento->mt_entregado,2) ?> para ir a comprar a los diferentes lugares lo siguiente:</p>
+		<p>A la perona: <?php echo $movimiento->empleado ?> se le entrego la cantidad de: $ <?php echo number_format($movimiento->mt_entregado,2) ?> para ir a comprar a los diferentes lugares lo siguiente:</p>
 		<p class="text-center"><b>Concepto</b></p>
 
 		<?php $conceptos = \DB::table('detalle_movimientos')->select('ct_concepto','id_concepto')->where('movimiento_temporal_id',$movimiento->id_movimiento_temporal)->where('compra_id','0')->get(); ?>
 
 		<?php foreach ($movimiento->compras as $compra){ ?>
-			<li>Compra No° <?php echo str_pad($compra->id_compra, 2, "0", STR_PAD_LEFT) ?></li>
+			<li>Compra No° <?php echo str_pad($compra->cm_nota, 2, "0", STR_PAD_LEFT) ?></li>
 		<?php } ?>
 		<?php foreach($conceptos as $con){ ?>
 										<li><?php echo $con->ct_concepto ?></li>

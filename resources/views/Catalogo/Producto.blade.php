@@ -223,14 +223,14 @@
                             <div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-coin-dollar"></span></span>
-									<input type="number" class="form-control input-costo" name="costo"  placeholder="COSTO" required>
+									<input type="number" class="form-control input-costo" name="costo"  placeholder="COSTO" step="0.0001" required>
 								</div>
 							</div>
                             
                              <div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-coin-dollar"></span></span>
-									<input type="number" class="form-control" name="precio_venta"  placeholder="PRECIO DE VENTA" required>
+									<input type="number" class="form-control" name="precio_venta"  placeholder="PRECIO DE VENTA" step="0.0001" required>
 								</div>
 							</div>
                         

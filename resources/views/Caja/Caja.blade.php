@@ -1876,7 +1876,7 @@
 	</div>
 
 	<!-- Modal COMPRA MATERIA PRIMA o GASTOS -->
-	<div class="modal fade" id="compra_material" tabindex="-1" role="dialog" aria-labelledby="materiales" aria-hidden="true">
+	<div class="modal fade" id="compra_material" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="materiales" aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">

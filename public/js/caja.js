@@ -90,11 +90,11 @@ $(document).ready(function(){
                                 '</div>'+
                                 '<div class="form-group col-md-2 DivPrecio">'+
                                     '<label>Precio</label>'+
-                                    '<input type="number" name="precio[]" class="form-control" value="0" min="1" placeholder="$" required>'+
+                                    '<input type="number" name="precio[]" class="form-control" value="0.0000" step="0.0001" min="1" placeholder="$" required>'+
                                 '</div>'+
                                 '<div class="form-group col-md-2 DivSub">'+
                                     '<label>Sub. Total</label>'+
-                                    '<input type="text" class="form-control subtotal" name="subtotal[]" value="0" readonly>'+
+                                    '<input type="text" class="form-control subtotal" name="subtotal[]" value="0.0000" step="0.0001" readonly>'+
                                 '</div>';
                     if(btn){
                         form += '<div class="form-group col-md-1">'+   
@@ -143,11 +143,11 @@ $(document).ready(function(){
                                 '</div>'+
                                 '<div class="form-group col-md-2 DivPrecio">'+
                                     '<label>Precio</label>'+
-                                    '<input type="number" name="precio[]" class="form-control" value="0" min="1" placeholder="$" required>'+
+                                    '<input type="number" name="precio[]" class="form-control" value="0.0000" step="0.0001" min="1" placeholder="$" required>'+
                                 '</div>'+
                                 '<div class="form-group col-md-2 DivSub">'+
                                     '<label>Sub. Total</label>'+
-                                    '<input type="text" class="form-control subtotal" name="subtotal[]" value="0" readonly>'+
+                                    '<input type="text" class="form-control subtotal" name="subtotal[]" value="0.0000" step="0.0001" readonly>'+
                                 '</div>';
                     if(btn){
                         form += '<div class="form-group col-md-1">'+   
@@ -334,11 +334,11 @@ $(document).ready(function(){
 						'</div>'+
 						'<div class="form-group col-md-2 DivPrecio">'+
 							'<label>Importe</label>'+
-							'<input type="number" name="precio[]" class="form-control" value="0" min="1" placeholder="$" required>'+
+							'<input type="number" name="precio[]" class="form-control" value="0.0000" step="0.0001" min="1" placeholder="$" required>'+
 						'</div>'+
 						'<div class="form-group col-md-2 DivSub">'+
 							'<label>Sub. Total</label>'+
-							'<input type="text" class="form-control subtotal" name="subtotal[]" value="0" readonly>'+
+							'<input type="text" class="form-control subtotal" name="subtotal[]" value="0.0000" step="0.0001" readonly>'+
 						'</div>';
 			if(btn){
 				form += '<div class="form-group col-md-1">'+   

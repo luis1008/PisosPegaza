@@ -1,73 +1,102 @@
--- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Versión del servidor:         10.1.21-MariaDB - mariadb.org binary distribution
--- SO del servidor:              Win32
--- HeidiSQL Versión:             9.4.0.5125
--- --------------------------------------------------------
+-- phpMyAdmin SQL Dump
+-- version 4.5.1
+-- http://www.phpmyadmin.net
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 21-02-2018 a las 21:38:45
+-- Versión del servidor: 10.1.9-MariaDB
+-- Versión de PHP: 5.6.15
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
+--
+-- Base de datos: `azulejos`
+--
 
--- Volcando estructura de base de datos para azulejos
-CREATE DATABASE IF NOT EXISTS `azulejos` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `azulejos`;
+-- --------------------------------------------------------
 
--- Volcando estructura para tabla azulejos.abono_compra
-CREATE TABLE IF NOT EXISTS `abono_compra` (
-  `id_abono` int(11) NOT NULL AUTO_INCREMENT,
+--
+-- Estructura de tabla para la tabla `abono_compra`
+--
+
+CREATE TABLE `abono_compra` (
+  `id_abono` int(11) NOT NULL,
   `compra_id` int(11) NOT NULL,
   `ab_numero` int(2) NOT NULL DEFAULT '0',
   `ab_abono` double(7,2) NOT NULL DEFAULT '0.00',
-  `ab_pago` enum('EFECTIVO','BANCARIA') NOT NULL DEFAULT 'EFECTIVO',
+  `ab_pago` varchar(100) NOT NULL DEFAULT 'CAJA',
   `created_at` date NOT NULL,
-  `updated_at` date NOT NULL,
-  PRIMARY KEY (`id_abono`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  `updated_at` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla azulejos.abono_compra: ~8 rows (aproximadamente)
-/*!40000 ALTER TABLE `abono_compra` DISABLE KEYS */;
+--
+-- Volcado de datos para la tabla `abono_compra`
+--
+
 INSERT INTO `abono_compra` (`id_abono`, `compra_id`, `ab_numero`, `ab_abono`, `ab_pago`, `created_at`, `updated_at`) VALUES
-	(1, 1, 1, 1210.00, 'EFECTIVO', '2017-10-27', '2017-10-27'),
-	(2, 5, 1, 1100.00, 'BANCARIA', '2017-10-27', '2017-10-27'),
-	(3, 6, 1, 100.00, 'EFECTIVO', '2017-10-27', '2017-10-27'),
-	(4, 8, 1, 360.00, 'BANCARIA', '2017-10-27', '2017-10-27'),
-	(5, 9, 1, 1500.00, 'BANCARIA', '2017-10-27', '2017-10-27'),
-	(6, 3, 1, 440.00, 'EFECTIVO', '2017-10-27', '2017-10-27'),
-	(7, 4, 1, 250.00, 'EFECTIVO', '2017-10-27', '2017-10-27'),
-	(8, 6, 2, 80.00, 'EFECTIVO', '2017-10-27', '2017-10-27');
-/*!40000 ALTER TABLE `abono_compra` ENABLE KEYS */;
+(1, 1, 1, 1500.00, 'BANCO HSBC', '2018-02-21', '2018-02-21'),
+(2, 1, 2, 1500.00, 'CAJA', '2018-02-21', '2018-02-21');
 
--- Volcando estructura para tabla azulejos.abono_pedido
-CREATE TABLE IF NOT EXISTS `abono_pedido` (
-  `id_abono_pedido` int(11) NOT NULL AUTO_INCREMENT,
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `abono_pedido`
+--
+
+CREATE TABLE `abono_pedido` (
+  `id_abono_pedido` int(11) NOT NULL,
   `ap_abono` double(7,2) NOT NULL DEFAULT '0.00',
   `ap_numero` int(2) NOT NULL DEFAULT '0',
   `pedido_id` int(11) NOT NULL DEFAULT '0',
-  `ap_pago` enum('EFECTIVO','CHEQUE','BANCARIA') NOT NULL DEFAULT 'EFECTIVO',
+  `ap_pago` varchar(100) NOT NULL DEFAULT 'CAJA',
   `ap_no_cheque` varchar(50) NOT NULL DEFAULT '0',
   `ap_status_cheque` enum('VERIFICANDO','NINGUNO','APROBADO','REACHAZADO') DEFAULT 'NINGUNO',
   `ap_folio` varchar(50) NOT NULL,
   `created_at` date NOT NULL,
-  `updated_at` date NOT NULL,
-  PRIMARY KEY (`id_abono_pedido`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+  `updated_at` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla azulejos.abono_pedido: ~4 rows (aproximadamente)
-/*!40000 ALTER TABLE `abono_pedido` DISABLE KEYS */;
+--
+-- Volcado de datos para la tabla `abono_pedido`
+--
+
 INSERT INTO `abono_pedido` (`id_abono_pedido`, `ap_abono`, `ap_numero`, `pedido_id`, `ap_pago`, `ap_no_cheque`, `ap_status_cheque`, `ap_folio`, `created_at`, `updated_at`) VALUES
-	(1, 5000.00, 1, 39, 'BANCARIA', '', 'NINGUNO', '5962', '2017-11-02', '2017-11-02'),
-	(2, 2625.00, 1, 40, 'CHEQUE', '102102102', 'VERIFICANDO', '5963', '2017-11-02', '2017-11-02'),
-	(3, 2100.00, 1, 41, 'CHEQUE', '102103104', 'VERIFICANDO', '5964', '2017-11-02', '2017-11-02'),
-	(4, 100.00, 1, 42, 'BANCARIA', '0', 'NINGUNO', '5964', '2017-11-02', '2017-11-02');
-/*!40000 ALTER TABLE `abono_pedido` ENABLE KEYS */;
+(1, 0.00, 1, 1, 'EFECTIVO', '0', 'NINGUNO', '0', '2018-02-21', '2018-02-21'),
+(2, 0.00, 1, 2, 'EFECTIVO', '0', 'NINGUNO', '1', '2018-02-21', '2018-02-21'),
+(3, 0.00, 1, 3, 'EFECTIVO', '0', 'NINGUNO', '2', '2018-02-21', '2018-02-21'),
+(4, 3000.00, 2, 1, 'BANCO BANCOMER', '0', 'NINGUNO', '0', '2018-02-21', '2018-02-21'),
+(5, 100.00, 3, 1, 'CAJA', '0', 'NINGUNO', '0', '2018-02-21', '2018-02-21');
 
--- Volcando estructura para tabla azulejos.cliente
-CREATE TABLE IF NOT EXISTS `cliente` (
-  `id_cliente` int(11) NOT NULL AUTO_INCREMENT,
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `abono_prestamo`
+--
+
+CREATE TABLE `abono_prestamo` (
+  `id_ab_prestamo` int(11) NOT NULL,
+  `ab_abono` double(6,2) NOT NULL DEFAULT '0.00',
+  `ab_numero` int(2) NOT NULL DEFAULT '0',
+  `prestamo_id` int(11) NOT NULL DEFAULT '0',
+  `created_at` date NOT NULL,
+  `updated_at` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cliente`
+--
+
+CREATE TABLE `cliente` (
+  `id_cliente` int(11) NOT NULL,
   `cl_nombre` text COLLATE utf8_unicode_ci NOT NULL,
   `cl_rfc` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   `cl_observacion` text COLLATE utf8_unicode_ci NOT NULL,
@@ -80,252 +109,307 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   `cl_termino_credito` enum('CONTADO','1 DIA','1 SEMANA','1 MES','1 BIMESTRE','1 TRIMESTRE') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'CONTADO',
   `cl_status` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id_cliente`),
-  UNIQUE KEY `cl_rfc` (`cl_rfc`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla azulejos.cliente: ~5 rows (aproximadamente)
-/*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
+--
+-- Volcado de datos para la tabla `cliente`
+--
+
 INSERT INTO `cliente` (`id_cliente`, `cl_nombre`, `cl_rfc`, `cl_observacion`, `cl_correo`, `cl_telefono`, `cl_nombre_contacto`, `cl_nombre_dueno`, `cl_forma_pago`, `cl_tipo_cliente`, `cl_termino_credito`, `cl_status`, `created_at`, `updated_at`) VALUES
-	(1, 'FERRETERIA ALVAREZ', 'FTRALZ1907523', 'ENTREGO TODO BIEN.', 'FERRETERIA.ALVAREZ@GMAIL.COM', '39-81017', 'JOSE LUIS ARROYO MANCERA', 'JOSE LUIS ARROYO MANCERA', 'EFECTIVO', 'NORMAL', '1 MES', 1, '2017-10-23 17:13:35', '2017-10-23 17:13:35'),
-	(2, 'PANADERIA RODRIGUEZ', 'GCR10109378', 'ENTREGO TODO COMPLETO', 'PANADERIA.RODRIGUEZ@GMAIL.COM', '3121381143', 'GERMAN CAZAREZ RODRIGUEZ', 'GERMAN CAZAREZ RODRIGUEZ', 'TRANSFERENCIA', 'NORMAL', '1 MES', 1, '2017-10-26 16:24:16', '2017-10-26 16:24:16'),
-	(3, 'MAS PUBLICIDAD', 'MP189367', 'ENTREGO TODO COMPLETO', 'MASPUBLICIDAD@GMAIL.COM', '31243453363', 'KARLA HERNANDEZ LUNA', 'CAROLINA FLORES CARDENAS', 'EFECTIVO', 'RIGUROSO', '1 DIA', 1, '2017-10-27 11:49:18', '2017-10-27 11:49:18'),
-	(4, 'FERRETERIA COLIMA MUNDO UNIDO', 'GOJJ920420HF036', 'ESTE SI PAGA CHIDO', 'LOL@LIVE.COM', '312-104-2444', 'PEPE', 'PEDRO ROCHA', 'EFECTIVO', 'NORMAL', 'CONTADO', 1, '2017-10-30 14:20:11', '2017-10-30 14:20:11'),
-	(5, 'FERRETERIA YAOIMNG', 'YAOYAO', 'NINGUNA', 'YAO@LIVE.COM', '312-102-4489', 'LORENA', 'YAOIMNG', 'EFECTIVO', 'RIGUROSO', 'CONTADO', 1, '2017-10-30 15:41:21', '2017-10-30 15:41:21'),
-	(6, 'ABARROTES LAS PALMAS DE LA VILLA', 'ASDASD', 'ASDASD', 'ASDASD@LIVE.COM', '3121068987', 'YOLA', 'PEDRO INFANTE', 'EFECTIVO', 'NORMAL', '1 MES', 1, '2017-10-30 15:47:51', '2017-10-30 15:47:51');
-/*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
+(1, 'FERRETERIA MARISOL', 'FRMA020192HM25', 'NO HAY NINGUNA OBSERVACION', 'MARI@GMAIL.COM', '3121032699', 'YOLANDA', 'MARISOL', 'EFECTIVO', 'NORMAL', '1 MES', 1, '2017-12-19 20:36:19', '2017-12-22 22:55:06'),
+(2, 'CONTRUCTOR GALINDO', 'COGA250695JMN20', 'NO HAY OBSERVACIONES', 'CONTRU-GALINDO@HOTMAIL.COM', '3121045899', 'JULIETA', 'RICARDO GALINDO', 'EFECTIVO', 'NORMAL', '1 SEMANA', 1, '2017-12-19 20:38:13', '2017-12-19 20:38:13'),
+(3, '', '', 'NO HAY OBSERVACIONES', 'htc@htc', '', '', '', '', '', '', 1, '2018-02-21 12:31:06', '2018-02-21 12:31:06');
 
--- Volcando estructura para tabla azulejos.compras
-CREATE TABLE IF NOT EXISTS `compras` (
-  `id_compra` int(11) NOT NULL AUTO_INCREMENT,
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `compras`
+--
+
+CREATE TABLE `compras` (
+  `id_compra` int(11) NOT NULL,
   `proveedor_id` int(11) NOT NULL DEFAULT '0',
   `cm_pago` enum('CONTADO','CREDITO') NOT NULL DEFAULT 'CONTADO',
   `cm_status` enum('PENDIENTE','PAGADO','ABONADO') NOT NULL DEFAULT 'PENDIENTE',
   `cm_bodega` tinyint(1) NOT NULL DEFAULT '0',
+  `empleado_id` int(11) NOT NULL,
+  `cm_num_entrada` varchar(100) NOT NULL,
   `cm_termino` enum('CONTADO','1 DIA','1 SEMANA','1 MES','1 BIMESTRE','1 TRIMESTRE') NOT NULL DEFAULT 'CONTADO',
   `cm_movimiento` tinyint(1) NOT NULL DEFAULT '0',
   `cm_proveedor` tinyint(1) NOT NULL DEFAULT '0',
+  `cm_nota` varchar(100) NOT NULL,
   `cm_tipo` enum('MATERIA PRIMA','GASTOS') NOT NULL DEFAULT 'GASTOS',
   `cm_total` double(7,2) NOT NULL DEFAULT '0.00',
   `cm_total_abonado` double(7,2) NOT NULL DEFAULT '0.00',
   `created_at` date NOT NULL,
-  `updated_at` date NOT NULL,
-  PRIMARY KEY (`id_compra`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+  `updated_at` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla azulejos.compras: ~9 rows (aproximadamente)
-/*!40000 ALTER TABLE `compras` DISABLE KEYS */;
-INSERT INTO `compras` (`id_compra`, `proveedor_id`, `cm_pago`, `cm_status`, `cm_bodega`, `cm_termino`, `cm_movimiento`, `cm_proveedor`, `cm_tipo`, `cm_total`, `cm_total_abonado`, `created_at`, `updated_at`) VALUES
-	(1, 1, 'CONTADO', 'PAGADO', 1, 'CONTADO', 0, 0, 'MATERIA PRIMA', 1210.00, 1210.00, '2017-10-27', '2017-10-27'),
-	(2, 1, 'CONTADO', 'PENDIENTE', 0, 'CONTADO', 1, 0, 'MATERIA PRIMA', 12520.00, 0.00, '2017-10-27', '2017-10-27'),
-	(3, 2, 'CONTADO', 'PAGADO', 1, 'CONTADO', 0, 0, 'MATERIA PRIMA', 440.00, 440.00, '2017-10-27', '2017-10-27'),
-	(4, 1, 'CONTADO', 'PAGADO', 1, 'CONTADO', 0, 0, 'MATERIA PRIMA', 250.00, 250.00, '2017-10-27', '2017-10-27'),
-	(5, 1, 'CONTADO', 'PAGADO', 1, 'CONTADO', 0, 0, 'MATERIA PRIMA', 1100.00, 1100.00, '2017-10-27', '2017-10-27'),
-	(6, 1, 'CREDITO', 'PAGADO', 1, '1 SEMANA', 0, 0, 'MATERIA PRIMA', 180.00, 180.00, '2017-10-27', '2017-10-27'),
-	(7, 2, 'CREDITO', 'PENDIENTE', 1, '1 DIA', 1, 0, 'GASTOS', 330.00, 0.00, '2017-10-27', '2017-10-27'),
-	(8, 1, 'CREDITO', 'PAGADO', 0, '1 DIA', 0, 0, 'MATERIA PRIMA', 360.00, 360.00, '2017-10-27', '2017-10-27'),
-	(9, 1, 'CREDITO', 'PAGADO', 1, '1 DIA', 0, 0, 'GASTOS', 1500.00, 1500.00, '2017-10-27', '2017-10-27');
-/*!40000 ALTER TABLE `compras` ENABLE KEYS */;
+--
+-- Volcado de datos para la tabla `compras`
+--
 
--- Volcando estructura para tabla azulejos.compra_cuentas
-CREATE TABLE IF NOT EXISTS `compra_cuentas` (
-  `id_detalle` int(11) NOT NULL AUTO_INCREMENT,
-  `compra_id` int(11) NOT NULL,
-  `cuentas_id` int(11) NOT NULL,
-  `det_cantidad` int(5) NOT NULL DEFAULT '0',
-  `det_precio` double(7,2) NOT NULL DEFAULT '0.00',
-  `det_subtotal` double(7,2) NOT NULL DEFAULT '0.00',
-  PRIMARY KEY (`id_detalle`,`compra_id`,`cuentas_id`),
-  KEY `compra_id` (`compra_id`),
-  KEY `cuentas_id` (`cuentas_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+INSERT INTO `compras` (`id_compra`, `proveedor_id`, `cm_pago`, `cm_status`, `cm_bodega`, `empleado_id`, `cm_num_entrada`, `cm_termino`, `cm_movimiento`, `cm_proveedor`, `cm_nota`, `cm_tipo`, `cm_total`, `cm_total_abonado`, `created_at`, `updated_at`) VALUES
+(1, 4, 'CREDITO', 'ABONADO', 1, 2, '1289', '1 MES', 0, 1, '10', 'MATERIA PRIMA', 6885.00, 3000.00, '2018-02-21', '2018-02-21'),
+(2, 1, 'CREDITO', 'PENDIENTE', 0, 0, '', '1 MES', 0, 1, '209', 'MATERIA PRIMA', 9380.00, 0.00, '2018-02-21', '2018-02-21'),
+(3, 3, 'CONTADO', 'PENDIENTE', 0, 0, '', 'CONTADO', 0, 1, '12', 'GASTOS', 10000.00, 0.00, '2018-02-21', '2018-02-21'),
+(4, 2, 'CREDITO', 'PENDIENTE', 0, 0, '', '1 MES', 0, 0, '210', 'MATERIA PRIMA', 200.00, 0.00, '2018-02-21', '2018-02-21');
 
--- Volcando datos para la tabla azulejos.compra_cuentas: ~3 rows (aproximadamente)
-/*!40000 ALTER TABLE `compra_cuentas` DISABLE KEYS */;
-INSERT INTO `compra_cuentas` (`id_detalle`, `compra_id`, `cuentas_id`, `det_cantidad`, `det_precio`, `det_subtotal`) VALUES
-	(1, 7, 2, 1, 110.00, 110.00),
-	(2, 7, 2, 1, 220.00, 220.00),
-	(3, 9, 1, 1, 1500.00, 1500.00);
-/*!40000 ALTER TABLE `compra_cuentas` ENABLE KEYS */;
+-- --------------------------------------------------------
 
--- Volcando estructura para tabla azulejos.compra_mp
-CREATE TABLE IF NOT EXISTS `compra_mp` (
-  `id_detalle` int(11) NOT NULL AUTO_INCREMENT,
+--
+-- Estructura de tabla para la tabla `compra_mp`
+--
+
+CREATE TABLE `compra_mp` (
+  `id_detalle` int(11) NOT NULL,
   `compra_id` int(11) NOT NULL,
   `mp_id` int(11) NOT NULL,
-  `det_cantidad` int(5) NOT NULL DEFAULT '0',
+  `det_cantidad` double(7,3) NOT NULL DEFAULT '0.000',
   `det_precio` double(7,2) NOT NULL DEFAULT '0.00',
-  `det_subtotal` double(7,2) NOT NULL DEFAULT '0.00',
-  PRIMARY KEY (`id_detalle`,`compra_id`,`mp_id`),
-  KEY `compra_id` (`compra_id`),
-  KEY `mp_id` (`mp_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+  `det_subtotal` double(7,2) NOT NULL DEFAULT '0.00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla azulejos.compra_mp: ~10 rows (aproximadamente)
-/*!40000 ALTER TABLE `compra_mp` DISABLE KEYS */;
+--
+-- Volcado de datos para la tabla `compra_mp`
+--
+
 INSERT INTO `compra_mp` (`id_detalle`, `compra_id`, `mp_id`, `det_cantidad`, `det_precio`, `det_subtotal`) VALUES
-	(1, 1, 2, 3, 220.00, 660.00),
-	(2, 1, 1, 5, 110.00, 550.00),
-	(3, 2, 7, 34, 180.00, 6120.00),
-	(4, 2, 4, 4, 250.00, 1000.00),
-	(5, 2, 6, 60, 90.00, 5400.00),
-	(6, 3, 2, 2, 220.00, 440.00),
-	(7, 4, 4, 1, 250.00, 250.00),
-	(8, 5, 1, 10, 110.00, 1100.00),
-	(9, 6, 7, 1, 180.00, 180.00),
-	(10, 8, 7, 2, 180.00, 360.00);
-/*!40000 ALTER TABLE `compra_mp` ENABLE KEYS */;
+(1, 1, 1, 15.000, 459.00, 6885.00),
+(2, 2, 5, 20.000, 469.00, 9380.00),
+(3, 4, 2, 2.000, 100.00, 200.00);
 
--- Volcando estructura para tabla azulejos.contacto
-CREATE TABLE IF NOT EXISTS `contacto` (
-  `id_contacto` int(11) NOT NULL AUTO_INCREMENT,
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `compra_producto`
+--
+
+CREATE TABLE `compra_producto` (
+  `id_detalle` int(11) NOT NULL,
+  `compra_id` int(11) NOT NULL,
+  `producto_id` int(11) NOT NULL,
+  `det_cantidad` int(11) NOT NULL,
+  `det_precio` double(7,2) NOT NULL DEFAULT '0.00',
+  `det_subtotal` double(7,2) NOT NULL DEFAULT '0.00'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `compra_producto`
+--
+
+INSERT INTO `compra_producto` (`id_detalle`, `compra_id`, `producto_id`, `det_cantidad`, `det_precio`, `det_subtotal`) VALUES
+(1, 3, 0, 10, 1000.00, 10000.00);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `contacto`
+--
+
+CREATE TABLE `contacto` (
+  `id_contacto` int(11) NOT NULL,
   `cn_nombre` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
   `cn_telefono` varchar(13) COLLATE utf8_unicode_ci NOT NULL,
+  `cn_status` tinyint(1) NOT NULL DEFAULT '1',
   `proveedor_id` int(11) NOT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id_contacto`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla azulejos.contacto: ~2 rows (aproximadamente)
-/*!40000 ALTER TABLE `contacto` DISABLE KEYS */;
-INSERT INTO `contacto` (`id_contacto`, `cn_nombre`, `cn_telefono`, `proveedor_id`, `created_at`, `updated_at`) VALUES
-	(1, 'LAURA DENISSE TORRES LOPEZ', '331-187-0964', 1, '2017-10-27 11:54:26', '2017-10-27 11:54:26'),
-	(2, 'mari', '434343', 2, '2017-10-27 16:51:27', '2017-10-27 16:51:27');
-/*!40000 ALTER TABLE `contacto` ENABLE KEYS */;
+--
+-- Volcado de datos para la tabla `contacto`
+--
 
--- Volcando estructura para tabla azulejos.cuentas
-CREATE TABLE IF NOT EXISTS `cuentas` (
-  `id_cuentas` int(11) NOT NULL AUTO_INCREMENT,
+INSERT INTO `contacto` (`id_contacto`, `cn_nombre`, `cn_telefono`, `cn_status`, `proveedor_id`, `created_at`, `updated_at`) VALUES
+(1, 'JORGE GUTIERREZ', '3121044897', 1, 1, '2017-12-19 20:40:08', '2017-12-19 20:40:08'),
+(2, 'LUIS GONZALEZ', '3124587799', 1, 1, '2017-12-19 20:40:08', '2017-12-22 23:30:30'),
+(3, 'ARTURO SANCHEZ', '3121895577', 1, 2, '2017-12-19 20:44:12', '2017-12-19 20:44:12'),
+(4, 'PEPE DEL TORO', '3121042133', 1, 2, '2017-12-22 23:31:23', '2017-12-22 23:31:23'),
+(5, 'JOSE', '3121051236', 1, 3, '2017-12-28 02:17:41', '2017-12-28 02:17:41'),
+(6, 'ANA DELGADO AYALA', '3121908753', 1, 4, '2018-01-11 21:31:48', '2018-01-11 21:31:48');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `contratos`
+--
+
+CREATE TABLE `contratos` (
+  `id_contrato` int(11) NOT NULL,
+  `empleado_id` int(11) NOT NULL,
+  `cont_fecha_inicio` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cont_fecha_fin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `contratos`
+--
+
+INSERT INTO `contratos` (`id_contrato`, `empleado_id`, `cont_fecha_inicio`, `cont_fecha_fin`) VALUES
+(1, 4, '2017-12-14', '2018-02-24'),
+(2, 3, '2017-11-20', '2018-06-30'),
+(3, 3, '2018-01-01', '2018-12-01');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cuentas`
+--
+
+CREATE TABLE `cuentas` (
+  `id_cuentas` int(11) NOT NULL,
   `ct_nombre` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ct_status` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id_cuentas`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla azulejos.cuentas: ~2 rows (aproximadamente)
-/*!40000 ALTER TABLE `cuentas` DISABLE KEYS */;
-INSERT INTO `cuentas` (`id_cuentas`, `ct_nombre`, `created_at`, `updated_at`) VALUES
-	(1, 'fdfdf', '2017-10-27 17:13:26', '2017-10-27 17:13:26'),
-	(2, 'hojas', '2017-10-27 17:13:45', '2017-10-27 17:13:45');
-/*!40000 ALTER TABLE `cuentas` ENABLE KEYS */;
+--
+-- Volcado de datos para la tabla `cuentas`
+--
 
--- Volcando estructura para tabla azulejos.detalle_movimientos
-CREATE TABLE IF NOT EXISTS `detalle_movimientos` (
-  `id_concepto` int(11) NOT NULL AUTO_INCREMENT,
+INSERT INTO `cuentas` (`id_cuentas`, `ct_nombre`, `ct_status`, `created_at`, `updated_at`) VALUES
+(1, 'BANCO BANORTE', 1, '2017-12-23 23:31:11', '2017-12-23 23:31:58'),
+(2, 'BANCO SANTANDER', 1, '2017-12-23 23:32:18', '2017-12-23 23:32:18'),
+(3, 'BANCO BANCOMER', 1, '2017-12-23 23:32:26', '2017-12-23 23:32:26'),
+(4, 'BANCO HSBC', 1, '2017-12-23 23:32:34', '2017-12-23 23:32:34');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `detalle_movimientos`
+--
+
+CREATE TABLE `detalle_movimientos` (
+  `id_concepto` int(11) NOT NULL,
   `movimiento_temporal_id` int(11) NOT NULL,
   `compra_id` int(11) NOT NULL DEFAULT '0',
   `ct_concepto` varchar(50) DEFAULT NULL,
   `ct_gasto` double(6,2) NOT NULL DEFAULT '0.00',
-  `ct_nota` varchar(15) NOT NULL,
-  PRIMARY KEY (`id_concepto`,`movimiento_temporal_id`,`compra_id`),
-  KEY `compra_id` (`compra_id`),
-  KEY `movimiento_temporal_id` (`movimiento_temporal_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+  `ct_nota` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla azulejos.detalle_movimientos: ~3 rows (aproximadamente)
-/*!40000 ALTER TABLE `detalle_movimientos` DISABLE KEYS */;
+--
+-- Volcado de datos para la tabla `detalle_movimientos`
+--
+
 INSERT INTO `detalle_movimientos` (`id_concepto`, `movimiento_temporal_id`, `compra_id`, `ct_concepto`, `ct_gasto`, `ct_nota`) VALUES
-	(11, 6, 0, 'GASOLINA', 0.00, ''),
-	(12, 6, 2, NULL, 0.00, ''),
-	(13, 6, 7, NULL, 0.00, ''),
-	(14, 6, 0, 'MOTOR', 0.00, '');
-/*!40000 ALTER TABLE `detalle_movimientos` ENABLE KEYS */;
+(1, 1, 4, NULL, 0.00, '');
 
--- Volcando estructura para tabla azulejos.detalle_pedido
-CREATE TABLE IF NOT EXISTS `detalle_pedido` (
-  `id_det_pedido` int(11) NOT NULL AUTO_INCREMENT,
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `detalle_pedido`
+--
+
+CREATE TABLE `detalle_pedido` (
+  `id_det_pedido` int(11) NOT NULL,
   `pedido_id` int(11) NOT NULL DEFAULT '0',
   `producto_id` int(11) NOT NULL DEFAULT '0',
   `pegaza_id` int(11) NOT NULL DEFAULT '0',
   `det_prod_cantidad` int(4) NOT NULL DEFAULT '0',
   `det_prod_precio` double(7,2) NOT NULL DEFAULT '0.00',
   `det_prod_subtotal` double(7,2) NOT NULL DEFAULT '0.00',
-  `det_prod_status` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id_det_pedido`,`pedido_id`,`producto_id`,`pegaza_id`),
-  KEY `pegaza_id` (`pegaza_id`),
-  KEY `producto_id` (`producto_id`),
-  KEY `pedido_id` (`pedido_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `det_prod_status` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla azulejos.detalle_pedido: ~16 rows (aproximadamente)
-/*!40000 ALTER TABLE `detalle_pedido` DISABLE KEYS */;
+--
+-- Volcado de datos para la tabla `detalle_pedido`
+--
+
 INSERT INTO `detalle_pedido` (`id_det_pedido`, `pedido_id`, `producto_id`, `pegaza_id`, `det_prod_cantidad`, `det_prod_precio`, `det_prod_subtotal`, `det_prod_status`) VALUES
-	(21, 24, 2, 0, 5, 300.00, 1500.00, 1),
-	(22, 25, 1, 0, 20, 370.00, 7400.00, 1),
-	(23, 26, 4, 0, 2, 100.00, 200.00, 1),
-	(24, 26, 3, 0, 8, 100.00, 800.00, 1),
-	(25, 26, 4, 0, 20, 100.00, 2000.00, 1),
-	(37, 38, 2, 0, 5, 400.00, 2000.00, 1),
-	(38, 38, 1, 0, 3, 300.00, 900.00, 1),
-	(39, 38, 3, 0, 15, 120.00, 1800.00, 1),
-	(40, 39, 4, 0, 15, 100.00, 1500.00, 1),
-	(41, 39, 1, 0, 20, 175.00, 3500.00, 1),
-	(42, 40, 1, 0, 15, 175.00, 2625.00, 1),
-	(43, 41, 1, 0, 12, 175.00, 2100.00, 1),
-	(45, 43, 3, 0, 1, 150.00, 150.00, 1),
-	(59, 42, 1, 0, 10, 175.00, 1750.00, 1),
-	(60, 0, 4, 1, 15, 0.00, 0.00, 1),
-	(61, 0, 3, 1, 20, 0.00, 0.00, 1);
-/*!40000 ALTER TABLE `detalle_pedido` ENABLE KEYS */;
+(1, 1, 1, 0, 10, 300.00, 3000.00, 1),
+(2, 1, 2, 0, 5, 750.00, 3750.00, 1),
+(3, 2, 7, 0, 1, 100.00, 100.00, 1),
+(4, 2, 8, 0, 1, 500.00, 500.00, 1),
+(5, 3, 8, 0, 10, 500.00, 5000.00, 1);
 
--- Volcando estructura para tabla azulejos.detalle_requisitos
-CREATE TABLE IF NOT EXISTS `detalle_requisitos` (
-  `id_detalle` int(11) NOT NULL AUTO_INCREMENT,
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `detalle_produccion`
+--
+
+CREATE TABLE `detalle_produccion` (
+  `id_detalle` int(11) NOT NULL,
+  `produccion_id` int(11) NOT NULL,
+  `pedido_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `detalle_requisitos`
+--
+
+CREATE TABLE `detalle_requisitos` (
+  `id_detalle` int(11) NOT NULL,
   `mp_id` int(11) NOT NULL,
   `producto_id` int(11) NOT NULL,
-  `det_cantidad` int(4) NOT NULL DEFAULT '0',
-  `det_precio` double(7,2) NOT NULL DEFAULT '0.00',
-  `det_subtotal` double(7,2) NOT NULL DEFAULT '0.00',
-  `det_status` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id_detalle`,`mp_id`,`producto_id`),
-  KEY `det_materia_prima_id` (`mp_id`),
-  KEY `det_producto_id` (`producto_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `det_cantidad` double(7,3) NOT NULL DEFAULT '0.000',
+  `det_precio` double(7,4) NOT NULL DEFAULT '0.0000',
+  `det_subtotal` double(7,4) NOT NULL DEFAULT '0.0000',
+  `det_status` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla azulejos.detalle_requisitos: ~14 rows (aproximadamente)
-/*!40000 ALTER TABLE `detalle_requisitos` DISABLE KEYS */;
+--
+-- Volcado de datos para la tabla `detalle_requisitos`
+--
+
 INSERT INTO `detalle_requisitos` (`id_detalle`, `mp_id`, `producto_id`, `det_cantidad`, `det_precio`, `det_subtotal`, `det_status`) VALUES
-	(1, 3, 1, 15, 70.00, 42.00, 1),
-	(2, 1, 1, 10, 110.00, 55.00, 1),
-	(3, 2, 1, 20, 220.00, 88.00, 1),
-	(4, 2, 3, 5, 220.00, 22.00, 1),
-	(5, 4, 3, 10, 250.00, 25.00, 1),
-	(6, 6, 4, 2, 90.00, 9.00, 1),
-	(7, 5, 4, 2, 100.00, 4.00, 1),
-	(8, 1, 4, 5, 110.00, 27.50, 1),
-	(9, 2, 5, 10, 220.00, 44.00, 1),
-	(10, 4, 5, 50, 250.00, 125.00, 1),
-	(11, 1, 5, 10, 110.00, 55.00, 1),
-	(12, 5, 5, 5, 100.00, 10.00, 1),
-	(13, 2, 6, 25, 220.00, 110.00, 1),
-	(14, 1, 6, 10, 110.00, 55.00, 1);
-/*!40000 ALTER TABLE `detalle_requisitos` ENABLE KEYS */;
+(1, 1, 10, 2.500, 459.0000, 22.9500, 1),
+(2, 4, 10, 7.600, 366.0000, 139.0800, 1),
+(4, 2, 11, 1.000, 30.0000, 30.0000, 1),
+(5, 1, 12, 2.500, 99.9999, 5.0000, 1);
 
--- Volcando estructura para tabla azulejos.detalle_viaje
-CREATE TABLE IF NOT EXISTS `detalle_viaje` (
-  `id_detalle` int(11) NOT NULL AUTO_INCREMENT,
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `detalle_requisito_producto`
+--
+
+CREATE TABLE `detalle_requisito_producto` (
+  `id_detalle` int(11) NOT NULL,
+  `pd_id` int(11) NOT NULL DEFAULT '0',
+  `producto_id` int(11) NOT NULL DEFAULT '0',
+  `det_pd_cantidad` double(7,3) NOT NULL DEFAULT '0.000',
+  `det_pd_precio` double(7,4) NOT NULL DEFAULT '0.0000',
+  `det_pd_subtotal` double(7,4) NOT NULL DEFAULT '0.0000',
+  `det_pd_status` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `detalle_viaje`
+--
+
+CREATE TABLE `detalle_viaje` (
+  `id_detalle` int(11) NOT NULL,
   `viaje_id` int(11) NOT NULL,
   `pedido_id` int(11) NOT NULL,
   `det_tipo` enum('COBRANZA','ENTREGA') NOT NULL DEFAULT 'ENTREGA',
-  `det_status` enum('ENTREGADO','COBRADO','PENDIENTE','NO SE ENTREGO') NOT NULL DEFAULT 'PENDIENTE',
-  PRIMARY KEY (`id_detalle`,`viaje_id`,`pedido_id`),
-  KEY `viaje_id` (`viaje_id`,`pedido_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  `det_status` enum('ENTREGADO','COBRADO','PENDIENTE','NO SE ENTREGO') NOT NULL DEFAULT 'PENDIENTE'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla azulejos.detalle_viaje: ~4 rows (aproximadamente)
-/*!40000 ALTER TABLE `detalle_viaje` DISABLE KEYS */;
+--
+-- Volcado de datos para la tabla `detalle_viaje`
+--
+
 INSERT INTO `detalle_viaje` (`id_detalle`, `viaje_id`, `pedido_id`, `det_tipo`, `det_status`) VALUES
-	(5, 2, 38, 'ENTREGA', 'PENDIENTE'),
-	(6, 2, 42, 'ENTREGA', 'PENDIENTE'),
-	(7, 2, 24, 'COBRANZA', 'PENDIENTE'),
-	(8, 2, 26, 'COBRANZA', 'PENDIENTE');
-/*!40000 ALTER TABLE `detalle_viaje` ENABLE KEYS */;
+(1, 1, 1, 'ENTREGA', 'PENDIENTE'),
+(2, 1, 2, 'COBRANZA', 'PENDIENTE');
 
--- Volcando estructura para tabla azulejos.documentos
-CREATE TABLE IF NOT EXISTS `documentos` (
-  `id_documentos` int(11) NOT NULL AUTO_INCREMENT,
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `documentos`
+--
+
+CREATE TABLE `documentos` (
+  `id_documentos` int(11) NOT NULL,
   `empleado_id` int(11) NOT NULL,
   `acta_nacimiento` tinyint(1) NOT NULL,
   `comprobante_domicilio` tinyint(1) NOT NULL,
@@ -334,168 +418,238 @@ CREATE TABLE IF NOT EXISTS `documentos` (
   `ine` tinyint(1) NOT NULL,
   `licencia_conducir` tinyint(1) NOT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id_documentos`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla azulejos.documentos: ~3 rows (aproximadamente)
-/*!40000 ALTER TABLE `documentos` DISABLE KEYS */;
+--
+-- Volcado de datos para la tabla `documentos`
+--
+
 INSERT INTO `documentos` (`id_documentos`, `empleado_id`, `acta_nacimiento`, `comprobante_domicilio`, `seguro_social`, `curp`, `ine`, `licencia_conducir`, `created_at`, `updated_at`) VALUES
-	(1, 1, 1, 1, 1, 1, 1, 1, '2017-10-23 17:10:55', '2017-10-23 17:10:55'),
-	(2, 2, 1, 1, 1, 1, 1, 1, '2017-10-30 03:11:24', '2017-10-30 03:11:24'),
-	(3, 3, 1, 1, 1, 1, 1, 1, '2017-10-30 03:11:35', '2017-10-30 03:11:35');
-/*!40000 ALTER TABLE `documentos` ENABLE KEYS */;
+(1, 1, 1, 1, 1, 1, 1, 1, '2017-12-20 01:46:39', '2017-12-20 01:46:45'),
+(2, 2, 1, 1, 0, 1, 1, 0, '2017-11-21 18:13:34', '2017-12-22 18:46:55'),
+(3, 3, 1, 1, 1, 1, 1, 1, '2017-11-21 18:14:09', '2017-12-22 18:43:54'),
+(4, 4, 1, 1, 1, 1, 1, 1, '2017-12-22 18:18:06', '2017-12-22 18:34:54');
 
--- Volcando estructura para tabla azulejos.documentos_cl
-CREATE TABLE IF NOT EXISTS `documentos_cl` (
-  `id_documentos_cl` int(11) NOT NULL AUTO_INCREMENT,
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `documentos_cl`
+--
+
+CREATE TABLE `documentos_cl` (
+  `id_documentos_cl` int(11) NOT NULL,
   `cliente_id` int(11) NOT NULL,
   `hacienda` tinyint(1) NOT NULL DEFAULT '0',
   `comprobante_domicilio` tinyint(1) NOT NULL DEFAULT '0',
   `ine` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id_documentos_cl`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla azulejos.documentos_cl: ~5 rows (aproximadamente)
-/*!40000 ALTER TABLE `documentos_cl` DISABLE KEYS */;
+--
+-- Volcado de datos para la tabla `documentos_cl`
+--
+
 INSERT INTO `documentos_cl` (`id_documentos_cl`, `cliente_id`, `hacienda`, `comprobante_domicilio`, `ine`, `created_at`, `updated_at`) VALUES
-	(1, 1, 1, 1, 1, '2017-10-23 17:13:35', '2017-10-23 17:13:35'),
-	(2, 2, 1, 1, 1, '2017-10-26 16:24:16', '2017-10-26 16:24:16'),
-	(3, 3, 1, 1, 1, '2017-10-27 11:49:18', '2017-10-27 11:49:18'),
-	(4, 4, 1, 1, 1, '2017-10-30 14:20:11', '2017-10-30 14:20:11'),
-	(5, 5, 1, 1, 1, '2017-10-30 15:41:21', '2017-10-30 15:41:21'),
-	(6, 6, 1, 1, 0, '2017-10-30 15:47:51', '2017-10-30 15:47:51');
-/*!40000 ALTER TABLE `documentos_cl` ENABLE KEYS */;
+(1, 1, 1, 1, 1, '2017-12-19 20:36:20', '2017-12-19 20:36:20'),
+(2, 2, 1, 1, 1, '2017-12-19 20:38:14', '2017-12-19 20:38:14'),
+(3, 3, 0, 0, 0, '2018-02-21 12:31:06', '2018-02-21 12:31:06');
 
--- Volcando estructura para tabla azulejos.domicilio
-CREATE TABLE IF NOT EXISTS `domicilio` (
-  `id_domicilio` int(11) NOT NULL AUTO_INCREMENT,
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `domicilio`
+--
+
+CREATE TABLE `domicilio` (
+  `id_domicilio` int(11) NOT NULL,
   `dom_calle` text COLLATE utf8_unicode_ci NOT NULL,
   `dom_colonia` text COLLATE utf8_unicode_ci NOT NULL,
   `dom_ciudad` text COLLATE utf8_unicode_ci NOT NULL,
   `dom_codigo_postal` int(6) NOT NULL,
+  `dom_status` tinyint(1) NOT NULL DEFAULT '1',
   `cliente_id` int(11) NOT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id_domicilio`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla azulejos.domicilio: ~8 rows (aproximadamente)
-/*!40000 ALTER TABLE `domicilio` DISABLE KEYS */;
-INSERT INTO `domicilio` (`id_domicilio`, `dom_calle`, `dom_colonia`, `dom_ciudad`, `dom_codigo_postal`, `cliente_id`, `created_at`, `updated_at`) VALUES
-	(1, 'AV J MERCED CABRERA #500', 'BUROCRATAS DEL ESTADO', 'TECOMAN', 28763, 1, '2017-10-23 17:13:35', '2017-10-23 17:13:35'),
-	(2, 'AV PABLO SILVA GARCIA #800', 'SAN PABLO', 'MANZANILLO', 28956, 1, '2017-10-23 17:13:35', '2017-10-23 17:13:35'),
-	(3, '5 DE MAYO #358', 'CENTRO', 'COLIMA', 28960, 2, '2017-10-26 16:24:16', '2017-10-26 16:24:16'),
-	(4, 'AV NIÑOS HEROES', 'MAGISTERIAL', 'GUADALAJARA', 37096, 3, '2017-10-27 11:49:18', '2017-10-27 11:49:18'),
-	(5, 'BUGAMBILIA', 'HACIENDA', 'TECOMAN', 28978, 4, '2017-10-30 14:20:11', '2017-10-30 14:20:11'),
-	(6, 'FLOR NARANJO', 'ALBARRADA', 'COLIMA', 28972, 4, '2017-10-30 14:20:11', '2017-10-30 14:20:11'),
-	(7, 'NARANJO #234', 'LOMAS ALTAS', 'TECOMAN', 28725, 5, '2017-10-30 15:41:21', '2017-10-30 15:41:21'),
-	(8, 'SOL DE PARK #567', 'SOLIDARIDAD', 'VILLA DE ALVAREZ', 28978, 6, '2017-10-30 15:47:51', '2017-10-30 15:47:51');
-/*!40000 ALTER TABLE `domicilio` ENABLE KEYS */;
+--
+-- Volcado de datos para la tabla `domicilio`
+--
 
--- Volcando estructura para tabla azulejos.empleado
-CREATE TABLE IF NOT EXISTS `empleado` (
-  `id_empleado` int(11) NOT NULL AUTO_INCREMENT,
+INSERT INTO `domicilio` (`id_domicilio`, `dom_calle`, `dom_colonia`, `dom_ciudad`, `dom_codigo_postal`, `dom_status`, `cliente_id`, `created_at`, `updated_at`) VALUES
+(1, 'FLOR DE LAUREL #122', 'LOMA ALTA', 'COLIMA', 28988, 1, 1, '2017-12-19 20:36:19', '2017-12-22 22:50:07'),
+(2, 'HIDALGO #256', 'BUGAMBILIA', 'TECOMAN', 28228, 1, 2, '2017-12-19 20:38:14', '2017-12-22 22:54:19'),
+(3, 'LOPEZ MATERO #345', 'FLORENCIA', 'MANZANILLO', 27578, 1, 1, '2017-12-22 22:53:15', '2017-12-22 22:54:39'),
+(4, '', '', '', 0, 1, 3, '2018-02-21 12:31:06', '2018-02-21 12:31:06');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `empleado`
+--
+
+CREATE TABLE `empleado` (
+  `id_empleado` int(11) NOT NULL,
   `em_nombre` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `em_curp` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `em_num_seg_social` int(100) NOT NULL,
+  `em_curp` varchar(18) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `em_num_seg_social` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `em_fecha_inicio` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `em_num_licencia` int(100) NOT NULL,
-  `em_vigencia_licencia` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `em_fecha_final` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `em_tipo` enum('CONTRATO','BASE') COLLATE utf8_unicode_ci DEFAULT NULL,
+  `em_num_licencia` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `em_vigencia_licencia` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `em_tipo` enum('CONTRATO','BASE') COLLATE utf8_unicode_ci NOT NULL,
   `em_status` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id_empleado`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla azulejos.empleado: ~3 rows (aproximadamente)
-/*!40000 ALTER TABLE `empleado` DISABLE KEYS */;
-INSERT INTO `empleado` (`id_empleado`, `em_nombre`, `em_curp`, `em_num_seg_social`, `em_fecha_inicio`, `em_num_licencia`, `em_vigencia_licencia`, `em_fecha_final`, `em_tipo`, `em_status`, `created_at`, `updated_at`) VALUES
-	(1, 'ANDRES TORRES CARDENAS', 'ATC901208HCMTRR04', 1890356, '23/10/2017', 145, '22-11-21', '', 'BASE', 1, '2017-10-23 17:10:55', '2017-10-23 17:10:55'),
-	(2, 'JOSE DE JESUS GONZALEZ JUAREZ', 'GOJJ920420HCMNRS06', 0, '20/10/2015', 0, '', '', 'BASE', 1, '2017-10-29 22:10:54', '2017-10-29 22:10:58'),
-	(3, 'JORGE LUIS GUTIERREZ MARTINEZ', 'GUJL920815HCMNRS02', 0, '20/10/2015', 0, '', '', 'BASE', 1, '2017-10-30 01:33:32', '2017-10-30 01:33:32');
-/*!40000 ALTER TABLE `empleado` ENABLE KEYS */;
+--
+-- Volcado de datos para la tabla `empleado`
+--
 
--- Volcando estructura para tabla azulejos.fallas
-CREATE TABLE IF NOT EXISTS `fallas` (
-  `id_fallo` int(11) NOT NULL AUTO_INCREMENT,
-  `vehiculo_id` int(11) NOT NULL,
-  `descripcion` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lugar` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `costo` int(100) NOT NULL,
-  PRIMARY KEY (`id_fallo`)
+INSERT INTO `empleado` (`id_empleado`, `em_nombre`, `em_curp`, `em_num_seg_social`, `em_fecha_inicio`, `em_num_licencia`, `em_vigencia_licencia`, `em_tipo`, `em_status`, `created_at`, `updated_at`) VALUES
+(1, 'JORGE LUIS GUTIERREZ MARTINEZ', 'JLGM101093HCMTRR03', '123456789', '2017-11-20', NULL, NULL, 'BASE', 1, '0000-00-00 00:00:00', '2017-12-22 17:59:04'),
+(2, 'XOCHITL', 'GFVD020303HCMNRS05', NULL, '2017-11-20', NULL, NULL, 'BASE', 1, '2017-11-21 18:13:34', '2017-12-22 18:46:55'),
+(3, 'JESUS GONZALEZ JUAREZ', 'GOKK020269HCMNRS05', '25436547', '2017-11-20', '1236546', '2020-06-08', 'CONTRATO', 1, '2017-11-21 18:14:09', '2017-12-23 17:13:35'),
+(4, 'JESUS GONZALEZ', 'GOJJ900204HCMNRS05', '2147483647', '2017-12-14', '312312312', '2018-05-20', 'CONTRATO', 1, '2017-12-22 18:18:06', '2017-12-22 19:14:02');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `fallas`
+--
+
+CREATE TABLE `fallas` (
+  `id_falla` int(11) NOT NULL,
+  `placas` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fa_descripcion` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fa_lugar` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fa_costo` double(7,2) NOT NULL DEFAULT '0.00',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla azulejos.fallas: ~0 rows (aproximadamente)
-/*!40000 ALTER TABLE `fallas` DISABLE KEYS */;
-/*!40000 ALTER TABLE `fallas` ENABLE KEYS */;
+--
+-- Volcado de datos para la tabla `fallas`
+--
 
--- Volcando estructura para tabla azulejos.gastos
-CREATE TABLE IF NOT EXISTS `gastos` (
-  `id_gastos` int(11) NOT NULL AUTO_INCREMENT,
-  `concepto` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `no_nota` int(200) NOT NULL,
-  `importe` int(100) NOT NULL,
-  `entregado` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id_gastos`)
+INSERT INTO `fallas` (`id_falla`, `placas`, `fa_descripcion`, `fa_lugar`, `fa_costo`, `created_at`, `updated_at`) VALUES
+(1, 'FTP-05-06', 'SE CAMBIARON LAS BUJIAS POR FALTA DE ACEITE, DONDE SE DESCOMPUSO EN EL VIAJE A TECOMAN', 'TALLER MECANICO CARBAJAL', 1500.00, '2017-11-30 00:43:55', '2017-12-23 00:43:55'),
+(2, 'ZTR-9087', 'ALINEACION Y BALANCEO DE LLANTAS, CAMBIO DE ACEITE.', 'TALLER EL TUERCAS', 1500.00, '2018-01-06 12:32:48', '2018-01-06 12:32:48');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `gastos`
+--
+
+CREATE TABLE `gastos` (
+  `id_gastos` int(11) NOT NULL,
+  `ga_nota` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ga_importe` double(7,2) NOT NULL,
+  `ga_concepto` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `viaje_id` tinyint(1) NOT NULL,
+  `created_at` date NOT NULL,
+  `updated_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla azulejos.gastos: ~0 rows (aproximadamente)
-/*!40000 ALTER TABLE `gastos` DISABLE KEYS */;
-/*!40000 ALTER TABLE `gastos` ENABLE KEYS */;
+-- --------------------------------------------------------
 
--- Volcando estructura para tabla azulejos.materia_prima
-CREATE TABLE IF NOT EXISTS `materia_prima` (
-  `id_materia_prima` int(11) NOT NULL AUTO_INCREMENT,
+--
+-- Estructura de tabla para la tabla `gasto_fijo`
+--
+
+CREATE TABLE `gasto_fijo` (
+  `id_gasto_fijo` int(11) NOT NULL,
+  `gf_concepto` varchar(200) COLLATE latin1_spanish_ci NOT NULL,
+  `gf_cantidad` double(7,3) NOT NULL,
+  `gf_importe` double(7,2) NOT NULL DEFAULT '0.00',
+  `gf_subtotal` double(7,2) NOT NULL DEFAULT '0.00',
+  `compra_id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `inventario`
+--
+
+CREATE TABLE `inventario` (
+  `id_inventario` int(11) NOT NULL,
+  `in_memo` text,
+  `in_cantidad` double(7,3) NOT NULL DEFAULT '0.000',
+  `in_operacion` enum('SUMA','RESTA') NOT NULL DEFAULT 'SUMA',
+  `producto_id` int(11) NOT NULL DEFAULT '0',
+  `mp_id` int(11) NOT NULL DEFAULT '0',
+  `produccion_id` int(11) NOT NULL DEFAULT '0',
+  `created_at` date NOT NULL,
+  `updated_at` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `materia_prima`
+--
+
+CREATE TABLE `materia_prima` (
+  `id_materia_prima` int(11) NOT NULL,
   `mp_nombre` text COLLATE utf8_unicode_ci NOT NULL,
   `mp_precio` double(6,2) NOT NULL DEFAULT '0.00',
-  `mp_cantidad` int(2) NOT NULL DEFAULT '0',
+  `mp_cantidad` double(6,2) NOT NULL DEFAULT '0.00',
   `mp_unidad` enum('KILOS','LITROS','PIEZAS','MILILITROS','METROS') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'KILOS',
   `mp_status` tinyint(1) NOT NULL DEFAULT '1',
   `mp_observacion` text COLLATE utf8_unicode_ci,
   `created_at` date NOT NULL,
-  `updated_at` date NOT NULL,
-  PRIMARY KEY (`id_materia_prima`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla azulejos.materia_prima: ~7 rows (aproximadamente)
-/*!40000 ALTER TABLE `materia_prima` DISABLE KEYS */;
+--
+-- Volcado de datos para la tabla `materia_prima`
+--
+
 INSERT INTO `materia_prima` (`id_materia_prima`, `mp_nombre`, `mp_precio`, `mp_cantidad`, `mp_unidad`, `mp_status`, `mp_observacion`, `created_at`, `updated_at`) VALUES
-	(1, 'cemento gris', 110.00, 20, 'KILOS', 1, 'esta completo', '2017-10-23', '2017-10-25'),
-	(2, 'cemento rojo', 220.00, 50, 'KILOS', 1, 'esta completo', '2017-10-23', '2017-10-23'),
-	(3, 'cal blanca', 70.00, 25, 'KILOS', 1, 'esta completa', '2017-10-23', '2017-10-23'),
-	(4, 'ladrillo rojo', 250.00, 100, 'PIEZAS', 1, 'estan completos.', '2017-10-23', '2017-10-23'),
-	(5, 'adhesivo', 100.00, 50, 'LITROS', 1, 'esta completa.', '2017-10-23', '2017-10-23'),
-	(6, 'arena', 90.00, 20, 'METROS', 1, 'esta completa.', '2017-10-23', '2017-10-23'),
-	(7, 'MORTERO', 180.00, 50, 'KILOS', 1, 'ESTA COMPLETO.', '2017-10-27', '2017-10-27');
-/*!40000 ALTER TABLE `materia_prima` ENABLE KEYS */;
+(1, 'CEMENTO GRIS', 459.00, 50.00, 'KILOS', 1, 'EL CEMENTO ES EL MAS IMPORTANTE', '2017-12-19', '2017-12-23'),
+(2, 'CAL BLANCA', 30.00, 1.00, 'KILOS', 1, 'NO HAY', '2017-12-19', '2017-12-19'),
+(3, 'ARENA', 35.00, 1.00, 'KILOS', 1, 'NO HAY', '2017-12-19', '2017-12-19'),
+(4, 'ARCILLA ROJA', 366.00, 20.00, 'KILOS', 1, 'NO HAY', '2017-12-19', '2017-12-19'),
+(5, 'ARCILLA BLANCA', 469.00, 50.00, 'KILOS', 1, 'NO HAY', '2017-12-19', '2017-12-19');
 
--- Volcando estructura para tabla azulejos.movimiento_temporal
-CREATE TABLE IF NOT EXISTS `movimiento_temporal` (
-  `id_movimiento_temporal` int(11) NOT NULL AUTO_INCREMENT,
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `movimiento_temporal`
+--
+
+CREATE TABLE `movimiento_temporal` (
+  `id_movimiento_temporal` int(11) NOT NULL,
   `mt_entregado` double(6,2) NOT NULL DEFAULT '0.00',
   `mt_firma` tinyint(1) NOT NULL DEFAULT '0',
   `mt_status` enum('PENDIENTE','FINALIZADO') NOT NULL DEFAULT 'PENDIENTE',
   `mt_gasto` double(6,2) NOT NULL DEFAULT '0.00',
-  `empleado_id` int(11) NOT NULL,
+  `empleado` varchar(80) NOT NULL,
   `created_at` date NOT NULL,
-  `updated_at` date NOT NULL,
-  PRIMARY KEY (`id_movimiento_temporal`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+  `updated_at` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla azulejos.movimiento_temporal: ~1 rows (aproximadamente)
-/*!40000 ALTER TABLE `movimiento_temporal` DISABLE KEYS */;
-INSERT INTO `movimiento_temporal` (`id_movimiento_temporal`, `mt_entregado`, `mt_firma`, `mt_status`, `mt_gasto`, `empleado_id`, `created_at`, `updated_at`) VALUES
-	(6, 1500.00, 1, 'PENDIENTE', 0.00, 1, '2017-11-05', '2017-11-06');
-/*!40000 ALTER TABLE `movimiento_temporal` ENABLE KEYS */;
+--
+-- Volcado de datos para la tabla `movimiento_temporal`
+--
 
--- Volcando estructura para tabla azulejos.pedidos
-CREATE TABLE IF NOT EXISTS `pedidos` (
-  `id_pedido` int(11) NOT NULL AUTO_INCREMENT,
+INSERT INTO `movimiento_temporal` (`id_movimiento_temporal`, `mt_entregado`, `mt_firma`, `mt_status`, `mt_gasto`, `empleado`, `created_at`, `updated_at`) VALUES
+(1, 500.00, 0, 'PENDIENTE', 0.00, 'PEDRO TORRES ANGUIANO', '2018-02-21', '2018-02-21');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pedidos`
+--
+
+CREATE TABLE `pedidos` (
+  `id_pedido` int(11) NOT NULL,
   `cliente_id` int(11) NOT NULL,
   `pe_importe` double(7,2) NOT NULL DEFAULT '0.00',
   `pe_total_abonado` double(7,2) NOT NULL DEFAULT '0.00',
@@ -510,101 +664,99 @@ CREATE TABLE IF NOT EXISTS `pedidos` (
   `pe_pago_status` enum('PENDIENTE','ABONADO','PAGADO') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'PENDIENTE',
   `pe_status` enum('ENTREGADO','EN PRODUCCION','PREPARADO PARA ENTREGAR','EN CAMINO A ENTREGAR','PENDIENTE PARA PRODUCCION','CANCELADO','EN CAMINO A COBRAR') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'PENDIENTE PARA PRODUCCION',
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id_pedido`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla azulejos.pedidos: ~8 rows (aproximadamente)
-/*!40000 ALTER TABLE `pedidos` DISABLE KEYS */;
+--
+-- Volcado de datos para la tabla `pedidos`
+--
+
 INSERT INTO `pedidos` (`id_pedido`, `cliente_id`, `pe_importe`, `pe_total_abonado`, `pe_nota`, `pe_fecha_pedido`, `pe_fecha_entrega`, `pe_destino_pedido`, `pe_destino_ciudad`, `pe_memo`, `pe_termino`, `pe_forma_pago`, `pe_pago_status`, `pe_status`, `created_at`, `updated_at`) VALUES
-	(24, 5, 1500.00, 0.00, '5958', '2017-10-29', '2017-11-06', 'NARANJO #234 LOMAS ALTAS ', 'TECOMAN', 'SE ENTREGARA EN OBRA', 'CONTADO', 'EFECTIVO', 'PENDIENTE', 'EN CAMINO A COBRAR', '2017-10-30 22:49:16', '2017-10-30 22:49:16'),
-	(25, 4, 7400.00, 0.00, '5959', '2017-10-27', '2017-11-02', 'BUGAMBILIA HACIENDA ', 'TECOMAN', 'EN OBRA', '1 SEMANA', 'CHEQUE', 'PENDIENTE', 'PENDIENTE PARA PRODUCCION', '2017-10-30 22:51:27', '2017-10-30 22:51:27'),
-	(26, 1, 3000.00, 0.00, '5960', '2017-10-28', '2017-11-05', 'AV PABLO SILVA GARCIA #800, SAN PABLO', 'MANZANILLO', 'SE ENTREGARA EN LA OBRA', '1 MES', 'EFECTIVO', 'PENDIENTE', 'EN CAMINO A COBRAR', '2017-10-31 00:55:37', '2017-10-31 00:55:37'),
-	(38, 4, 4700.00, 0.00, '5961', '2017-11-01', '2017-11-10', 'FLOR NARANJO, ALBARRADA', 'COLIMA', 'NOSE QUE PONER', '1 MES', 'EFECTIVO', 'PENDIENTE', 'EN CAMINO A ENTREGAR', '2017-11-02 02:12:06', '2017-11-02 02:12:06'),
-	(39, 5, 5000.00, 0.00, '5962', '2017-11-02', '2017-11-02', 'NARANJO #234, LOMAS ALTAS', 'TECOMAN', 'OLOLO', 'CONTADO', 'DEPOSITO', 'PAGADO', 'ENTREGADO', '2017-11-02 02:16:13', '2017-11-02 02:16:13'),
-	(40, 1, 2625.00, 0.00, '5963', '2017-11-02', '2017-11-11', 'AV J MERCED CABRERA #500, BUROCRATAS DEL ESTADO', 'TECOMAN', 'LOLOLO', 'CONTADO', 'CHEQUE', 'PAGADO', 'ENTREGADO', '2017-11-02 02:17:42', '2017-11-02 02:17:42'),
-	(41, 1, 2100.00, 0.00, '5964', '2017-11-02', '2017-11-11', 'AV J MERCED CABRERA #500, BUROCRATAS DEL ESTADO', 'TECOMAN', 'ASDASD', 'CONTADO', 'CHEQUE', 'PAGADO', 'ENTREGADO', '2017-11-02 02:26:26', '2017-11-02 02:26:26'),
-	(42, 1, 1750.00, 0.00, '5964', '2017-10-31', '2017-11-05', 'AV PABLO SILVA GARCIA #800, SAN PABLO', 'MANZANILLO', 'OTRA COSA MODIFICADA', 'CONTADO', 'DEPOSITO', 'ABONADO', 'EN CAMINO A ENTREGAR', '2017-11-02 02:29:21', '2017-11-02 21:38:34');
-/*!40000 ALTER TABLE `pedidos` ENABLE KEYS */;
+(1, 2, 6750.00, 3100.00, '0', '2018-02-21', '2018-02-21', 'HIDALGO #256, BUGAMBILIA', 'TECOMAN', 'ENTREGA INMEDIATA.', '1 SEMANA', 'EFECTIVO', 'ABONADO', 'EN CAMINO A ENTREGAR', '2018-02-21 09:26:50', '2018-02-21 10:29:37'),
+(2, 1, 600.00, 0.00, '1', '2018-02-21', '2018-02-21', 'LOPEZ MATERO #345, FLORENCIA', 'MANZANILLO', 'ENTREGA INMEDIATA.', '1 MES', 'EFECTIVO', 'PENDIENTE', 'EN CAMINO A COBRAR', '2018-02-21 09:29:01', '2018-02-21 09:29:37'),
+(3, 2, 5000.00, 0.00, '2', '2018-02-21', '2018-02-21', 'HIDALGO #256, BUGAMBILIA', 'TECOMAN', 'SE AMPLIÓ CRÉDITO.', '1 MES', 'EFECTIVO', 'PENDIENTE', 'ENTREGADO', '2018-02-21 09:50:46', '2018-02-21 09:50:46');
 
--- Volcando estructura para tabla azulejos.pedido_pegaza
-CREATE TABLE IF NOT EXISTS `pedido_pegaza` (
-  `id_pegaza` int(11) NOT NULL AUTO_INCREMENT,
-  `pp_memo` text NOT NULL,
-  `pp_nota` varchar(50) NOT NULL DEFAULT '0',
-  `pp_status` enum('PENDIENTE','EN PRODUCCION','COMPLETADO','CANCELADO') NOT NULL DEFAULT 'PENDIENTE',
-  `created_at` date NOT NULL,
-  `updated_at` date NOT NULL,
-  PRIMARY KEY (`id_pegaza`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+-- --------------------------------------------------------
 
--- Volcando datos para la tabla azulejos.pedido_pegaza: ~1 rows (aproximadamente)
-/*!40000 ALTER TABLE `pedido_pegaza` DISABLE KEYS */;
-INSERT INTO `pedido_pegaza` (`id_pegaza`, `pp_memo`, `pp_nota`, `pp_status`, `created_at`, `updated_at`) VALUES
-	(1, 'LOL', '0101', 'PENDIENTE', '2017-11-03', '2017-11-03');
-/*!40000 ALTER TABLE `pedido_pegaza` ENABLE KEYS */;
+--
+-- Estructura de tabla para la tabla `prestamo`
+--
 
--- Volcando estructura para tabla azulejos.prestamo
-CREATE TABLE IF NOT EXISTS `prestamo` (
-  `id_prestamo` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `prestamo` (
+  `id_prestamo` int(11) NOT NULL,
   `pres_cantidad` double(6,2) NOT NULL DEFAULT '0.00',
-  `pres_status` enum('PENDIENTE','LISTO','NO APROBADO') NOT NULL DEFAULT 'PENDIENTE',
+  `pres_abonado` double(6,2) NOT NULL DEFAULT '0.00',
+  `pres_status` enum('PENDIENTE','APROBADO','NO APROBADO') NOT NULL DEFAULT 'PENDIENTE',
   `pres_descripcion` text NOT NULL,
-  `empleado_id` int(11) NOT NULL,
+  `empleado` varchar(100) NOT NULL,
   `viaje_id` int(11) NOT NULL DEFAULT '0',
   `movimiento_temporal_id` int(11) NOT NULL DEFAULT '0',
   `pres_tipo` enum('PERSONAL','GASTO') NOT NULL,
   `created_at` date NOT NULL,
-  `updated_at` date NOT NULL,
-  PRIMARY KEY (`id_prestamo`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
--- Volcando datos para la tabla azulejos.prestamo: ~0 rows (aproximadamente)
-/*!40000 ALTER TABLE `prestamo` DISABLE KEYS */;
-/*!40000 ALTER TABLE `prestamo` ENABLE KEYS */;
-
--- Volcando estructura para tabla azulejos.produccion
-CREATE TABLE IF NOT EXISTS `produccion` (
-  `id_produccion` int(11) NOT NULL AUTO_INCREMENT,
-  `pr_encargado` varchar(60) NOT NULL,
-  `pr_ayudante` varchar(60) NOT NULL,
-  `pr_turno` enum('MATUTINO','VESPERTINO') NOT NULL,
-  `pr_completo` tinyint(1) NOT NULL DEFAULT '0',
-  `pr_recibido` tinyint(1) NOT NULL DEFAULT '0',
-  `created_at` date NOT NULL,
-  `updated_at` date NOT NULL,
-  PRIMARY KEY (`id_produccion`)
+  `updated_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla azulejos.produccion: ~0 rows (aproximadamente)
-/*!40000 ALTER TABLE `produccion` DISABLE KEYS */;
-/*!40000 ALTER TABLE `produccion` ENABLE KEYS */;
+-- --------------------------------------------------------
 
--- Volcando estructura para tabla azulejos.producto
-CREATE TABLE IF NOT EXISTS `producto` (
-  `id_producto` int(11) NOT NULL AUTO_INCREMENT,
+--
+-- Estructura de tabla para la tabla `produccion`
+--
+
+CREATE TABLE `produccion` (
+  `id_produccion` int(11) NOT NULL,
+  `pr_encargado` varchar(60) DEFAULT NULL,
+  `pr_ayudante` varchar(60) DEFAULT NULL,
+  `pr_turno` enum('MATUTINO','VESPERTINO') DEFAULT NULL,
+  `pr_completo` enum('FINALIZADO','PENDIENTE','CANCELADO') NOT NULL DEFAULT 'PENDIENTE',
+  `pr_memo` text,
+  `pr_productos` text NOT NULL,
+  `pr_materiales` text NOT NULL,
+  `created_at` date NOT NULL,
+  `updated_at` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `producto`
+--
+
+CREATE TABLE `producto` (
+  `id_producto` int(11) NOT NULL,
   `pd_nombre` text COLLATE utf8_unicode_ci NOT NULL,
   `pd_tipo` enum('ENSAMBLADO','NO ENSAMBLADO') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'NO ENSAMBLADO',
-  `pd_costo` double(7,2) NOT NULL DEFAULT '0.00',
-  `pd_precio_venta` double(7,2) NOT NULL DEFAULT '0.00',
+  `pd_cantidad` int(11) NOT NULL DEFAULT '1',
+  `pd_costo` double(7,4) NOT NULL DEFAULT '0.0000',
+  `pd_precio_venta` double(7,4) NOT NULL DEFAULT '0.0000',
   `pd_status` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` date NOT NULL,
-  `updated_at` date NOT NULL,
-  PRIMARY KEY (`id_producto`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla azulejos.producto: ~4 rows (aproximadamente)
-/*!40000 ALTER TABLE `producto` DISABLE KEYS */;
-INSERT INTO `producto` (`id_producto`, `pd_nombre`, `pd_tipo`, `pd_costo`, `pd_precio_venta`, `pd_status`, `created_at`, `updated_at`) VALUES
-	(1, 'pegapiso gris', 'ENSAMBLADO', 185.00, 370.00, 1, '2017-10-23', '2017-10-23'),
-	(2, 'lampara led', 'NO ENSAMBLADO', 100.00, 220.00, 1, '2017-10-23', '2017-10-23'),
-	(3, 'pegapiso rojo', 'ENSAMBLADO', 47.00, 100.00, 1, '2017-10-23', '2017-10-23'),
-	(4, 'pegapiso azul', 'ENSAMBLADO', 40.50, 100.00, 1, '2017-10-23', '2017-10-23');
-/*!40000 ALTER TABLE `producto` ENABLE KEYS */;
+--
+-- Volcado de datos para la tabla `producto`
+--
 
--- Volcando estructura para tabla azulejos.proveedor
-CREATE TABLE IF NOT EXISTS `proveedor` (
-  `id_proveedor` int(11) NOT NULL AUTO_INCREMENT,
+INSERT INTO `producto` (`id_producto`, `pd_nombre`, `pd_tipo`, `pd_cantidad`, `pd_costo`, `pd_precio_venta`, `pd_status`, `created_at`, `updated_at`) VALUES
+(1, 'PEGA AZULEJO', 'ENSAMBLADO', 1, 201.5000, 300.0000, 1, '2017-12-19', '2017-12-23'),
+(2, 'PEGAZA ORO', 'ENSAMBLADO', 1, 501.4000, 750.0000, 1, '2017-12-19', '2017-12-23'),
+(3, 'LLAVE PARA LAVAMANOS', 'NO ENSAMBLADO', 1, 123.0000, 321.0000, 1, '2017-12-23', '2017-12-23'),
+(6, 'EJEMPLO2', 'ENSAMBLADO', 1, 590.0000, 600.0000, 1, '2017-12-23', '2017-12-23'),
+(7, 'QUIMICO 1', 'ENSAMBLADO', 1, 73.0000, 100.0000, 1, '2017-12-23', '2017-12-23'),
+(8, 'PEGA AZULEJO ROJO', 'ENSAMBLADO', 1, 423.0000, 500.0000, 1, '2017-12-23', '2017-12-23'),
+(9, 'VASTAGO DE REGADERA', 'NO ENSAMBLADO', 1, 23.0000, 50.0000, 1, '2018-01-11', '2018-01-11'),
+(10, 'EJEMPLO3', 'ENSAMBLADO', 1, 162.0000, 200.0000, 1, '2018-02-21', '2018-02-21'),
+(11, 'EJEMPLO4', 'ENSAMBLADO', 1, 66.0000, 2.0000, 1, '2018-02-21', '2018-02-21'),
+(12, 'EJEMPLO5', 'ENSAMBLADO', 1, 5.0000, 10.0000, 1, '2018-02-21', '2018-02-21');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `proveedor`
+--
+
+CREATE TABLE `proveedor` (
+  `id_proveedor` int(11) NOT NULL,
   `pv_nombre` text COLLATE utf8_unicode_ci NOT NULL,
   `pv_domicilio` text COLLATE utf8_unicode_ci NOT NULL,
   `pv_ciudad` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -612,21 +764,27 @@ CREATE TABLE IF NOT EXISTS `proveedor` (
   `pv_correo` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `pv_status` tinyint(4) NOT NULL DEFAULT '1',
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id_proveedor`),
-  UNIQUE KEY `pv_rfc` (`pv_rfc`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla azulejos.proveedor: ~2 rows (aproximadamente)
-/*!40000 ALTER TABLE `proveedor` DISABLE KEYS */;
+--
+-- Volcado de datos para la tabla `proveedor`
+--
+
 INSERT INTO `proveedor` (`id_proveedor`, `pv_nombre`, `pv_domicilio`, `pv_ciudad`, `pv_rfc`, `pv_correo`, `pv_status`, `created_at`, `updated_at`) VALUES
-	(1, 'HOLCIM APASCO', 'CARRT. TECOMAN-MADRID #1', 'TECOMAN, COL.', 'HOLAPA189034', 'VENTAS@APASCO.COM', 1, '2017-10-27 11:54:26', '2017-10-27 11:54:26'),
-	(2, 'promapesa', 'conocido', 'ñpurblo', 'rere', '', 1, '2017-10-27 16:51:27', '2017-10-27 16:51:27');
-/*!40000 ALTER TABLE `proveedor` ENABLE KEYS */;
+(1, 'CEMENTO APASCO', 'PRADOS DEL NORTE #125, LOMAS DE LA HIGUERA', 'TECOMAN', 'APSC251292HS058', 'APSCO.MEXICO@GMAIL.COM', 1, '2017-12-19 20:40:08', '2017-12-19 20:40:08'),
+(2, 'CEMEX CEMENTO MEXICANDO', 'INDUSTRIAL #5996 B, TONILA', 'GUADALAJARA', 'CMXE232895ASD56', 'CEMEX@HOTMAIL.COM', 1, '2017-12-19 20:44:11', '2017-12-19 20:44:11'),
+(3, 'PAPELERIA SAN JOSE', 'PRADOS DEL NORTE #235, LOMAS DE LA HIGUERA', 'VILLA DE ALVAREZ', 'ASDFSD0326852', 'sanjose@gmail.com', 1, '2017-12-28 02:17:41', '2017-12-28 02:17:41'),
+(4, 'FERRETERIA LA PAROTA', 'AV. BENITO JUAREZ #32, COL. CENTRO', 'COLIMA', 'FTLPT12793763', 'FERRETERIA.PAROTA@GMAIL.COM', 1, '2018-01-11 21:31:48', '2018-01-11 21:31:48');
 
--- Volcando estructura para tabla azulejos.usuario
-CREATE TABLE IF NOT EXISTS `usuario` (
-  `id_usuario` int(11) NOT NULL AUTO_INCREMENT,
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `id_usuario` int(11) NOT NULL,
   `empleado_id` int(11) NOT NULL,
   `perfil` enum('CAJA','ADMIN') NOT NULL DEFAULT 'CAJA',
   `usuario` varchar(50) NOT NULL,
@@ -634,38 +792,50 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `password` text NOT NULL,
   `remember_token` text NOT NULL,
   `created_at` date NOT NULL,
-  `updated_at` date NOT NULL,
-  PRIMARY KEY (`id_usuario`),
-  UNIQUE KEY `usuario` (`usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `updated_at` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla azulejos.usuario: ~2 rows (aproximadamente)
-/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
 INSERT INTO `usuario` (`id_usuario`, `empleado_id`, `perfil`, `usuario`, `us_status`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-	(1, 2, 'ADMIN', 'JESUS', 1, '$2y$10$mLGX6NgHqayQwXLYhA6kU.RCDzixb3t8HKYlQP6YJeUM3Lld31BuO', 'tsrAeH9K6WPHmpAmdxjjWxFc4biHAlQ3IOcWtunxPq4kLbBSvCOKeboYeyFK', '2017-10-29', '2017-10-30'),
-	(2, 3, 'ADMIN', 'JORGE', 1, '$2y$10$mLGX6NgHqayQwXLYhA6kU.RCDzixb3t8HKYlQP6YJeUM3Lld31BuO', 'tXPbtpFcZse7lVTq1b0egHPrUWHs1ewvQk8yIDiBuNp7vaPyR5fdImlgIa3r', '2017-10-30', '2017-10-30');
-/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
+(1, 1, 'ADMIN', 'JORGE', 1, '$2y$10$fozx4Ah2/kvk4h1vhBo3su7sEjUQe9iQdNyKdApewGzilb9nh6lOu', 'kbqxOR6V0w8lWbwiWvcHAVM1ilRzCRABOZP6FMNpbJ02EYAQravQ3EAa2sJC', '2017-11-21', '2018-02-21'),
+(2, 2, 'ADMIN', 'XOCHITL', 1, '$2y$10$xEIRMKVMHmXokj7/xH6RL.bKl5GudwgKwgMNZBE4qK24rPT8f7yGu', '', '2017-11-21', '2017-11-21'),
+(3, 3, 'ADMIN', 'JESUS', 1, '$2y$10$oA3Vhdo3VR10mvS12hz4o.NoYzTpCVWs8n11odUJueE.A6hoEPaYS', 'We98TbWrUgQk8Ggt8XrtKYhw1RfAF7df2cOpeWEJHVmYe57eTuLZuZTRoMD7', '2017-11-21', '2017-12-20'),
+(4, 4, 'CAJA', 'YISUS', 1, '$2y$10$K.zdjEwbstOrBr8rkMEEPuoQmnstXPF0vIkHsgHWAjDBv7iRPW4Pq', '', '2017-12-22', '2017-12-22');
 
--- Volcando estructura para tabla azulejos.vehiculo
-CREATE TABLE IF NOT EXISTS `vehiculo` (
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `vehiculo`
+--
+
+CREATE TABLE `vehiculo` (
   `placas` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `vh_nombre` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `vh_caracteristicas` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `vh_status` tinyint(4) NOT NULL DEFAULT '1',
+  `vh_status` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`placas`)
+  `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla azulejos.vehiculo: ~1 rows (aproximadamente)
-/*!40000 ALTER TABLE `vehiculo` DISABLE KEYS */;
-INSERT INTO `vehiculo` (`placas`, `vh_nombre`, `vh_caracteristicas`, `vh_status`, `created_at`, `updated_at`) VALUES
-	('FTP-102-11', 'TOYOTA BLANCA', 'CAMION GRANDE PARA LLEVAR PRODUCCION', 1, '2017-11-03 01:01:35', '2017-11-03 01:01:40');
-/*!40000 ALTER TABLE `vehiculo` ENABLE KEYS */;
+--
+-- Volcado de datos para la tabla `vehiculo`
+--
 
--- Volcando estructura para tabla azulejos.viaje
-CREATE TABLE IF NOT EXISTS `viaje` (
-  `id_viaje` int(11) NOT NULL AUTO_INCREMENT,
+INSERT INTO `vehiculo` (`placas`, `vh_nombre`, `vh_caracteristicas`, `vh_status`, `created_at`, `updated_at`) VALUES
+('FTP-05-06', 'TOYOTA', 'CAMIONETA BLANCA', 1, '2017-12-22 23:54:45', '2017-12-23 00:04:54'),
+('ZTR-9087', 'HILUX', 'BLANCA, 4X4, DOBLE CABINA', 1, '2018-01-06 12:31:54', '2018-01-06 12:31:54');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `viaje`
+--
+
+CREATE TABLE `viaje` (
+  `id_viaje` int(11) NOT NULL,
   `vi_kilometraje_inicial` varchar(25) NOT NULL DEFAULT '0',
   `vi_kilometraje_final` varchar(25) NOT NULL,
   `empleado_id` int(11) NOT NULL,
@@ -675,16 +845,411 @@ CREATE TABLE IF NOT EXISTS `viaje` (
   `vi_status` tinyint(1) NOT NULL DEFAULT '0',
   `vi_observaciones` text NOT NULL,
   `created_at` date NOT NULL,
-  `updated_at` date NOT NULL,
-  PRIMARY KEY (`id_viaje`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `updated_at` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla azulejos.viaje: ~0 rows (aproximadamente)
-/*!40000 ALTER TABLE `viaje` DISABLE KEYS */;
+--
+-- Volcado de datos para la tabla `viaje`
+--
+
 INSERT INTO `viaje` (`id_viaje`, `vi_kilometraje_inicial`, `vi_kilometraje_final`, `empleado_id`, `vehiculo_id`, `vi_destino`, `vi_viaticos`, `vi_status`, `vi_observaciones`, `created_at`, `updated_at`) VALUES
-	(2, '15700', '15850', 2, 'FTP-102-11', 'MANZANILLO', 1000.00, 0, '', '2017-11-03', '2017-11-03');
-/*!40000 ALTER TABLE `viaje` ENABLE KEYS */;
+(1, '10564', '', 3, 'FTP-05-06', 'TECOMAN', 500.00, 0, '', '2018-02-21', '2018-02-21');
 
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `abono_compra`
+--
+ALTER TABLE `abono_compra`
+  ADD PRIMARY KEY (`id_abono`);
+
+--
+-- Indices de la tabla `abono_pedido`
+--
+ALTER TABLE `abono_pedido`
+  ADD PRIMARY KEY (`id_abono_pedido`);
+
+--
+-- Indices de la tabla `abono_prestamo`
+--
+ALTER TABLE `abono_prestamo`
+  ADD PRIMARY KEY (`id_ab_prestamo`);
+
+--
+-- Indices de la tabla `cliente`
+--
+ALTER TABLE `cliente`
+  ADD PRIMARY KEY (`id_cliente`),
+  ADD UNIQUE KEY `cl_rfc` (`cl_rfc`);
+
+--
+-- Indices de la tabla `compras`
+--
+ALTER TABLE `compras`
+  ADD PRIMARY KEY (`id_compra`);
+
+--
+-- Indices de la tabla `compra_mp`
+--
+ALTER TABLE `compra_mp`
+  ADD PRIMARY KEY (`id_detalle`,`compra_id`,`mp_id`),
+  ADD KEY `compra_id` (`compra_id`),
+  ADD KEY `mp_id` (`mp_id`);
+
+--
+-- Indices de la tabla `compra_producto`
+--
+ALTER TABLE `compra_producto`
+  ADD PRIMARY KEY (`id_detalle`);
+
+--
+-- Indices de la tabla `contacto`
+--
+ALTER TABLE `contacto`
+  ADD PRIMARY KEY (`id_contacto`);
+
+--
+-- Indices de la tabla `contratos`
+--
+ALTER TABLE `contratos`
+  ADD PRIMARY KEY (`id_contrato`);
+
+--
+-- Indices de la tabla `cuentas`
+--
+ALTER TABLE `cuentas`
+  ADD PRIMARY KEY (`id_cuentas`);
+
+--
+-- Indices de la tabla `detalle_movimientos`
+--
+ALTER TABLE `detalle_movimientos`
+  ADD PRIMARY KEY (`id_concepto`,`movimiento_temporal_id`,`compra_id`),
+  ADD KEY `compra_id` (`compra_id`),
+  ADD KEY `movimiento_temporal_id` (`movimiento_temporal_id`);
+
+--
+-- Indices de la tabla `detalle_pedido`
+--
+ALTER TABLE `detalle_pedido`
+  ADD PRIMARY KEY (`id_det_pedido`,`pedido_id`,`producto_id`,`pegaza_id`),
+  ADD KEY `pegaza_id` (`pegaza_id`),
+  ADD KEY `producto_id` (`producto_id`),
+  ADD KEY `pedido_id` (`pedido_id`);
+
+--
+-- Indices de la tabla `detalle_produccion`
+--
+ALTER TABLE `detalle_produccion`
+  ADD PRIMARY KEY (`id_detalle`,`produccion_id`,`pedido_id`),
+  ADD KEY `produccion_id` (`produccion_id`),
+  ADD KEY `pedido_id` (`pedido_id`);
+
+--
+-- Indices de la tabla `detalle_requisitos`
+--
+ALTER TABLE `detalle_requisitos`
+  ADD PRIMARY KEY (`id_detalle`,`mp_id`,`producto_id`),
+  ADD KEY `det_materia_prima_id` (`mp_id`),
+  ADD KEY `det_producto_id` (`producto_id`);
+
+--
+-- Indices de la tabla `detalle_requisito_producto`
+--
+ALTER TABLE `detalle_requisito_producto`
+  ADD PRIMARY KEY (`id_detalle`,`producto_id`,`pd_id`),
+  ADD KEY `producto_id` (`producto_id`),
+  ADD KEY `pd_id` (`pd_id`);
+
+--
+-- Indices de la tabla `detalle_viaje`
+--
+ALTER TABLE `detalle_viaje`
+  ADD PRIMARY KEY (`id_detalle`,`viaje_id`,`pedido_id`),
+  ADD KEY `viaje_id` (`viaje_id`,`pedido_id`);
+
+--
+-- Indices de la tabla `documentos`
+--
+ALTER TABLE `documentos`
+  ADD PRIMARY KEY (`id_documentos`);
+
+--
+-- Indices de la tabla `documentos_cl`
+--
+ALTER TABLE `documentos_cl`
+  ADD PRIMARY KEY (`id_documentos_cl`);
+
+--
+-- Indices de la tabla `domicilio`
+--
+ALTER TABLE `domicilio`
+  ADD PRIMARY KEY (`id_domicilio`);
+
+--
+-- Indices de la tabla `empleado`
+--
+ALTER TABLE `empleado`
+  ADD PRIMARY KEY (`id_empleado`),
+  ADD UNIQUE KEY `em_curp` (`em_curp`);
+
+--
+-- Indices de la tabla `fallas`
+--
+ALTER TABLE `fallas`
+  ADD PRIMARY KEY (`id_falla`);
+
+--
+-- Indices de la tabla `gastos`
+--
+ALTER TABLE `gastos`
+  ADD PRIMARY KEY (`id_gastos`);
+
+--
+-- Indices de la tabla `gasto_fijo`
+--
+ALTER TABLE `gasto_fijo`
+  ADD PRIMARY KEY (`id_gasto_fijo`);
+
+--
+-- Indices de la tabla `inventario`
+--
+ALTER TABLE `inventario`
+  ADD PRIMARY KEY (`id_inventario`);
+
+--
+-- Indices de la tabla `materia_prima`
+--
+ALTER TABLE `materia_prima`
+  ADD PRIMARY KEY (`id_materia_prima`);
+
+--
+-- Indices de la tabla `movimiento_temporal`
+--
+ALTER TABLE `movimiento_temporal`
+  ADD PRIMARY KEY (`id_movimiento_temporal`);
+
+--
+-- Indices de la tabla `pedidos`
+--
+ALTER TABLE `pedidos`
+  ADD PRIMARY KEY (`id_pedido`);
+
+--
+-- Indices de la tabla `prestamo`
+--
+ALTER TABLE `prestamo`
+  ADD PRIMARY KEY (`id_prestamo`);
+
+--
+-- Indices de la tabla `produccion`
+--
+ALTER TABLE `produccion`
+  ADD PRIMARY KEY (`id_produccion`);
+
+--
+-- Indices de la tabla `producto`
+--
+ALTER TABLE `producto`
+  ADD PRIMARY KEY (`id_producto`);
+
+--
+-- Indices de la tabla `proveedor`
+--
+ALTER TABLE `proveedor`
+  ADD PRIMARY KEY (`id_proveedor`),
+  ADD UNIQUE KEY `pv_rfc` (`pv_rfc`);
+
+--
+-- Indices de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`id_usuario`),
+  ADD UNIQUE KEY `usuario` (`usuario`);
+
+--
+-- Indices de la tabla `vehiculo`
+--
+ALTER TABLE `vehiculo`
+  ADD PRIMARY KEY (`placas`);
+
+--
+-- Indices de la tabla `viaje`
+--
+ALTER TABLE `viaje`
+  ADD PRIMARY KEY (`id_viaje`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `abono_compra`
+--
+ALTER TABLE `abono_compra`
+  MODIFY `id_abono` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT de la tabla `abono_pedido`
+--
+ALTER TABLE `abono_pedido`
+  MODIFY `id_abono_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT de la tabla `abono_prestamo`
+--
+ALTER TABLE `abono_prestamo`
+  MODIFY `id_ab_prestamo` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `cliente`
+--
+ALTER TABLE `cliente`
+  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT de la tabla `compras`
+--
+ALTER TABLE `compras`
+  MODIFY `id_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT de la tabla `compra_mp`
+--
+ALTER TABLE `compra_mp`
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT de la tabla `compra_producto`
+--
+ALTER TABLE `compra_producto`
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT de la tabla `contacto`
+--
+ALTER TABLE `contacto`
+  MODIFY `id_contacto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT de la tabla `contratos`
+--
+ALTER TABLE `contratos`
+  MODIFY `id_contrato` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT de la tabla `cuentas`
+--
+ALTER TABLE `cuentas`
+  MODIFY `id_cuentas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT de la tabla `detalle_movimientos`
+--
+ALTER TABLE `detalle_movimientos`
+  MODIFY `id_concepto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT de la tabla `detalle_pedido`
+--
+ALTER TABLE `detalle_pedido`
+  MODIFY `id_det_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT de la tabla `detalle_produccion`
+--
+ALTER TABLE `detalle_produccion`
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `detalle_requisitos`
+--
+ALTER TABLE `detalle_requisitos`
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT de la tabla `detalle_requisito_producto`
+--
+ALTER TABLE `detalle_requisito_producto`
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `detalle_viaje`
+--
+ALTER TABLE `detalle_viaje`
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT de la tabla `documentos`
+--
+ALTER TABLE `documentos`
+  MODIFY `id_documentos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT de la tabla `documentos_cl`
+--
+ALTER TABLE `documentos_cl`
+  MODIFY `id_documentos_cl` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT de la tabla `domicilio`
+--
+ALTER TABLE `domicilio`
+  MODIFY `id_domicilio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT de la tabla `empleado`
+--
+ALTER TABLE `empleado`
+  MODIFY `id_empleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT de la tabla `fallas`
+--
+ALTER TABLE `fallas`
+  MODIFY `id_falla` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT de la tabla `gastos`
+--
+ALTER TABLE `gastos`
+  MODIFY `id_gastos` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `gasto_fijo`
+--
+ALTER TABLE `gasto_fijo`
+  MODIFY `id_gasto_fijo` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `inventario`
+--
+ALTER TABLE `inventario`
+  MODIFY `id_inventario` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `materia_prima`
+--
+ALTER TABLE `materia_prima`
+  MODIFY `id_materia_prima` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT de la tabla `movimiento_temporal`
+--
+ALTER TABLE `movimiento_temporal`
+  MODIFY `id_movimiento_temporal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT de la tabla `pedidos`
+--
+ALTER TABLE `pedidos`
+  MODIFY `id_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT de la tabla `prestamo`
+--
+ALTER TABLE `prestamo`
+  MODIFY `id_prestamo` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `produccion`
+--
+ALTER TABLE `produccion`
+  MODIFY `id_produccion` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `producto`
+--
+ALTER TABLE `producto`
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+--
+-- AUTO_INCREMENT de la tabla `proveedor`
+--
+ALTER TABLE `proveedor`
+  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT de la tabla `viaje`
+--
+ALTER TABLE `viaje`
+  MODIFY `id_viaje` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
