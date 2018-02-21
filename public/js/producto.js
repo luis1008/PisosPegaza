@@ -6,7 +6,7 @@ $(document).ready(function(){
             $('.input-costo').prop('readonly',true);
             //GetAjaxMateriaPrima(0);
             $('.AppendBtn').append('<button type="button" class="btn btn-dark btn-AddMaterial"><span class="icon icon-plus"></span> Material</button>');
-            $('.AppendBtn').append('<button type="button" class="btn btn-danger btn-AddProducto" style="margin-left:5px;"><span class="icon icon-plus"></span> Producto</button>');
+            /*$('.AppendBtn').append('<button type="button" class="btn btn-danger btn-AddProducto" style="margin-left:5px;"><span class="icon icon-plus"></span> Producto</button>');*/
         } else {
             $('.AddEnsamblado,.AppendBtn').empty();
             $('.input-costo').val('').prop('readonly',false);
@@ -18,10 +18,10 @@ $(document).ready(function(){
         $('.AddEnsamblado').append(campos);
     });
 
-    $(document).on('click','.btn-AddProducto',function(){
+    /*$(document).on('click','.btn-AddProducto',function(){
         var campos = GetAjaxProducto(1);
         $('.AddEnsamblado').append(campos);
-    });
+    });*/
 
     $(document).on('click','.BtnUpdatedMaterial',function(){
         var campos = GetAjaxMateriaPrima(1);
@@ -30,12 +30,12 @@ $(document).ready(function(){
 
     });
 
-    $(document).on('click','.BtnUpdatedProducto',function(){
+    /*$(document).on('click','.BtnUpdatedProducto',function(){
         var campos = GetAjaxProducto(1);
         $(this).parent('div').parent('div').parent('div').find('div.AddRequisitos').append(campos);
         $(this).parent('div').parent('div').parent('div').find('div.modal-footer').find('button[type="submit"]').prop('disabled',false);
 
-    });
+    });*/
 
     $(document).on('click','.btn-delete', function(){
         var cont = 0;
@@ -81,7 +81,7 @@ $(document).ready(function(){
         CalcularCosto();
     });
 
-    $(document).on('change','.select-producto',function(){
+    /*$(document).on('change','.select-producto',function(){
         var id    = $(this).val();
         var valor = 0;
         var cantidad = 0;
@@ -102,7 +102,7 @@ $(document).ready(function(){
         $(this).parent('div.form-group').parent('div.form-row').find('input.cantidad_materiaprima').val(cantidad);
         CalcularSubTotal();
         CalcularCosto();
-    });
+    });*/
 
     $(document).on('keyup','input[name="precio[]"],input[name="precio_producto[]"]', function(){
         CalcularSubTotal();
@@ -177,7 +177,7 @@ $(document).ready(function(){
                                 '<input type="hidden" class="cantidad_materiaprima" value="0">'+
                                 '<div class="form-group col-md-2 DivPrecio">'+
                                     '<label>Precio</label>'+
-                                    '<input type="number" name="precio[]" class="form-control" value="0" placeholder="$" required>'+
+                                    '<input type="number" name="precio[]" class="form-control" value="0" readonly placeholder="$" required>'+
                                 '</div>'+
                                 '<div class="form-group col-md-2 DivSub">'+
                                     '<label>Sub. Total</label>'+
@@ -249,7 +249,7 @@ $(document).ready(function(){
     }
 
     function FormatMoney(money){
-        var v_money = money.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g,"$1,");
+        var v_money = money.toFixed(4).replace(/(\d)(?=(\d\d\d)+(?!\d))/g,"$1,");
         return v_money;
     }
 });

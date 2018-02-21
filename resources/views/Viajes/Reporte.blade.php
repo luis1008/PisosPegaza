@@ -48,6 +48,7 @@
 				<th>Importe</th>
 				<th>Destino</th>
 				<th>Estatus</th>
+				<th>Forma de Pago</th>
 				<th>Abonar/Pagar</th>
 			</thead>
 			<tbody>
@@ -60,6 +61,15 @@
 							<td><?php echo $pedido->pe_importe ?></td>
 							<td><?php echo $pedido->pe_destino_pedido ?></td>
 							<td><?php echo $pedido->pivot->det_status ?></td>
+							<td>
+								<select name="forma_pago">
+									<option value="">Seleccionar</option>
+									<option value="EFECTIVO">EFECTIVO</option>
+									<option value="TRANSFERENCIA">TRANSFERENCIA</option>
+									<option value="CHEQUE">CHEQUE</option>
+
+								</select>
+							</td>
 							<td>
 								<input type="text" class="form-control" name="abono" placeholder="$">
 							</td>
@@ -81,8 +91,8 @@
 				<th>Importe</th>
 				<th>Abonado</th>
 				<th>Resto</th>
-				<th>Forma de Pago</th>
 				<th>Estatus</th>
+				<th>Forma de Pago</th>
 				<th>Abonar/Pagar</th>
 			</thead>
 			<tbody>
@@ -94,8 +104,16 @@
 							<td><?php echo $pedido->pe_importe ?></td>
 							<td><?php echo $pedido->pe_total_abonado ?></td>
 							<td><?php echo $pedido->pe_importe - $pedido->pe_total_abonado ?></td>
-							<td><?php echo $pedido->pe_forma_pago ?></td>
 							<td><?php echo $pedido->pivot->det_status ?></td>
+							<td>
+								<select name="forma_pago">
+									<option value="">Seleccionar</option>
+									<option value="EFECTIVO">EFECTIVO</option>
+									<option value="TRANSFERENCIA">TRANSFERENCIA</option>
+									<option value="CHEQUE">CHEQUE</option>
+
+								</select>
+							</td>
 							<td>
 								<input type="text" class="form-control" name="abono" placeholder="$">
 							</td>

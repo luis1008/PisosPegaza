@@ -111,7 +111,7 @@
 			</thead>
 			<tbody>
 				<?php foreach ($viajes->pedidos as $pedido): ?>
-					<?php if ($pedido->pe_pago_status==="PENDIENTE"): ?>
+					<?php if ($pedido->pe_pago_status==="ABONADO"): ?>
 						<tr>
 							<td><?php echo $pedido->pe_nota ?></td>
 							<td><?php echo $pedido->cliente->cl_nombre ?></td>

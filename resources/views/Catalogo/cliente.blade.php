@@ -296,7 +296,7 @@
     </div>
 
     <!-- INSERTAR NUEVO CLIENTE -->
-	<div class="modal fade" id="cliente" tabindex="-1" role="dialog" aria-labelledby="clientes" aria-hidden="true">
+	<div class="modal fade" id="cliente" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="clientes" aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -313,7 +313,7 @@
                             <div class="form-group col">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-user"></span></span>
-                                    <input type="text" class="form-control" name="nombre" placeholder="NOMBRE" required>
+                                    <input type="text" class="form-control" name="nombre" placeholder="NOMBRE">
                                 </div>
                             </div>
                         </div>
@@ -321,14 +321,14 @@
                             <div class="form-group col">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-profile"></span></span>
-                                    <input type="text" class="form-control" name="rfc"  placeholder="RFC" required>
+                                    <input type="text" class="form-control" name="rfc"  placeholder="RFC">
                                 </div>
                             </div>
                             
                             <div class="form-group col">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-mail4"></span></span>
-                                    <input type="email" class="form-control" name="correo"  placeholder="CORREO" required>
+                                    <input type="email" class="form-control" name="correo"  placeholder="CORREO">
                                 </div>
                             </div>
                         </div>
@@ -337,14 +337,14 @@
                             <div class="form-group col">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-phone"></span></span>
-                                    <input type="text" class="form-control Numeros" name="telefono" maxlength="13" placeholder="TELEFONO" required>
+                                    <input type="text" class="form-control Numeros" name="telefono" maxlength="13" placeholder="TELEFONO">
                                 </div>
                             </div>
 
                             <div class="form-group col">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-bubble"></span></span>
-                                    <input type="text" class="form-control" name="nombre_contacto"  placeholder="NOMBRE DEL CONTACTO" required>
+                                    <input type="text" class="form-control" name="nombre_contacto"  placeholder="NOMBRE DEL CONTACTO">
                                 </div>
                             </div>
                         </div>
@@ -353,19 +353,20 @@
                             <div class="form-group col">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-user-tie"></span></span>
-                                    <input type="text" class="form-control" name="nombre_dueno" placeholder="NOMBRE DEL DUEÑO" required>
+                                    <input type="text" class="form-control" name="nombre_dueno" placeholder="NOMBRE DEL DUEÑO">
                                 </div>
                             </div>
 
                             <div class="form-group col">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-credit-card"></span></span>
-                                    <select class="form-control" name="forma_pago" required>
+                                    <select class="form-control" name="forma_pago">
                                         <option value="">FORMA DE PAGO</option>
                                         <option value="EFECTIVO">EFECTIVO</option>
                                         <option value="CHEQUE">CHEQUE</option>
                                         <option value="TRANSFERENCIA">TRANSFERENCIA</option>
                                         <option value="DEPOSITO">DEPOSITO</option>
+                                        <option value="NO ESPECIFICA">NO ESPECIFICA</option>
                                     </select>
                                 </div>
                             </div>
@@ -375,7 +376,7 @@
                             <div class="form-group col">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-accessibility"></span></span>
-                                    <select class="form-control" name="tipo" required>
+                                    <select class="form-control" name="tipo">
                                         <option value="">TIPO CLIENTE</option>
                                         <option value="NORMAL">NORMAL</option>
                                         <option value="RIGUROSO">RIGUROSO</option>
@@ -385,7 +386,7 @@
                             <div class="form-group col">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-clock"></span></span>
-                                    <select class="form-control" name="termino" required>
+                                    <select class="form-control" name="termino">
                                         <option value="">TERMINO CREDITO</option>
                                         <option value="CONTADO">CONTADO</option>
                                         <option value="1 DIA">1 DIA</option>
@@ -402,28 +403,28 @@
                             <div class="form-group col-md-4">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-location"></span></span>
-                                    <input class="form-control" name="calle[]" type="text" placeholder="CALLE" required>
+                                    <input class="form-control" name="calle[]" type="text" placeholder="CALLE">
                                 </div>
                             </div>
 
                             <div class="form-group col-md-3">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-location"></span></span>
-                                    <input class="form-control" name="colonia[]" type="text" placeholder="COLONIA" required>
+                                    <input class="form-control" name="colonia[]" type="text" placeholder="COLONIA">
                                 </div>
                             </div>
 
                             <div class="form-group col-md-3">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-office"></span></span>
-                                    <input class="form-control" name="ciudad[]" type="text" placeholder="CIUDAD" required>
+                                    <input class="form-control" name="ciudad[]" type="text" placeholder="CIUDAD">
                                 </div>
                             </div>
 
                             <div class="form-group col-md-2">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-location"></span></span>
-                                    <input class="form-control Numeros" name="codigo_postal[]" type="text" placeholder="C.P" maxlength="5" required>
+                                    <input class="form-control Numeros" name="codigo_postal[]" type="text" placeholder="C.P" maxlength="5">
                                 </div>
                             </div>
 

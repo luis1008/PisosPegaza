@@ -40,8 +40,8 @@
 	  <li class="nav-item dropdown">
 	    <a class="nav-link active dropdown-toggle tooltips2" data-toggle="dropdown" href="#" data-placement="top" title="Informacion"><span class="icon icon-info"></span> <!-- Información --></a>
 	    <div class="dropdown-menu">
-	      <a class="dropdown-item" data-toggle="pill" href="#pills-info" role="tab"><span class="icon icon-eye"></span> Ver</a>
-	      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#pedido"><span class="icon icon-plus"></span> Nuevo</a>
+	      <a class="dropdown-item" data-toggle="pill" href="#pills-info" role="tab" style="padding-bottom:35px;><span class="icon icon-eye"></span> Ver</a>
+	      <!--<a class="dropdown-item" href="#" data-toggle="modal" data-target="#pedido"><span class="icon icon-plus"></span> Nuevo</a>-->
 	    </div>
 	  </li>
 	  	  <!-- li pagos -->

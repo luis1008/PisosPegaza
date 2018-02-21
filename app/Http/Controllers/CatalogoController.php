@@ -32,33 +32,10 @@ class CatalogoController extends Controller
         if ($request->ajax()) {
             //Validar campos required
             $this->validate($request, [
-                'rfc'             => 'required',
-                'nombre'          => 'required',
                 'correo'          => 'email',
-                'telefono'        => 'required',
-                'nombre_contacto' => 'required',
-                'nombre_dueno'    => 'required',
-                'forma_pago'      => 'required',
-                'tipo'            => 'required',
-                'termino'         => 'required',
-                'calle'           => 'required',
-                'colonia'         => 'required',
-                'ciudad'          => 'required',
-                'codigo_postal'   => 'required',
             ],[
-                'rfc.required'              => 'EL CAMPO RFC ES OBLIGATORIO',
-                'nombre.required'           => 'EL CAMPO NOMBRE ES OBLIGATORIO',
                 'correo.email'              => 'EL CAMPO CORREO DEBE SER DE TIPO CORREO (@live.com, @gmail.com, @hotmail.com, etc.)',
-                'telefono.required'         => 'EL CAMPO TELEFONO ES OBLIGATORIO',
-                'nombre_contacto.required'  => 'EL CAMPO NOMBRE CONTACTO ES OBLIGATORIO',
-                'nombre_dueno.required'     => 'EL CAMPO NOMBRE DUEÑO ES OBLIGATORIO',
-                'forma_pago.required'       => 'EL CAMPO FORMA PAGO ES OBLIGATORIO',
-                'tipo.required'             => 'EL CAMPO TIPO CLIENTE ES OBLIGATORIO',
-                'termino.required'          => 'EL CAMPO TERMINO ES OBLIGATORIO',
-                'calle.required'            => 'EL CAMPO CALLE ES OBLIGATORIO',
-                'colonia.required'          => 'EL CAMPO COLONIA ES OBLIGATORIO',
-                'ciudad.required'           => 'EL CAMPO CIUDAD ES OBLIGATORIO',
-                'codigo_postal.required'    => 'EL CAMPO CODIGO POSTAL ES OBLIGATORIO',
+
             ]
             );
         }

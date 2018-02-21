@@ -164,7 +164,7 @@
                                 <div class="form-row text-center">
                                     <div class="col-md-12">
                                         <button type="button" class="btn btn-dark BtnUpdatedMaterial"><span class="icon icon-plus"></span> Material</button>
-                                        <button type="button" class="btn btn-danger BtnUpdatedProducto" style="margin-left:5px;"><span class="icon icon-plus"></span> Producto</button>
+                                        <!--<button type="button" class="btn btn-danger BtnUpdatedProducto" style="margin-left:5px;"><span class="icon icon-plus"></span> Producto</button>-->
                                     </div>
                                 </div>
                                 <br>
@@ -182,7 +182,7 @@
     @endforeach
 
     <!-- INSERTAR NUEVO PRODUCTO -->
-	<div class="modal fade" id="producto" tabindex="-1" role="dialog" aria-labelledby="productos" aria-hidden="true">
+	<div class="modal fade" id="producto" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="productos" aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
