@@ -29,19 +29,22 @@ class CatalogoController extends Controller
     }
 
     public function post_cliente(Request $request){
-        if ($request->ajax()) {
             //Validar campos required
             $this->validate($request, [
+                'rfc' => 'unique:cliente,cl_rfc',
                 'correo'          => 'email',
             ],[
-                'correo.email'              => 'EL CAMPO CORREO DEBE SER DE TIPO CORREO (@live.com, @gmail.com, @hotmail.com, etc.)',
+                'correo.email'    => 'EL CAMPO CORREO DEBE SER DE TIPO CORREO (@live.com, @gmail.com, @hotmail.com, etc.)',
 
+                'rfc.unique'         => 'EL RFC YA EXISTE CON OTRO CLIENTE.',
             ]
             );
-        }
+            
         $cliente = new Cliente();
+        if (trim($request->rfc)!="") {
+        $cliente->cl_rfc             = $request->rfc; 
+        }
         //$cliente->cl_factura         = $request->factura;
-        $cliente->cl_rfc             = $request->rfc;
         $cliente->cl_nombre          = $request->nombre;
         $cliente->cl_correo          = $request->correo;
         $cliente->cl_telefono        = $request->telefono;

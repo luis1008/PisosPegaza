@@ -121,7 +121,7 @@
 	                        <?php $total=\DB::table('pedidos')->SUM('pe_total_abonado'); ?>
 	                		<td><?php echo '$'. number_format($total,2) ?></td>  
 
-	                		<!-- TOTAL DE EGRESOS -->
+	                <!-- TOTAL DE EGRESOS -->
 	                        <?php $total=\DB::table('compras')->SUM('cm_total_abonado'); ?>
 	                		<td><?php echo '$'. number_format($total,2) ?></td>  		      
 	                    </tr>
@@ -962,13 +962,13 @@
 											</button>
 										</div>
 										<div class="modal-body">
-											<form action="<?php echo route('post_AddOtroConcepto') ?>" method="POST" onsubmit="return ValidacionAddMovimientos()">
+											<form action="<?php echo route('post_AddOtroConcepto') ?>" method="POST" onsubmit="return ValidacionAddMovimientos(<?php echo $mt->id_movimiento_temporal ?>)">
 												{{csrf_field()}}
 												<input type="hidden" name="movimiento" value="<?php echo $mt->id_movimiento_temporal ?>">
 												<div class="form-row">
 													<div class="form-group col-md-12" style="width:100%;">
 														<label>Compras</label>
-														<select name="compras[]" class="form-control addcompras multicompra" multiple>
+														<select name="compras[]" class="form-control addcompras-<?php echo $mt->id_movimiento_temporal ?> multicompra" multiple>
 															@foreach($mov_compras as $compra)
 																<option value="{{$compra->id_compra}}">Compra No° {{str_pad($compra->cm_nota, 2, "0", STR_PAD_LEFT)}}</option>
 															@endforeach
@@ -978,7 +978,7 @@
 														<label>Concepto</label>
 														<div class="input-group">
 															<span class="input-group-addon"><span class="icon icon-price-tag"></span></span>
-															<input class="form-control addconcept" name="concepto" type="text" placeholder="CONCEPTO">
+															<input class="form-control addconcept-<?php echo $mt->id_movimiento_temporal ?>" name="concepto" type="text" placeholder="CONCEPTO">
 														</div>
 													</div>
 												</div>
@@ -2420,11 +2420,11 @@
 			}
 		}
 
-		function ValidacionAddMovimientos(){
-			var compras   = $('.addcompras').val();
-			var conceptos = $('.addconcept').val();
-			if(conceptos === '' || compras.length === 0){
-				alert("Debe Seleccionar Compra(s) o Agregar Concepto(s)");
+		function ValidacionAddMovimientos(id){
+			var compras   = $('.addcompras-'+id).val();
+			var conceptos = $('.addconcept-'+id).val();
+			if(conceptos === '' && compras.length === 0){
+				alert("Debe Seleccionar al Menos Una Compra o Agregar un Concepto");
 				return false;
 			}
 			return true;

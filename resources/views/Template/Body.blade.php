@@ -27,7 +27,7 @@
 		<br>
         <?php if(count($errors) > 0){ ?>
             <div class="alert alert-danger">
-                <p class="text-center" style="margin-top:-10px;"><b>Error:</b></p>
+                <p class="text-center" style="margin-top:-10px;"><b>Advertencia:</b></p>
                 <ul style="margin-top:-15px;">
                     <?php foreach($errors->all() as $error) { ?>
                         <li><?php echo $error ?></li>
