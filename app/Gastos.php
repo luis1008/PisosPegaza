@@ -10,10 +10,8 @@ class Gastos extends Model
     
     protected $primaryKey = "id_gastos";
     
-    protected $fillable   = ['ga_no_nota',   
-                             'ga_importe', 
-                             'ga_concepto',
-                             'viaje_id'];
+    protected $fillable   = ['ga_concepto',                          
+                             'ga_status'];
 
     public function viajes(){
         return $this->hasMany('pegaza\Viaje','viaje_id');

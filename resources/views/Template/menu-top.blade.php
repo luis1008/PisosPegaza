@@ -11,6 +11,7 @@
 	          <span class="icon icon-books"></span>	Catalogos
 	        </a>
 	        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+	          <a class="dropdown-item" href="{{route('gastos')}}"><span class="icon icon-coin-dollar"></span> Gastos</a>
 	          <a class="dropdown-item" href="{{route('cuentas')}}"><span class="icon icon-credit-card"></span> Cuentas</a>
 	          <a class="dropdown-item" href="{{route('empleado')}}"><span class="icon icon-users"></span> Empleado</a>
 	          <a class="dropdown-item" href="{{route('cliente')}}"><span class="icon icon-user"></span> Cliente</a>

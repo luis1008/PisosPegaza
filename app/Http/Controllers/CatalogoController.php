@@ -18,6 +18,7 @@ use pegaza\DocumentosCl;
 use pegaza\Usuario;
 use pegaza\Contrato;
 use pegaza\Falla;
+use pegaza\Gastos;
 
 class CatalogoController extends Controller
 {
@@ -36,7 +37,7 @@ class CatalogoController extends Controller
             ],[
                 'correo.email'    => 'EL CAMPO CORREO DEBE SER DE TIPO CORREO (@live.com, @gmail.com, @hotmail.com, etc.)',
 
-                'rfc.unique'         => 'EL RFC YA EXISTE CON OTRO CLIENTE.',
+                'rfc.unique'         => 'EL RFC YA EXISTE CON OTRO CLIENTE. REGISTRO NO INSERTADO.',
             ]
             );
             
@@ -164,6 +165,21 @@ class CatalogoController extends Controller
 
         return redirect()->route('cuentas');
 
+    }
+            //GASTOS
+        public function gastos(Request $request){
+        $gasto = Gastos::paginate(25);
+        return view('Catalogo.gastos')->with('gastos',$gasto);
+    }
+
+    public function post_gasto(Request $request){
+        //Lado izquierdo son los campos del modelo que especifico y del lado derecho son los names de los inputs de la vista del formulario
+        $gastos =  new Gastos();
+
+        $gastos->ga_concepto = $request->concepto;
+        $gastos->save();
+
+        return redirect()->route('gastos');
     }
     
     // MATERIA PRIMA

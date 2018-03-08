@@ -19,6 +19,7 @@
             <thead>
                 <th width="50" class="text-center">Clave</th>
                 <th width="100">Nombre</th>
+                <th width="100">Contenido</th>
                 <th width="50">Unidad</th>
                 <th width="50">Precio</th>
                 <th width="100">Observación</th>
@@ -33,7 +34,8 @@
                 <?php foreach ($mat_primas as $mp) { ?>
                     <tr class='<?php if($mp->mp_status){ echo "table-success"; } else { echo "table-danger"; } ?>'>
                         <th class="text-center"><?php echo str_pad($mp->id_materia_prima, 2, "0", STR_PAD_LEFT) ?></th>
-                        <td><?php echo $mp->mp_nombre /*. " " . $mp->mp_cantidad . " " .$mp->mp_unidad*/ ?></td>
+                        <td><?php echo $mp->mp_nombre?></td>
+                        <td><?php echo $mp->mp_cantidad ?></td>
                         <td><?php echo $mp->mp_unidad ?></td>
                         <td>$<?php echo number_format($mp->mp_precio,2) ?></td>
                         <td><?php echo $mp->mp_observacion ?></td>
@@ -146,12 +148,12 @@
 								</div>
 							</div>
                             
-							<!--<div class="form-group col-md-3">
+							<div class="form-group col-md-3">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-stack"></span></span>
-                                    <input type="number" class="form-control" name="cantidad" min="0.1" step="0.01" placeholder="CANTIDAD" required>
+                                    <input type="number" class="form-control" name="cantidad" min="0.1" step="0.001" placeholder="CANTIDAD" required>
                                 </div>
-                            </div>-->
+                            </div>
                             
                             <input type="hidden" name="cantidad" value="1">
 

@@ -2423,7 +2423,7 @@
 		function ValidacionAddMovimientos(id){
 			var compras   = $('.addcompras-'+id).val();
 			var conceptos = $('.addconcept-'+id).val();
-			if(conceptos === '' && compras.length === 0){
+			if(conceptos === 'undefined' && compras.length === 0){
 				alert("Debe Seleccionar al Menos Una Compra o Agregar un Concepto");
 				return false;
 			}
