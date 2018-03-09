@@ -191,11 +191,11 @@ $(document).ready(function(){
                                 '<input type="hidden" class="cantidad_producto" value="0">'+
                                 '<div class="form-group col-md-2 DivPrecio">'+
                                     '<label>Precio</label>'+
-                                    '<input type="text" name="precio[]" class="form-control" value="0" placeholder="$" required>'+
+                                    '<input type="text" name="precio[]" class="form-control" value="0.0000" step="0.0001" placeholder="$" required>'+
                                 '</div>'+
                                 '<div class="form-group col-md-2 DivSub">'+
                                     '<label>Sub. Total</label>'+
-                                    '<input type="text" class="form-control subtotal" name="subtotal[]" value="0" readonly>'+
+                                    '<input type="text" class="form-control subtotal" name="subtotal[]" value="0.0000" step="0.0001" readonly>'+
                                 '</div>';
                     if(btn){
                         form += '<div class="form-group col-md-1">'+   
@@ -262,11 +262,11 @@ $(document).ready(function(){
                                 '<input type="hidden" class="cantidad_producto" value="0">'+
                                 '<div class="form-group col-md-2 DivPrecio">'+
                                     '<label>Precio</label>'+
-                                    '<input type="text" name="precio2[]" class="form-control precio-'+id+'" value="0" placeholder="$" required>'+
+                                    '<input type="text" name="precio2[]" class="form-control precio-'+id+'" value="0.0000" step="0.0001" placeholder="$" required>'+
                                 '</div>'+
                                 '<div class="form-group col-md-2 DivSub">'+
                                     '<label>Sub. Total</label>'+
-                                    '<input type="text" class="form-control subtotal-'+id+'" name="subtotal2[]" value="0" readonly>'+
+                                    '<input type="text" class="form-control subtotal-'+id+'" name="subtotal2[]" value="0.0000" step="0.0001" readonly>'+
                                 '</div>';
                     if(btn){
                         form += '<div class="form-group col-md-1">'+   

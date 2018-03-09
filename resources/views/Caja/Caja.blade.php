@@ -118,11 +118,18 @@
 	                <!-- TOTAL DE INGRESOS -->
 	                    <tr>
 	                        <th>Total</th>
-	                        <?php $total=\DB::table('pedidos')->SUM('pe_total_abonado'); ?>
+	                        <?php $total_pedido=\DB::table('pedidos')->SUM('pe_total_abonado'); ?>
+	                        <?php $total_ab_pedido=\DB::table('abono_pedido')->SUM('ap_abono'); ?>
+	                        <?php $total_ab_prestamos=\DB::table('abono_prestamo')->SUM('ab_abono'); ?>
+	                        <?php $total=$total_pedido+$total_ab_pedido+$total_ab_prestamos ?>
 	                		<td><?php echo '$'. number_format($total,2) ?></td>  
 
 	                <!-- TOTAL DE EGRESOS -->
-	                        <?php $total=\DB::table('compras')->SUM('cm_total_abonado'); ?>
+	                        <?php $total_comp=\DB::table('compras')->SUM('cm_total_abonado'); ?>
+	                        <?php $total_ab_comp=\DB::table('abono_compra')->SUM('ab_abono'); ?>
+	                        <?php $total_det_mov=\DB::table('detalle_movimientos')->SUM('ct_gasto'); ?>
+	                        <?php $total_mov_temp=\DB::table('movimiento_temporal')->SUM('mt_gasto'); ?>
+	                        <?php $total=$total_comp+$total_ab_comp+$total_det_mov+$total_mov_temp ?>
 	                		<td><?php echo '$'. number_format($total,2) ?></td>  		      
 	                    </tr>
 		        </tbody>
@@ -978,7 +985,12 @@
 														<label>Concepto</label>
 														<div class="input-group">
 															<span class="input-group-addon"><span class="icon icon-price-tag"></span></span>
-															<input class="form-control addconcept-<?php echo $mt->id_movimiento_temporal ?>" name="concepto" type="text" placeholder="CONCEPTO">
+															<select name="concepto" id="" class="form-control addconcept-<?php echo $mt->id_movimiento_temporal ?>" required>
+																<option value="">Seleccionar</option>
+																	@foreach($cat_gastos as $gast)
+																<option value="{{$gast->ga_concepto}}">		{{$gast->ga_concepto}}</option>
+																	@endforeach
+															</select>
 														</div>
 													</div>
 												</div>

@@ -79,6 +79,16 @@ Route::group(['middleware' => 'auth'],function(){
 	]);
 	
 
+	Route::get('/Gastos/{id}',[
+		'uses'  => 'CatalogoController@put_gasto',
+		'as'	=> 'put_gasto'
+	]);
+
+	Route::put('/Gastos/{id}',[
+		'uses'  => 'CatalogoController@put_datos_gasto',
+		'as'	=> 'put_datos_gasto'
+	]);
+
 	// MATERIA PRIMA
 	Route::get('/MateriaPrima',[
 		'uses'  => 'CatalogoController@mat_prima',

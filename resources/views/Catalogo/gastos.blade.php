@@ -9,7 +9,7 @@
 	</a>
 
     <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#gastos">
-		<span class="icon icon-droplet"></span> Nuevo
+		<span class="icon icon-coin-dollar"></span> Nuevo
 	</button>
     <br>
     <br>
@@ -35,9 +35,9 @@
                             <button type="button" class="btn btn-dark btn-sm tooltips2" title="Modificar" data-toggle="modal" data-target="#mo-{{$ga->id_gastos}}"><span class="icon icon-pencil"></span></button>
 
                             <?php if($ga->ga_status){ ?>
-                                <a href="{{route('put_mat_prima',$ga->id_gastos)}}" class="btn btn-danger btn-sm tooltips2" title="Suspender"><span class="icon icon-arrow-down"></span></a>
+                                <a href="{{route('put_gasto',$ga->id_gastos)}}" class="btn btn-danger btn-sm tooltips2" title="Suspender"><span class="icon icon-arrow-down"></span></a>
                             <?php } else { ?>
-                                <a href="{{route('put_mat_prima',$ga->id_gastos)}}" class="btn btn-danger btn-sm tooltips2" title="Activar"><span class="icon icon-arrow-up"></span></a>
+                                <a href="{{route('put_gasto',$ga->id_gastos)}}" class="btn btn-danger btn-sm tooltips2" title="Activar"><span class="icon icon-arrow-up"></span></a>
                             <?php } ?>
                         </td>
                     </tr>
@@ -52,13 +52,13 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="<?php echo route('put_datos_mat_prima',$ga->id_gastos)?>" method="POST">
+                                    <form action="<?php echo route('put_datos_gasto',$ga->id_gastos)?>" method="POST">
                                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                                         <input type="hidden" name="_method" value="PUT">
                                         <div class="form-row">
                                             <div class="form-group col">
                                                 <div class="input-group">
-                                                    <span class="input-group-addon"><span class="icon icon-droplet"></span></span>
+                                                    <span class="input-group-addon"><span class="icon icon-coin-dollar"></span></span>
                                                     <input type="text" class="form-control" name="concepto" value="{{$ga->ga_concepto}}" placeholder="CONCEPTO" required>
                                                 </div>
                                             </div>

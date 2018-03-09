@@ -181,6 +181,26 @@ class CatalogoController extends Controller
 
         return redirect()->route('gastos');
     }
+
+    public function put_gasto($id){
+
+        $gastos = Gastos::find($id);
+        $gastos->ga_status = !$gastos->ga_status;
+        $gastos->save();
+
+        return redirect()->route('gastos');
+
+    }
+
+    public function put_datos_gasto(Request $request, $id){
+
+        $gastos = Gastos::find($id);
+        $gastos->ga_concepto = $request->concepto;
+        $gastos->save();
+
+        return redirect()->route('gastos');
+
+    }
     
     // MATERIA PRIMA
     public function mat_prima(){

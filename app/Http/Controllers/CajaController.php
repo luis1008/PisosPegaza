@@ -56,7 +56,8 @@ class CajaController extends Controller
         $EmpleadosPendientesPorPagar   = Prestamo::where('pres_tipo','=','PERSONAL')->where('pres_status','=','APROBADO')->whereRaw('pres_abonado < pres_cantidad')->orderBy('created_at')->get();
         $CatalogoCuentas               = Cuenta::where('ct_status','1')->orderBy('ct_nombre')->get();
         $PedidosProduccion             = Produccion::where('pr_completo','PENDIENTE')->orderBy('created_at')->get();
-        //dd($pend);
+        $CatalogoGastos                = Gastos::where('ga_status','1')->orderBy('ga_concepto')->get();
+        //dd($CatalogoGastos);
         return view('Caja.Caja')->with('empleados',$emp)
                                 ->with('vehiculos',$veh)
                                 ->with('mtPendientes',$mtp)
@@ -81,7 +82,8 @@ class CajaController extends Controller
                                 ->with('mat_primas',$mp)
                                 ->with('cuentas',$CatalogoCuentas)
                                 ->with('pendientes',$pedidos_pendientes_produccion)
-                                ->with('productos',$prod);
+                                ->with('productos',$prod)
+                                ->with('cat_gastos',$CatalogoGastos);
 
     }
 
