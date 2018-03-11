@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
 	//	MOVIMIENTOS TEMPORALES
-	$('.btn-concepto').click(function(){
+		$('.btn-concepto').click(function(){
 		var formulario = "";
 		formulario +=   '<div class="form-group col-md-6">'+
 							'<div class="input-group">'+
@@ -18,6 +18,7 @@ $(document).ready(function(){
 	$(document).on('click','.btn-delete', function(){
 		$(this).parent('div.input-group-btn').parent('div.input-group').parent('div.form-group').remove();
 	});
+
 
 	//	MOVIMIENTOS TEMPORALES PENDIENTES
 	$('.gasto').keyup(function(){

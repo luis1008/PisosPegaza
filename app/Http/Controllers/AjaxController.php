@@ -16,6 +16,7 @@ use pegaza\Domicilio;
 use pegaza\Compra;
 use pegaza\Contacto;
 use pegaza\Prestamo;
+use pegaza\Gasto;
 
 class AjaxController extends Controller
 {
@@ -69,6 +70,13 @@ class AjaxController extends Controller
         if ($request->ajax()) {
             $mp = MateriaPrima::where('mp_status','=','1')->orderBy('mp_nombre','mp_cantidad','mp_unidad')->get();
             return response()->json($mp);
+        }
+    }
+
+    public function GetConcepto(Request $request){
+        if ($request->ajax()) {
+            $gas = Gasto::where('ga_status','=','1')->orderBy('ga_concepto')->get();
+            return response()->json($gas);
         }
     }
 

@@ -91,7 +91,6 @@ $(document).ready(function(){
 							'<td>'+pedido.pe_termino+'</td>'+
 							'<td>$'+FormatMoney(parseFloat(pedido.pe_importe) - parseFloat(pedido.pe_total_abonado))+'</td>'+
 							'<td>$'+FormatMoney(pedido.pe_total_abonado)+'</td>'+
-							'<td>$'+FormatMoney(pedido.pe_importe + pedido.pe_total_abonado)+'</td>'+
 					    '</tr>';
 					    resto += (parseFloat(pedido.pe_importe) - parseFloat(pedido.pe_total_abonado));
 		});

@@ -228,7 +228,7 @@
 					  		<div class="col-md-3">
 					  			<label>Total a Cobrar</label>
 					  			<div class="input-group">
-					  				<input type="number" class="form-control" name="pago_total" step="0.01" min="0.1" value="0" id="pago" readonly>
+					  				<input type="number" class="form-control" name="pago_total" step="0.0001" min="0.0001" value="0.0000" id="pago" readonly>
 					  				<div class="input-group-btn">
 					  					<button type="submit" class="btn btn-dark" id="BtnPagoClientePedidos" disabled><span class="icon icon-coin-dollar"></span> Cobrar</button>
 					  				</div>
