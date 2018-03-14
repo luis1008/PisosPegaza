@@ -37,7 +37,9 @@ class CatalogoController extends Controller
             ],[
                 'correo.email'    => 'EL CAMPO CORREO DEBE SER DE TIPO CORREO (@live.com, @gmail.com, @hotmail.com, etc.)',
 
-                'rfc.unique'         => 'EL RFC YA EXISTE CON OTRO CLIENTE. REGISTRO NO INSERTADO.',
+                'rfc.unique'         => 'EL RFC YA EXISTE CON OTRO CLIENTE. 
+                                        REGISTRO NO INSERTADO. 
+                                        REGISTRELO NUEVAMENTE.',
             ]
             );
             
@@ -166,6 +168,8 @@ class CatalogoController extends Controller
         return redirect()->route('cuentas');
 
     }
+
+    
             //GASTOS
         public function gastos(Request $request){
         $gasto = Gastos::paginate(25);

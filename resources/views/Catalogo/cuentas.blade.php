@@ -1,6 +1,6 @@
 @extends('Template.Body')
 
-@section('title','Captura Materia Prima')
+@section('title','Cuentas')
 
 @section('body')
 

@@ -155,7 +155,7 @@
                                 </div>
                             </div>
                             
-                            <input type="hidden" name="cantidad" value="1">
+                            <!--<input type="hidden" name="cantidad" value="1">-->
 
                             <div class="form-row">
                                     <div class="form-group col">
@@ -184,7 +184,7 @@
                             <div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-binoculars"></span></span>
-                                    <textarea class="form-control" name="observacion" placeholder="OBSERVACIONES" row="5">ninguna observación</textarea>
+                                    <textarea class="form-control" name="observacion" placeholder="OBSERVACIONES" row="5">NINGUNA OBSERVACIÓN.</textarea>
 								</div>
 							</div>
                         

@@ -14,14 +14,14 @@ class ReporteController extends Controller
 	public function get_pedidos(Request $request){
         //dd($id);
 
-        $ped = Pedido::Fechas($request->inicial, $request->final)->where('pe_pago_status','=','ABONADO')->get();
+        $ped = Pedido::Fechas($request->inicial, $request->final)->where('pe_status','=','ENTREGADO')->get();
         
         return view('Reportes.ReporteCobranza')->with('pedidos',$ped);
     }
 
     public function get_compras(Request $request){
         //dd($id);
-        $com = Compra::Fechas($request->inicial, $request->final)->where('cm_status','=','ABONADO')->get();
+        $com = Compra::Fechas($request->inicial, $request->final)->where('cm_bodega','=','1')->get();
         
         return view('Reportes.ReporteCompras')->with('compras',$com);
     }

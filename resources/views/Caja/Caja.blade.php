@@ -116,22 +116,26 @@
 	            </thead>
 	            <tbody>
 	                <!-- TOTAL DE INGRESOS -->
-	                    <tr>
-	                        <th>Total</th>
-	                        <?php $total_pedido=\DB::table('pedidos')->SUM('pe_total_abonado'); ?>
-	                        <?php $total_ab_pedido=\DB::table('abono_pedido')->SUM('ap_abono'); ?>
-	                        <?php $total_ab_prestamos=\DB::table('abono_prestamo')->SUM('ab_abono'); ?>
-	                        <?php $total=$total_pedido+$total_ab_pedido+$total_ab_prestamos ?>
-	                		<td><?php echo '$'. number_format($total,2) ?></td>  
+	                <tr>
+	                    <th>Total</th>
+	                    <?php $total_pedido=\DB::table('pedidos')->SUM('pe_total_abonado'); ?>
+	                    <?php $total_ab_prestamos=\DB::table('abono_prestamo')->SUM('ab_abono'); ?>
+	                    <!-- SUMA EL TOTAL DE INGRESOS -->
+	                    <?php $total=$total_pedido+$total_ab_prestamos ?>
+	                    <!-- PINTA EL TOTAL DE INGRESOS -->
+	                	<td><?php echo '$'. number_format($total,2) ?></td>  
 
 	                <!-- TOTAL DE EGRESOS -->
-	                        <?php $total_comp=\DB::table('compras')->SUM('cm_total_abonado'); ?>
-	                        <?php $total_ab_comp=\DB::table('abono_compra')->SUM('ab_abono'); ?>
-	                        <?php $total_det_mov=\DB::table('detalle_movimientos')->SUM('ct_gasto'); ?>
-	                        <?php $total_mov_temp=\DB::table('movimiento_temporal')->SUM('mt_gasto'); ?>
-	                        <?php $total=$total_comp+$total_ab_comp+$total_det_mov+$total_mov_temp ?>
-	                		<td><?php echo '$'. number_format($total,2) ?></td>  		      
-	                    </tr>
+	                    <?php $total_comp=\DB::table('compras')->SUM('cm_total_abonado'); ?>
+	                    <?php $total_mov_temp=\DB::table('movimiento_temporal')->SUM('mt_gasto'); ?>
+	                    <?php $total_viaje=\DB::table('viaje')->SUM('vi_viaticos'); ?>
+	                    <?php $total_egreso=\DB::table('egresos')->SUM('eg_importe'); ?>
+	                    <?php $total_prestamo=\DB::table('prestamo')->SUM('pres_cantidad'); ?>
+	                    <!-- SUMA EL TOTAL DE EGRESOS -->
+	                    <?php $total=$total_comp+$total_mov_temp+$total_viaje+$total_egreso+$total_prestamo ?>
+	                    <!-- PINTA EL TOTAL DE EGRESOS -->
+	                	<td><?php echo '$'. number_format($total,2) ?></td>  		      
+	                </tr>
 		        </tbody>
 		    </table>
 			<br>
@@ -986,7 +990,7 @@
 														<div class="input-group">
 															<span class="input-group-addon"><span class="icon icon-price-tag"></span></span>
 															<select name="concepto" id="" class="form-control addconcept-<?php echo $mt->id_movimiento_temporal ?>" required>
-																<option value="">Seleccionar</option>
+																<option value="">Seleccionar Concepto</option>
 																	@foreach($cat_gastos as $gast)
 																<option value="{{$gast->ga_concepto}}">		{{$gast->ga_concepto}}</option>
 																	@endforeach

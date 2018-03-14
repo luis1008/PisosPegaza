@@ -32,8 +32,8 @@ class CajaController extends Controller
     public function caja(){
         $emp = Empleado::where('em_status','=','1')->get();
         $veh = Vehiculo::where('vh_status','=','1')->get();
-        $cob = Pedido::where('pe_pago_status','!=','PAGADO')->where('pe_status','ENTREGADO')->get();
-        $pre = Pedido::where('pe_status','PREPARADO PARA ENTREGAR')->get();
+        $cob = Pedido::where('pe_status','=','ENTREGADO')->where('pe_pago_status','!=','PAGADO')->get();
+        $pre = Pedido::where('pe_status','=','PREPARADO PARA ENTREGAR')->get();
         $ciu = Pedido::select('pe_destino_ciudad')->distinct()->get();
         $mtp = MovimientoTemporal::where('mt_status','=','PENDIENTE')->get();
         $prp = Prestamo::where('pres_status','=','PENDIENTE')->get();
