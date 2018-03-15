@@ -99,7 +99,7 @@ $(document).ready(function(){
 	}
 
 	function AppendComprasProveedor(respuesta){
-		var compras = '', resto = 0;
+		var compras = '', resto = 0, total = 0;
 		$.each(respuesta, function(index, compra){
 			//required = (index == 0) ? "required" : "";
 			compras += 	'<tr>'+
@@ -110,6 +110,7 @@ $(document).ready(function(){
 							'<td>'+compra.cm_termino+'</td>'+
 							'<td>$'+FormatMoney(parseFloat(compra.cm_total) - parseFloat(compra.cm_total_abonado))+'</td>'+
 							'<td>$'+FormatMoney(compra.cm_total_abonado)+'</td>'+
+							'<td>$'+FormatMoney(total += compra.cm_total_abonado)+'</td>'+
 					    '</tr>';
 					    resto += (parseFloat(compra.cm_total) - parseFloat(compra.cm_total_abonado));
 		});

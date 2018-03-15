@@ -161,7 +161,7 @@ $(document).ready(function(){
                     form += '<div class="form-row">'+
                                 '<div class="form-group col-md-1 DivCantidad">'+
                                     '<label>Cant.</label>'+
-                                    '<input step="0.01" type="number" name="cantidad[]" class="form-control" value="1" placeholder="NECESITA" required>'+
+                                    '<input step="0.0001" type="number" name="cantidad[]" class="form-control" value="1.0000" placeholder="NECESITA" required>'+
                                 '</div>'+
                                 '<div class="form-group col-md-6">'+
                                     '<label>Material</label>'+
@@ -223,7 +223,7 @@ $(document).ready(function(){
                     
                     form +=         '</select>'+
                                 '</div>'+
-                                '<input type="hidden" class="cantidad_materiaprima" value="0">'+
+                                '<input type="hidden" class="cantidad_materiaprima" value="0.0000" step="0.0001">'+
                                 '<div class="form-group col-md-2 DivPrecio">'+
                                     '<label>Precio</label>'+
                                     '<input type="number" name="precio_producto[]" class="form-control" value="0" placeholder="$" required>'+
