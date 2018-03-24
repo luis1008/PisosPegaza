@@ -37,6 +37,7 @@
 	<!-- ul nav -->
 	<ul class="nav nav-pills mb-3 nav-justified" id="pills-tab" role="tablist">
 	  <!-- li Informacion -->
+	  <?php if(Auth::user()->perfil=='CAJA' || Auth::user()->perfil=='ADMIN'){ ?>
 	  <li class="nav-item dropdown">
 	    <a class="nav-link active dropdown-toggle tooltips2" data-toggle="dropdown" href="#" data-placement="top" title="Informacion"><span class="icon icon-info"></span> <!-- Información --></a>
 	    <div class="dropdown-menu">
@@ -44,6 +45,7 @@
 	      <!--<a class="dropdown-item" href="#" data-toggle="modal" data-target="#pedido"><span class="icon icon-plus"></span> Nuevo</a>-->
 	    </div>
 	  </li>
+	  <?php } ?>
 	  	  <!-- li pagos -->
 	  <li class="nav-item dropdown">
 	    <a class="nav-link dropdown-toggle tooltips2" data-toggle="dropdown" href="#" data-placement="top" title="Cobranza"><span class="icon icon-coin-dollar"></span> <!-- Información --></a>
@@ -210,7 +212,7 @@
 					  		<div class="col-md-6">
 					  			<label>Clientes</label>
 							  	<select name="cliente" required class="form-control" id="SelectClientePendiente">
-									<option value="">Seleccionar</option>
+									<option value="">Seleccionar Cliente</option>
 									<?php foreach($ClientesPendientes as $cl){ ?>
 										<option value="<?php echo $cl->cliente->id_cliente?>"><?php echo $cl->cliente->cl_nombre ?></option>
 									<?php } ?> 
@@ -221,7 +223,7 @@
 					  			<div class="input-group">
 					  				<div class="input-group-addon"><span class="icon icon-credit-card"></span></div>
 					  				<select name="cuenta" required class="form-control">
-					  					<option value="">Seleccionar</option>
+					  					<option value="">Seleccionar Cuenta</option>
 					  					<option value="CAJA">CAJA</option>
 					  					@foreach($cuentas as $cuenta)
 					  						<option value="{{$cuenta->ct_nombre}}">{{$cuenta->ct_nombre}}</option>
@@ -271,7 +273,7 @@
 					  		<div class="col-md-6">
 					  			<label>Proveedores</label>
 							  	<select name="proveedor" required class="form-control" id="SelectProveedorPendiente">
-									<option value="">Seleccionar</option>
+									<option value="">Seleccionar Proveedor</option>
 									<?php foreach($ProveedoresPendientes as $pv){ ?>
 										<option value="<?php echo $pv->proveedor->id_proveedor?>"><?php echo $pv->proveedor->pv_nombre ?></option>
 									<?php } ?> 
@@ -282,7 +284,7 @@
 					  			<div class="input-group">
 					  				<div class="input-group-addon"><span class="icon icon-credit-card"></span></div>
 					  				<select name="cuenta" required class="form-control">
-					  					<option value="">Seleccionar</option>
+					  					<option value="">Seleccionar Cuenta</option>
 					  					<option value="CAJA">CAJA</option>
 					  					@foreach($cuentas as $cuenta)
 					  						<option value="{{$cuenta->ct_nombre}}">{{$cuenta->ct_nombre}}</option>
@@ -293,7 +295,7 @@
 					  		<div class="col-md-3">
 					  			<label>Total a Pagar</label>
 					  			<div class="input-group">
-					  				<input type="number" class="form-control" name="pago_total" step="0.01" min="0.1" value="0" id="pago_proveedor" readonly>
+					  				<input type="number" class="form-control" name="pago_total" step="0.01" min="0.01" value="0.00" id="pago_proveedor" readonly>
 					  				<div class="input-group-btn">
 					  					<button type="submit" class="btn btn-danger" id="BtnPagoProveedorCompra" disabled><span class="icon icon-coin-dollar"></span> Pagar</button>
 					  				</div>
@@ -308,6 +310,7 @@
 						                <th class="text-center">Termino</th>
 						                <th class="text-center">Resto</th>
 						                <th class="text-center">Total Abonado</th>
+						                <th class="text-center">Cantidad a Abonar</th>
 						            </thead>
 						            <tbody id="BodyComprasProveedor">
 					                    <tr>
@@ -331,7 +334,7 @@
 					  		<div class="col-md-8">
 					  			<label>Deudores</label>
 							  	<select name="deudor" required class="form-control" id="SelectEmpleadoPendiente">
-									<option value="">Seleccionar</option>
+									<option value="">Seleccionar Empleado</option>
 									<?php foreach($EmpleadosPendientes as $prestamo){ ?>
 										<option value="<?php echo $prestamo->id_prestamo ?>"><?php echo $prestamo->empleado ?></option>
 									<?php } ?> 
@@ -1043,13 +1046,13 @@
 								<td><?php echo $viaje->vi_destino ?></td>
 								<td><?php echo $viaje->created_at ?></td>
 								<td>
-									<a class="btn btn-dark btn-sm" target="_blank()" href="<?php echo route('get_viaje',$viaje->id_viaje) ?>"><span class="icon icon-plus"></span></a>
+									<a class="btn btn-dark btn-sm tooltips2"  title="Finalizar" target="_blank()" href="<?php echo route('get_viaje',$viaje->id_viaje) ?>"><span class="icon icon-checkmark"></span></a>
 								</td>
 								<td>
-									<a class="btn btn-danger btn-sm" target="_blank()" href="<?php echo route('get_viaje_caja',$viaje->id_viaje) ?>"><span class="icon icon-eye"></span></a>
+									<a class="btn btn-danger btn-sm tooltips2" title="Detalle" target="_blank()" href="<?php echo route('get_viaje_caja',$viaje->id_viaje) ?>"><span class="icon icon-eye"></span></a>
 								</td>
 								<td>
-									<a class="btn btn-dark btn-sm" target="_blank()" href="<?php echo route('ticket_viaje',['id'=>$viaje->id_viaje,'copia'=>1]) ?>"><span class="icon icon-ticket"></span></a>
+									<a class="btn btn-dark btn-sm tooltips2" title="Nota" target="_blank()" href="<?php echo route('ticket_viaje',['id'=>$viaje->id_viaje,'copia'=>1]) ?>"><span class="icon icon-ticket"></span></a>
 								</td>
 							</tr>
 						@endforeach

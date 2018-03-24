@@ -577,7 +577,7 @@ class CajaController extends Controller
 
         for ($i = 0; $i < sizeof($request->compras); $i++) {
 
-            $v_resto = $request->resto[$i];
+          /*  $v_resto = $request->resto[$i];
 
             if ($v_resto <= $v_pago) {
                 $this->AbonarCompraProveedor($request->compras[$i], $v_resto, $request->cuenta);
@@ -585,7 +585,8 @@ class CajaController extends Controller
                 $this->AbonarCompraProveedor($request->compras[$i], $v_pago, $request->cuenta);
             }
 
-            $v_pago -= $v_resto;
+            $v_pago -= $v_resto;*/
+            $this->AbonarCompraProveedor($request->compras[$i], $request->abono[$i], $request->cuenta);
         }
 
         return redirect()->route('caja');

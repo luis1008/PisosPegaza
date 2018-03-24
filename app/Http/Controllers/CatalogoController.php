@@ -333,7 +333,8 @@ class CatalogoController extends Controller
     // PRODUCTO
     public function producto(){
         $producto = Producto::paginate(25);
-        return view('Catalogo.Producto')->with('productos',$producto);
+        $materiales = MateriaPrima::where('mp_status', 1)->get();
+        return view('Catalogo.Producto')->with('productos',$producto)->with('materiales',$materiales);
     }
 
     public function post_producto(Request $request){
@@ -359,6 +360,17 @@ class CatalogoController extends Controller
         return redirect()->route('producto');
     }
 
+    public function post_agregar_material(Request $request, $id){
+        //dd($request);
+        $producto = Producto::find($id);
+
+        //Guardar Tabla detalle -> Materia Prima
+        for ($i=0; $i < sizeof($request->cantidad); $i++) { 
+            $producto->materiasprimas()->attach($request->material[$i], ['det_cantidad'=>$request->cantidad[$i],'det_precio'=>$request->precio[$i],'det_subtotal'=>$request->subtotal[$i]]);
+        }
+         return redirect()->route('producto');
+    }
+
     public function put_datos_producto(Request $request, $id){
         
         $producto = Producto::find($id);
@@ -380,7 +392,7 @@ class CatalogoController extends Controller
 
     }
 
-    public function put_requisitos(Request $request, $id){
+    public function post_requisitos(Request $request, $id){
         //dd($request);
         $producto = Producto::find($id);
         // Vacias Tablas 

@@ -45,17 +45,37 @@ $(document).ready(function(){
 	});
 
 	$('#pago_proveedor').change(function(){
-		CalcularPagoTecleado($(this).val(), 'CheckPagoProveedor', 'TdRestoProveedor');
+		CalcularPagoTecleado($(this).val(), 'CheckPagoProveedor', 'TdRestoProveedor', 'pago_proveedor');
 	});
 
 	$('#pago_proveedor').keyup(function(){
-		CalcularPagoTecleado($(this).val(), 'CheckPagoProveedor', 'TdRestoProveedor');
+		CalcularPagoTecleado($(this).val(), 'CheckPagoProveedor', 'TdRestoProveedor', 'pago_proveedor');
+	});
+
+	//INPUT DE ABONADO.
+	$(document).on('keyup', '.abonado', function(){
+		//VALIDA QUE NO QUEDE VACIO, PONE "0.00"
+		var cantidad = $(this).val();
+		if (cantidad == "") {
+			$(this).val('0.00');
+			$(this).parent('td').parent('tr').find('td.TDcheck').find('.CheckPagoProveedor').prop('checked', false);
+		}else{
+			$(this).parent('td').parent('tr').find('td.TDcheck').find('.CheckPagoProveedor').prop('checked', true);
+		}
+
+		
+		var total = 0;
+		$('.abonado').each(function(){
+			var abono = $(this).val();
+			total += parseFloat(abono);
+		});
+		$('#pago_proveedor').val(total);
 	});
 
 	$(document).on('change', '.CheckPagoProveedor', function(){
 		var pago = 0;
-		$('#pago_proveedor').val("0");
-		$('.CheckPagoProveedor').each(function(index){
+		//$('#pago_proveedor').val("0");
+		/*$('.CheckPagoProveedor').each(function(index){
 			if(this.checked){
 				$('.TdRestoProveedor').each(function(pos){
 					if (pos === index) {
@@ -64,6 +84,18 @@ $(document).ready(function(){
 					}
 				});
 			}
+		});*/
+		//$('#pago_proveedor').val(pago);
+
+		if (!$(this).prop('checked')) {
+			$(this).parent('td').parent('tr').find('td.TDabono').find('.abonado').val('0.00');
+		}else{
+			var resto = $(this).parent('td').parent('tr').find('.TdRestoProveedor').val();
+			$(this).parent('td').parent('tr').find('td.TDabono').find('.abonado').val(resto);
+		}
+		$('.abonado').each(function(){
+			var abono = $(this).val();
+			pago += parseFloat(abono);
 		});
 		$('#pago_proveedor').val(pago);
 	});
@@ -92,6 +124,8 @@ $(document).ready(function(){
 							'<td>$'+FormatMoney(parseFloat(pedido.pe_importe) - parseFloat(pedido.pe_total_abonado))+'</td>'+
 							'<td>$'+FormatMoney(pedido.pe_total_abonado)+'</td>'+
 					    '</tr>';
+
+
 					    resto += (parseFloat(pedido.pe_importe) - parseFloat(pedido.pe_total_abonado));
 		});
 		$('#BodyPedidosCliente').empty().append(pedidos);
@@ -104,14 +138,15 @@ $(document).ready(function(){
 			//required = (index == 0) ? "required" : "";
 			compras += 	'<tr>'+
 							'<input type="hidden" class="TdRestoProveedor" name="resto[]" value="'+(parseFloat(compra.cm_total) - parseFloat(compra.cm_total_abonado))+'"/>'+
-							'<td><input type="checkbox" class="CheckPagoProveedor" name="compras[]" value="'+compra.id_compra+'"/></td>'+
+							'<td class="TDcheck"><input type="checkbox" class="CheckPagoProveedor" name="compras[]" value="'+compra.id_compra+'"/></td>'+
 							'<th class="text-center">'+compra.cm_nota+'</th>'+
 							'<td>'+compra.created_at+'</td>'+
 							'<td>'+compra.cm_termino+'</td>'+
 							'<td>$'+FormatMoney(parseFloat(compra.cm_total) - parseFloat(compra.cm_total_abonado))+'</td>'+
 							'<td>$'+FormatMoney(compra.cm_total_abonado)+'</td>'+
-							'<td>$'+FormatMoney(total += compra.cm_total_abonado)+'</td>'+
+							'<td class="TDabono"><input type="number" class="form-control abonado" name="abono[]" value="0.00" step="0.01" max="'+(parseFloat(compra.cm_total) - parseFloat(compra.cm_total_abonado))+'" required/></td>'+
 					    '</tr>';
+
 					    resto += (parseFloat(compra.cm_total) - parseFloat(compra.cm_total_abonado));
 		});
 		$('#BodyComprasProveedor').empty().append(compras);
@@ -119,7 +154,7 @@ $(document).ready(function(){
 	}
 
 	function AppendPrestamo(respuesta){
-		var prestamo = '', resto = 0;
+		var prestamo = '', resto = 0, totales = 0;
 		prestamo += '<tr>'+
 						//'<input type="hidden" class="TdResto" name="resto" value="'+(parseFloat(respuesta.pres_cantidad) - parseFloat(respuesta.pres_abonado))+'"/>'+
 						'<td class="text-center">'+respuesta.id_prestamo+'</td>'+
@@ -127,7 +162,9 @@ $(document).ready(function(){
 						'<td>$'+FormatMoney(respuesta.pres_abonado)+'</td>'+
 						'<th>'+respuesta.pres_descripcion+'</th>'+
 				    '</tr>';
+
 		resto += (parseFloat(respuesta.pres_cantidad) - parseFloat(respuesta.pres_abonado));
+
 		$('#BodyEmpleadoPrestamo').empty().append(prestamo);
 		$('#pago_empleado').prop('max',resto);
 	}
@@ -156,12 +193,24 @@ $(document).ready(function(){
         return flag;
     }
 
-    function CalcularPagoTecleado(PagoTecleado, CampoCheck, CampoResto){
+    function CalcularPagoTecleado(PagoTecleado, CampoCheck, CampoResto, CampoTotal){
     	var pago = PagoTecleado, resto = 0;
 		$('.'+CampoCheck).prop('checked',false);
+		if (PagoTecleado == "" || PagoTecleado == 0) {
+			$('#'+CampoTotal).val('0.00');
+			$('.abonado').val('0.00');
+		}
 		$('.'+CampoResto).each(function(index){
 			resto += parseFloat($(this).val());
 			if ((resto <= pago) || pago > 0) {
+				if (resto <= pago) {
+
+					$(this).parent('tr').find('td.TDabono').find('.abonado').val(resto);
+					
+				}else if(pago > 0){
+					$(this).parent('tr').find('td.TDabono').find('.abonado').val(pago);
+				}
+
 				$('.'+CampoCheck).each(function(pos){
 					if (index == pos) {
 						$(this).prop('checked',true);

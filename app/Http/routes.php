@@ -164,8 +164,13 @@ Route::group(['middleware' => 'auth'],function(){
 	]);
 
 	Route::post('/RequisitosProducto/{id}',[
-		'uses'  => 'CatalogoController@put_requisitos', //A que controlador y despues del @ es a que funcion dentro del controlador
-		'as'	=> 'put_requisitos' //Nombre de la ruta
+		'uses'  => 'CatalogoController@post_requisitos', //A que controlador y despues del @ es a que funcion dentro del controlador
+		'as'	=> 'post_requisitos' //Nombre de la ruta
+	]);
+
+	Route::post('/AgregarMaterial/{id}',[
+		'uses'  => 'CatalogoController@post_agregar_material', //A que controlador y despues del @ es a que funcion dentro del controlador
+		'as'	=> 'post_agregar_material' //Nombre de la ruta
 	]);
 
 	// PROVEEDOR

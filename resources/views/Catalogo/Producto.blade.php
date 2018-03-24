@@ -135,7 +135,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="infos">Información/Modificación</h5>
+                        <h5 class="modal-title" id="infos">Información/Modificación de <?php echo $pd->pd_nombre ?></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -155,10 +155,48 @@
                             </ul>
                         </div>
                         <div class="form-row">
-                            <div class="col text-center bg-dark text-white" style="font-size:20px;"><b>Nuevo Requisitos</b></div>
+
+                        <div class="col text-center bg-dark text-white" style="font-size:20px;"><b>Agregar Material</b></div>
+
+                        <form action="{{ route('post_agregar_material',$pd->id_producto)}}" method="POST" onSubmit="return confirm('¿Seguro que desea agregar un nuevo material?')">
+                            {{csrf_field()}}
+                            <div class="form-row">
+                                    <div class="form-group col-md-2 DivCantidad">
+                                        <label>Cant.</label>
+                                        <input step="0.0001" type="number" name="cantidad[]" class="form-control" value="1.0000" placeholder="NECESITA" required>
+                                    </div>
+                            <div class="form-group col-md-6">
+                                        <label>Material</label>
+                            <select name="material[]" class="form-control select-material" required>
+                                        <option value="" selected>Seleccionar</option>
+                                <?php foreach ($materiales as $material): ?>
+                                        <option value="<?php echo $material->id_materia_prima ?>"><?php echo $material->mp_nombre ?></option>
+                                <?php endforeach ?>
+                             </select>
+                            </div>
+                                <input type="hidden" class="cantidad_materiaprima" value="0">
+                                <div class="form-group col-md-2 DivPrecio">
+                                    <label>Precio</label>
+                                    <input type="number" name="precio[]" class="form-control" value="0.0000" step="0.0001" placeholder="$" required>
+                                </div>
+                                <div class="form-group col-md-2 DivSub">
+                                    <label>Sub. Total</label>
+                                    <input type="text" class="form-control subtotal" name="subtotal[]" value="0.0000" step="0.0001" readonly>
+                                </div>
+
+                                <div class="col-md-12 text-center">
+                                <button type="submit" class="btn btn-dark"><span class="icon icon-upload"></span> Agregar Material</button>
+                                </div>
+
+                            </div>
+                        </form>
                         </div>
-                        <p><b>Si desea cambiar los requisitos para este producto completar la parte inferior, agregando el materia o producto necesario (Es importante que al modificar los requisitos actuales, no habrá forma de recuperarlo).</b></p>
-                        <form action="{{ route('put_requisitos',$pd->id_producto)}}" method="POST" onSubmit="return confirm('Seguro que desea modificar?')">
+                        <br>
+                        <div class="form-row">
+                            <div class="col text-center bg-danger text-white" style="font-size:20px;"><b>Nueva Formula</b></div>
+                        </div>
+                        <p><b>Si desea cambiar los requisitos para este producto, completar la parte inferior, agregando el material o producto necesario (Es importante tener en cuenta que al modificar los requisitos actuales, no habrá forma de recuperarlos).</b></p>
+                        <form action="{{ route('post_requisitos',$pd->id_producto)}}" method="POST" onSubmit="return confirm('¿Seguro que desea modificar?')">
                             {{csrf_field()}}
                             <div>
                                 <div class="form-row text-center">
