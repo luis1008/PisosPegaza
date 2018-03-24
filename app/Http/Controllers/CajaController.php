@@ -26,6 +26,7 @@ use pegaza\MateriaPrima;
 use pegaza\Produccion;
 use pegaza\Gastos;
 use pegaza\GastoFijo;
+use pegaza\Egresos;
 
 class CajaController extends Controller
 {
@@ -465,6 +466,38 @@ class CajaController extends Controller
         
         return view('Viajes.Reporte');  
 }
+
+        public function post_finalizar_viaje(Request $request){
+
+            //TABLA VIAJE
+            $viaje = new Viaje();
+            $viaje->vi_kilometraje_final        = $request->final;
+            $viaje->vi_observaciones            = $request->descripcion;
+            $viaje->save();
+
+            //TABLA ABONO_PEDIDO
+            $abono_pedido =  new AbonoPedido();
+            $abono_pedido->ap_abono  = $request->abono_pedido;
+            $abono_pedido->ap_pago   = $request->forma_pago_pedido;
+            $abono_pedido->save();
+
+             //TABLA ABONO_COBRANZA
+            $abono_pedido =  new AbonoPedido();
+            $abono_pedido->ap_abono  = $request->abono_cobranza;
+            $abono_pedido->ap_pago   = $request->forma_pago_cobranza;
+            $abono_pedido->save();
+
+            //TABLA EGRESOS
+            $egresos =  new Egresos();
+            $egresos->eg_nota       = $request->nota;
+            $egresos->eg_concepto   = $request->concepto;
+            $egresos->eg_importe    = $request->importe;
+            $egresos->viaje_id      = $viaje->id_viaje;
+            $egresos->save();
+
+        return redirect()->route('Viajes.Reporte_Caja');
+
+    }
     
     // PRODUCCION
     public function post_pedido_produccion(Request $request){
@@ -555,9 +588,9 @@ class CajaController extends Controller
 
         $v_pago  = $request->pago_total;
 
-        for ($i = 0; $i < sizeof($request->pedidos); $i++) {
+       for ($i = 0; $i < sizeof($request->pedidos); $i++) {
 
-            $v_resto = $request->resto[$i];
+            /*$v_resto = $request->resto[$i];
 
             if ($v_resto <= $v_pago) {
                 $this->AbonarPedidoCliente($request->pedidos[$i], $v_resto, $request->cuenta);
@@ -565,7 +598,8 @@ class CajaController extends Controller
                 $this->AbonarPedidoCliente($request->pedidos[$i], $v_pago, $request->cuenta);
             }
 
-            $v_pago -= $v_resto;
+            $v_pago -= $v_resto;*/
+            $this->AbonarPedidoCliente($request->pedidos[$i], $request->abono[$i], $request->cuenta);
         }
 
         return redirect()->route('caja');

@@ -317,6 +317,11 @@ Route::group(['middleware' => 'auth'],function(){
 		'as'   => 'post_viaje'
 	]);
 
+	Route::post('/FinalizarViaje',[
+		'uses' => 'CajaController@post_finalizar_viaje',
+		'as'   => 'post_finalizar_viaje'
+	]);
+
 	Route::get('/Viaje/{id}',[
 		'uses' => 'ViajeController@get_viaje',
 		'as'   => 'get_viaje'

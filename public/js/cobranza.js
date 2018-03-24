@@ -11,27 +11,11 @@ $(document).ready(function(){
 	});
 
 	$('#pago').change(function(){
-		CalcularPagoTecleado($(this).val(), 'CheckPagoCliente', 'TdResto');
+		CalcularPagoTecleado($(this).val(), 'CheckPagoCliente', 'TdResto', 'pago');
 	});
 
 	$('#pago').keyup(function(){
-		CalcularPagoTecleado($(this).val(), 'CheckPagoCliente', 'TdResto');
-	});
-
-	$(document).on('change', '.CheckPagoCliente', function(){
-		var pago = 0;
-		$('#pago').val("0");
-		$('.CheckPagoCliente').each(function(index){
-			if(this.checked){
-				$('.TdResto').each(function(pos){
-					if (pos === index) {
-						pago += parseFloat($(this).val());
-						return false;
-					}
-				});
-			}
-		});
-		$('#pago').val(pago);
+		CalcularPagoTecleado($(this).val(), 'CheckPagoCliente', 'TdResto', 'pago');
 	});
 
 	// Proveedor
@@ -52,7 +36,7 @@ $(document).ready(function(){
 		CalcularPagoTecleado($(this).val(), 'CheckPagoProveedor', 'TdRestoProveedor', 'pago_proveedor');
 	});
 
-	//INPUT DE ABONADO.
+	//INPUT DE ABONADO PROVEEDOR.
 	$(document).on('keyup', '.abonado', function(){
 		//VALIDA QUE NO QUEDE VACIO, PONE "0.00"
 		var cantidad = $(this).val();
@@ -63,7 +47,6 @@ $(document).ready(function(){
 			$(this).parent('td').parent('tr').find('td.TDcheck').find('.CheckPagoProveedor').prop('checked', true);
 		}
 
-		
 		var total = 0;
 		$('.abonado').each(function(){
 			var abono = $(this).val();
@@ -72,6 +55,56 @@ $(document).ready(function(){
 		$('#pago_proveedor').val(total);
 	});
 
+	//INPUT DE ABONADO CLIENTES.
+	$(document).on('keyup', '.abonado', function(){
+		//VALIDA QUE NO QUEDE VACIO, PONE "0.00"
+		var cantidad = $(this).val();
+		if (cantidad == "") {
+			$(this).val('0.00');
+			$(this).parent('td').parent('tr').find('td.TDcheck').find('.CheckPagoCliente').prop('checked', false);
+		}else{
+			$(this).parent('td').parent('tr').find('td.TDcheck').find('.CheckPagoCliente').prop('checked', true);
+		}
+
+		var total = 0;
+		$('.abonado').each(function(){
+			var abono = $(this).val();
+			total += parseFloat(abono);
+		});
+		$('#pago').val(total);
+	});
+
+		//CLIENTES
+	$(document).on('change', '.CheckPagoCliente', function(){
+		var pago = 0;
+		/*$('#pago').val("0");
+		$('.CheckPagoCliente').each(function(index){
+			if(this.checked){
+				$('.TdResto').each(function(pos){
+					if (pos === index) {
+						pago += parseFloat($(this).val());
+						return false;
+					}
+				});
+			}
+		});
+		$('#pago').val(pago);*/
+
+			if (!$(this).prop('checked')) {
+			$(this).parent('td').parent('tr').find('td.TDabono').find('.abonado').val('0.00');
+		}else{
+			var resto = $(this).parent('td').parent('tr').find('.TdResto').val();
+			$(this).parent('td').parent('tr').find('td.TDabono').find('.abonado').val(resto);
+		}
+		$('.abonado').each(function(){
+			var abono = $(this).val();
+			pago += parseFloat(abono);
+		});
+		$('#pago').val(pago);
+	});
+	
+
+	//PROVEEDOR
 	$(document).on('change', '.CheckPagoProveedor', function(){
 		var pago = 0;
 		//$('#pago_proveedor').val("0");
@@ -117,12 +150,13 @@ $(document).ready(function(){
 			pedidos += 	'<tr>'+
 							'<input type="hidden" class="TdResto" name="resto[]" value="'+(parseFloat(pedido.pe_importe) - parseFloat(pedido.pe_total_abonado))+'"/>'+
 							//'<td><input type="checkbox" class="CheckPagoCliente" name="pedidos[]" '+required+' value="'+pedido.pe_nota+'"/></td>'+
-							'<td><input type="checkbox" class="CheckPagoCliente" name="pedidos[]" value="'+pedido.id_pedido+'"/></td>'+
+							'<td class="TDcheck"><input type="checkbox" class="CheckPagoCliente" name="pedidos[]" value="'+pedido.id_pedido+'"/></td>'+
 							'<th class="text-center">'+pedido.pe_nota+'</th>'+
 							'<td>'+pedido.pe_fecha_pedido+'</td>'+
 							'<td>'+pedido.pe_termino+'</td>'+
 							'<td>$'+FormatMoney(parseFloat(pedido.pe_importe) - parseFloat(pedido.pe_total_abonado))+'</td>'+
 							'<td>$'+FormatMoney(pedido.pe_total_abonado)+'</td>'+
+							'<td class="TDabono"><input type="number" class="form-control abonado" name="abono[]" value="0.00" step="0.01" max="'+(parseFloat(pedido.pe_importe) - parseFloat(pedido.pe_total_abonado))+'" required/></td>'+
 					    '</tr>';
 
 

@@ -38,6 +38,8 @@
 			<td><b>Kilometraje Inicial:</b></td><td><?php echo $viajes->vi_kilometraje_inicial ?></td>
 		</tr>
 	</table>
+	<form action="<?php echo route('post_finalizar_viaje')?>" method="POST">
+        {{csrf_field()}}
 	<div class="card">
 		<div class="card-header bg-danger text-center text-white"><b>Entrego</b></div>
 		<table class="table table-sm">
@@ -62,7 +64,7 @@
 							<td><?php echo $pedido->pe_destino_pedido ?></td>
 							<td><?php echo $pedido->pivot->det_status ?></td>
 							<td>
-								<select name="forma_pago">
+								<select name="forma_pago_pedido">
 									<option value="">Seleccionar</option>
 									<option value="EFECTIVO">EFECTIVO</option>
 									<option value="TRANSFERENCIA">TRANSFERENCIA</option>
@@ -71,7 +73,7 @@
 								</select>
 							</td>
 							<td>
-								<input type="text" class="form-control" name="abono" placeholder="$">
+								<input type="text" class="form-control" name="abono_pedido" placeholder="$">
 							</td>
 
 						</tr>	
@@ -106,7 +108,7 @@
 							<td><?php echo $pedido->pe_importe - $pedido->pe_total_abonado ?></td>
 							<td><?php echo $pedido->pivot->det_status ?></td>
 							<td>
-								<select name="forma_pago">
+								<select name="forma_pago_cobranza">
 									<option value="">Seleccionar</option>
 									<option value="EFECTIVO">EFECTIVO</option>
 									<option value="TRANSFERENCIA">TRANSFERENCIA</option>
@@ -115,7 +117,7 @@
 								</select>
 							</td>
 							<td>
-								<input type="text" class="form-control" name="abono" placeholder="$">
+								<input type="text" class="form-control" name="abono_cobranza" placeholder="$">
 							</td>
 						</tr>	
 					<?php endif ?>
@@ -150,7 +152,7 @@
 			<button class="btn btn-danger">Finalizar Viaje</button>
 		</div>
 	</div>
-
+	</form>
 	<!-- Modal EGRESOS -->
 	<!--
 	<div class="modal fade" id="egreso" tabindex="-1" role="dialog" aria-labelledby="egresos" aria-hidden="true">

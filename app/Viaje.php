@@ -32,6 +32,10 @@ class Viaje extends Model
         return $this->belongsTo('pegaza\Viaje','viaje_id');
     }
 
+    public function egresos(){
+        return $this->belongsTo('pegaza\Viaje','viaje_id');
+    }
+
       public function prestamo(){
         return $this->belongsTo('pegaza\Prestamo','viaje_id');
     }
