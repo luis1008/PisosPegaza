@@ -250,6 +250,7 @@
 						                <th class="text-center">Termino</th>
 						                <th class="text-center">Debe</th>
 						                <th class="text-center">Total Abonado</th>
+						                <th class="text-center">Cantidad a Abonar</th>
 						            </thead>
 						            <tbody id="BodyPedidosCliente">
 					                    <tr>
