@@ -38,7 +38,7 @@
 			<td><b>Kilometraje Inicial:</b></td><td><?php echo $viajes->vi_kilometraje_inicial ?></td>
 		</tr>
 	</table>
-	<form action="<?php echo route('post_finalizar_viaje')?>" method="POST">
+	<form action="<?php echo route('post_finalizar_viaje', $viajes->id_viaje)?>" method="POST" onSubmit="return confirm('¿Seguro que desea Finalizar el Viaje? Una vez Finalizado, no se permiten modificaciones.')">
         {{csrf_field()}}
 	<div class="card">
 		<div class="card-header bg-danger text-center text-white"><b>Entrego</b></div>
@@ -64,7 +64,7 @@
 							<td><?php echo $pedido->pe_destino_pedido ?></td>
 							<td><?php echo $pedido->pivot->det_status ?></td>
 							<td>
-								<select name="forma_pago_pedido">
+								<select name="forma_pago[]">
 									<option value="">Seleccionar</option>
 									<option value="EFECTIVO">EFECTIVO</option>
 									<option value="TRANSFERENCIA">TRANSFERENCIA</option>
@@ -73,7 +73,8 @@
 								</select>
 							</td>
 							<td>
-								<input type="text" class="form-control" name="abono_pedido" placeholder="$">
+								<input type="hidden" name="id_pedido[]" value="<?php echo $pedido->id_pedido ?> ">
+								<input type="text" class="form-control" name="abono[]" placeholder="$">
 							</td>
 
 						</tr>	
@@ -108,7 +109,7 @@
 							<td><?php echo $pedido->pe_importe - $pedido->pe_total_abonado ?></td>
 							<td><?php echo $pedido->pivot->det_status ?></td>
 							<td>
-								<select name="forma_pago_cobranza">
+								<select name="forma_pago[]">
 									<option value="">Seleccionar</option>
 									<option value="EFECTIVO">EFECTIVO</option>
 									<option value="TRANSFERENCIA">TRANSFERENCIA</option>
@@ -117,7 +118,8 @@
 								</select>
 							</td>
 							<td>
-								<input type="text" class="form-control" name="abono_cobranza" placeholder="$">
+								<input type="hidden" name="id_pedido[]" value="<?php echo $pedido->id_pedido ?> ">
+								<input type="text" class="form-control" name="abono[]" placeholder="$">
 							</td>
 						</tr>	
 					<?php endif ?>

@@ -467,35 +467,32 @@ class CajaController extends Controller
         return view('Viajes.Reporte');  
 }
 
-        public function post_finalizar_viaje(Request $request){
+        public function post_finalizar_viaje(Request $request, $id){
 
             //TABLA VIAJE
-            $viaje = new Viaje();
+            $viaje = Viaje::find($id);
             $viaje->vi_kilometraje_final        = $request->final;
+            $viaje->vi_status                   = 1;
             $viaje->vi_observaciones            = $request->descripcion;
             $viaje->save();
 
             //TABLA ABONO_PEDIDO
-            $abono_pedido =  new AbonoPedido();
-            $abono_pedido->ap_abono  = $request->abono_pedido;
-            $abono_pedido->ap_pago   = $request->forma_pago_pedido;
-            $abono_pedido->save();
-
-             //TABLA ABONO_COBRANZA
-            $abono_pedido =  new AbonoPedido();
-            $abono_pedido->ap_abono  = $request->abono_cobranza;
-            $abono_pedido->ap_pago   = $request->forma_pago_cobranza;
-            $abono_pedido->save();
+            for ($i=0; $i < sizeof($request->abono) ; $i++) { 
+                $this->AbonarPedidoCliente($request->id_pedido[$i], $request->abono[$i], $request->forma_pago[$i]);
+            }
 
             //TABLA EGRESOS
-            $egresos =  new Egresos();
-            $egresos->eg_nota       = $request->nota;
-            $egresos->eg_concepto   = $request->concepto;
-            $egresos->eg_importe    = $request->importe;
-            $egresos->viaje_id      = $viaje->id_viaje;
-            $egresos->save();
+            for ($i=0; $i < sizeof($request->nota) ; $i++) { 
+                    $egresos =  new Egresos();
+                    $egresos->eg_nota       = $request->nota[$i];
+                    $egresos->eg_concepto   = $request->concepto[$i];
+                    $egresos->eg_importe    = $request->importe[$i];
+                    $egresos->viaje_id      = $viaje->id_viaje;
+                    $egresos->save();
+            }
 
-        return redirect()->route('Viajes.Reporte_Caja');
+
+        return redirect()->route('get_viaje_caja', $viaje->id_viaje);
 
     }
     

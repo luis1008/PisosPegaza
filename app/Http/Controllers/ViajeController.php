@@ -11,6 +11,7 @@ use pegaza\Empleado;
 use pegaza\Vehiculo;
 use pegaza\Pedido;
 use pegaza\Gastos;
+use pegaza\Egresos;
 
 class ViajeController extends Controller
 {
@@ -28,6 +29,13 @@ class ViajeController extends Controller
         $via  = Viaje::find($id);
         
         return view('Viajes.Reporte_Caja')->with('viajes',$via);
+    }
+
+    public function get_egresos_viaje($id){
+        //dd($id);
+        $egre  = Egresos::find($id);
+        
+        return view('Viajes.Reporte_Caja')->with('egresos',$egre);
     }
 
 }

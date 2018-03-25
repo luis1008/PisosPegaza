@@ -317,7 +317,7 @@ Route::group(['middleware' => 'auth'],function(){
 		'as'   => 'post_viaje'
 	]);
 
-	Route::post('/FinalizarViaje',[
+	Route::post('/FinalizarViaje/{id}',[
 		'uses' => 'CajaController@post_finalizar_viaje',
 		'as'   => 'post_finalizar_viaje'
 	]);
