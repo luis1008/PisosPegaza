@@ -101,6 +101,9 @@
 	      <a class="dropdown-item" data-toggle="pill" href="#pills-produccion" role="tab"><span class="icon icon-eye"></span> Ver</a>
 	      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#produccion_pedido"><span class="icon icon-forward"></span> Enviar</a>
 	      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ajuste_inventario"><span class="icon icon-cog"></span> Ajuste Inventario</a>
+	      @foreach($PedidosProduccion as $pr)
+	      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#AgregarProduccion-{{$pr->id_produccion}}"><span class="icon icon-plus"></span> Agregar Producción</a>
+	      @endforeach
 	    </div>
 	  </li>
 	</ul> <!-- /ul nav -->
@@ -115,17 +118,18 @@
 	                <th></th>
 	                <th>Ingresos</th>
 	                <th>Egresos</th>
+	                <th>Saldo</th>
 	            </thead>
 	            <tbody>
 	                <!-- TOTAL DE INGRESOS -->
 	                <tr>
-	                    <th>Total</th>
+	                    <th>Totales</th>
 	                    <?php $total_pedido=\DB::table('pedidos')->SUM('pe_total_abonado'); ?>
 	                    <?php $total_ab_prestamos=\DB::table('abono_prestamo')->SUM('ab_abono'); ?>
 	                    <!-- SUMA EL TOTAL DE INGRESOS -->
-	                    <?php $total=$total_pedido+$total_ab_prestamos ?>
+	                    <?php $total_ingresos=$total_pedido+$total_ab_prestamos ?>
 	                    <!-- PINTA EL TOTAL DE INGRESOS -->
-	                	<td><?php echo '$'. number_format($total,2) ?></td>  
+	                	<td><?php echo '$'. number_format($total_ingresos,2) ?></td>  
 
 	                <!-- TOTAL DE EGRESOS -->
 	                    <?php $total_comp=\DB::table('compras')->SUM('cm_total_abonado'); ?>
@@ -134,9 +138,12 @@
 	                    <?php $total_egreso=\DB::table('egresos')->SUM('eg_importe'); ?>
 	                    <?php $total_prestamo=\DB::table('prestamo')->SUM('pres_cantidad'); ?>
 	                    <!-- SUMA EL TOTAL DE EGRESOS -->
-	                    <?php $total=$total_comp+$total_mov_temp+$total_viaje+$total_egreso+$total_prestamo ?>
+	                    <?php $total_egresos=$total_comp+$total_mov_temp+$total_viaje+$total_egreso+$total_prestamo ?>
 	                    <!-- PINTA EL TOTAL DE EGRESOS -->
-	                	<td><?php echo '$'. number_format($total,2) ?></td>  		      
+	                	<td><?php echo '$'. number_format($total_egresos,2) ?></td>
+	                	<!-- PINTA EL SALDO -->
+	                	<?php $total_saldo=$total_ingresos - $total_egresos ?>
+	                	<td><?php echo '$'. number_format($total_saldo,2) ?></td>  		      
 	                </tr>
 		        </tbody>
 		    </table>
@@ -1667,12 +1674,19 @@
 				</div>
 				<div class="modal-body">
 					<form action="<?php echo route('post_prestamo') ?>" method="POST">
+
 						{{csrf_field()}}
 						<div class="form-row">
 							<div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-user"></span></span>
-									<input type="text" class="form-control" name="empleado" placeholder="¿A QUIEN LE PRESTA?" required>
+										<select name="empleado" id="emp" class="form-control select-person" required>
+											<option value="">Seleccionar Empleado</option>
+											<option value="add">Otros</option>
+											@foreach($empleados as $emp)
+											<option value="{{$emp->em_nombre}}">{{$emp->em_nombre}}</option>
+											@endforeach
+										</select>
 								</div>
 							</div>
 							<div class="form-group col">
@@ -1714,6 +1728,60 @@
 							<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
 							<button type="submit" class="btn btn-dark"><span class="icon icon-floppy-disk"></span> Guardar</button>
 						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal PRESTAMO -> AGREGAR NUEVA PERSONA <OPTION> -->
+	<div class="modal fade" id="NewPersona" tabindex="-1" role="dialog" aria-labelledby="personas" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="personas">Nueva Persona</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form action="<?php echo route('post_producto')?>" method="POST">
+                        {{csrf_field()}}
+						<div class="form-row">
+                            <div class="form-group col">
+								<div class="input-group">
+									<span class="input-group-addon"><span class="icon icon-user"></span></span>
+									<input type="text" class="form-control" name="nombre" placeholder="NOMBRE" required>
+								</div>
+							</div>
+                          	<div class="form-group col">
+								<div class="input-group">
+									<span class="input-group-addon"><span class="icon icon-road"></span></span>
+									<input type="text" class="form-control input-costo" name="domicilio"  placeholder="DOMICILIO" required>
+								</div>
+							</div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col">
+								<div class="input-group">
+									<span class="input-group-addon"><span class="icon icon-phone"></span></span>
+									<input type="number" class="form-control" name="telefono"  placeholder="TELEFONO" required>
+								</div>
+							</div>
+						   	<div class="form-group col">
+								<div class="input-group">
+									<span class="input-group-addon"><span class="icon icon-coin-mail"></span></span>
+									<input type="number" class="form-control" name="correo"  placeholder="CORREO" required>
+								</div>
+							</div>
+                        
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button> 
+                            <button type="button" class="btn btn-danger btn-closePD" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
+                            <button type="submit" class="btn btn-dark"><span class="icon icon-floppy-disk"></span> Guardar</button>
+                        </div>
 					</form>
 				</div>
 			</div>
@@ -2340,7 +2408,7 @@
 	</div>
 
 	@foreach($PedidosProduccion as $pr)
-		<!-- Modal Finalizar-->
+		<!-- Modal Finalizar Produccion-->
 		<div class="modal fade" id="FinalizarProduccion-{{$pr->id_produccion}}" tabindex="-1" role="dialog" aria-labelledby="viaticos" aria-hidden="true">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
@@ -2385,6 +2453,72 @@
 								<div class="col text-center bg-danger text-white" style="font-size:20px;"><b>Exceso de Producto</b></div>
 								<div class="col-md-12">
 									<p><b>Si se excede de productos solicitados, favor de especificar los productos excedidos para afectar inventario, caso al contrario omitir este proceso.</b></p>
+								</div>
+							</div>
+							<div class="form-row" style="margin-bottom:25px;">
+								<div class="text-center col-md-12">
+									<button type="button" class="btn btn-dark BtnAddProductoExceso"><span class="icon icon-plus"></span> Producto</button>
+								</div>
+							</div>
+							<div class="AppendProductoExceso"></div>
+							<div class="modal-footer">
+								<button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button>
+								<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
+								<button type="submit" class="btn btn-dark"><span class="icon icon-floppy-disk"></span> Guardar</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	@endforeach
+
+	@foreach($PedidosProduccion as $pr)
+		<!-- Modal Agregar Produccion-->
+		<div class="modal fade" id="AgregarProduccion-{{$pr->id_produccion}}" tabindex="-1" role="dialog" aria-labelledby="viaticos" aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="viaticos">Agregar Producción</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form action="{{route('finalizar_produccion',$pr->id_produccion)}}" method="POST">
+							<input type="hidden" name="_token" value="{{csrf_token()}}">
+							<input type="hidden" name="_method" value="PUT">
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Encargado</label>
+									<div class="input-group">
+										<div class="input-group-addon"><span class="icon icon-user-tie"></span></div>
+										<input type="text" name="encargado" class="form-control" placeholder="Encargado" required>
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Ayudante</label>
+									<div class="input-group">
+										<div class="input-group-addon"><span class="icon icon-user"></span></div>
+										<input type="text" name="ayudante" class="form-control" placeholder="Ayudante">
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Turno</label>
+									<div class="input-group">
+										<div class="input-group-addon"><span class="icon icon-clock"></span></div>
+										<select name="turno" class="form-control" required>
+											<option value="">Seleccionar</option>
+											<option value="MATUTINO">MATUTINO</option>
+											<option value="VESPERTINO">VESPERTINO</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col text-center bg-danger text-white" style="font-size:20px;"><b>Agregar Producto(s)</b></div>
+								<div class="col-md-12">
+									<p><b>Agregar la Producción que se hizo durante el día.</b></p>
 								</div>
 							</div>
 							<div class="form-row" style="margin-bottom:25px;">

@@ -1,6 +1,6 @@
 @extends('Template.Body')
 
-@section('title','Compras')
+@section('title','Reporte de Compras')
 
 @section('body')
     <form action="{{route('get_compras')}}" method="GET">

@@ -1,6 +1,6 @@
 @extends('Template.Body')
 
-@section('title','Cobranza')
+@section('title','Reporte de Cobranza')
 
 @section('body')
     <form action="{{route('get_pedidos')}}" method="GET">
@@ -50,7 +50,7 @@
                 <?php foreach ($pedidos as $pedido) { ?>
                     <tr>
                         <th class="text-center">{{$pedido->id_pedido}}</th>
-                         <td>{{$pedido->cliente->cl_nombre}}</td>
+                        <td>{{$pedido->cliente->cl_nombre}}</td>
                         <td>{{'$'.number_format($pedido->pe_importe,2)}}</td>
                         <td>{{'$'.number_format($pedido->pe_total_abonado,2)}}</td>
                         <td>{{$pedido->pe_fecha_pedido}}</td>

@@ -1,6 +1,6 @@
 @extends('Template.Body')
 
-@section('title','Produccion')
+@section('title','Reporte de Produccion')
 
 @section('body')
     <form action="{{route('get_produccion')}}" method="GET">

@@ -387,6 +387,11 @@ Route::group(['middleware' => 'auth'],function(){
 		'as'	=> 'get_compras' //Nombre de la ruta
 	]);
 
+	Route::get('/ReportesCaja',[
+		'uses'  => 'ReporteController@get_caja', //A que controlador y despues del @ es a que funcion dentro del controlador
+		'as'	=> 'get_caja' //Nombre de la ruta
+	]);
+
 	Route::get('/ReportesProduccion',[
 		'uses'  => 'ReporteController@get_produccion', //A que controlador y despues del @ es a que funcion dentro del controlador
 		'as'	=> 'get_produccion' //Nombre de la ruta
