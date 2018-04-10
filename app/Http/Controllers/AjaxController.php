@@ -54,8 +54,8 @@ class AjaxController extends Controller
 
     public function GetPrestamosPendientes(Request $request){
         if ($request->ajax()) {
-            $prestamo = Prestamo::find($request->id);
-            return response()->json($prestamo);
+            $prestamos = Prestamo::find($request->id)->where('pres_status','=','APROBADO')->get();
+            return response()->json($prestamos);
         }
     }
 

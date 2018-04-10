@@ -36,6 +36,24 @@ $(document).ready(function(){
 		CalcularPagoTecleado($(this).val(), 'CheckPagoProveedor', 'TdRestoProveedor', 'pago_proveedor');
 	});
 
+	// Prestamo
+	$('#SelectEmpleadoPendiente').change(function(){
+		var valor = $(this).val();
+		if (valor != "") {
+			var flag = PeticionesAjax("/GetPrestamosPendientes", "GET", {id:valor}, AppendPrestamo);
+			$('#BtnPagoEmpleado').prop('disabled',!flag);
+			$('#pago_empleado').prop('readonly',!flag);
+		}
+	});
+
+	$('#pago_empleado').change(function(){
+		CalcularPagoTecleado($(this).val(), 'CheckPagoPrestamo', 'TdRestoPrestamo', 'pago_empleado');
+	});
+
+	$('#pago_empleado').keyup(function(){
+		CalcularPagoTecleado($(this).val(), 'CheckPagoPrestamo', 'TdRestoPrestamo', 'pago_empleado');
+	});
+
 	//INPUT DE ABONADO PROVEEDOR.
 	$(document).on('keyup', '.abonado', function(){
 		//VALIDA QUE NO QUEDE VACIO, PONE "0.00"
@@ -73,6 +91,26 @@ $(document).ready(function(){
 		});
 		$('#pago').val(total);
 	});
+
+	//INPUT DE ABONADO PRESTAMOS.
+	$(document).on('keyup', '.abonado', function(){
+		//VALIDA QUE NO QUEDE VACIO, PONE "0.00"
+		var cantidad = $(this).val();
+		if (cantidad == "") {
+			$(this).val('0.00');
+			$(this).parent('td').parent('tr').find('td.TDcheck').find('.CheckPagoPrestamo').prop('checked', false);
+		}else{
+			$(this).parent('td').parent('tr').find('td.TDcheck').find('.CheckPagoPrestamo').prop('checked', true);
+		}
+
+		var total = 0;
+		$('.abonado').each(function(){
+			var abono = $(this).val();
+			total += parseFloat(abono);
+		});
+		$('#pago_empleado').val(total);
+	});
+
 
 		//CLIENTES
 	$(document).on('change', '.CheckPagoCliente', function(){
@@ -133,7 +171,25 @@ $(document).ready(function(){
 		$('#pago_proveedor').val(pago);
 	});
 
-	//Empleado
+	//PRESTAMO EMPLEADO
+	$(document).on('change', '.CheckPagoPrestamo', function(){
+		var pago = 0;
+
+		if (!$(this).prop('checked')) {
+			$(this).parent('td').parent('tr').find('td.TDabono').find('.abonado').val('0.00');
+		}else{
+			var resto = $(this).parent('td').parent('tr').find('.TdRestoPrestamo').val();
+			$(this).parent('td').parent('tr').find('td.TDabono').find('.abonado').val(resto);
+		}
+		$('.abonado').each(function(){
+			var abono = $(this).val();
+			pago += parseFloat(abono);
+		});
+		$('#pago_empleado').val(pago);
+	});
+
+
+	/*Empleado
 	$('#SelectEmpleadoPendiente').change(function(){
 		var valor = $(this).val();
 		if (valor != "") {
@@ -141,7 +197,7 @@ $(document).ready(function(){
 			$('#BtnPagoEmpleado').prop('disabled',!flag);
 			$('#pago_empleado').prop('readonly',!flag);
 		}
-	});
+	}); */
 
 	function AppendPedidosCliente(respuesta){
 		var pedidos = '', resto = 0;
@@ -188,8 +244,29 @@ $(document).ready(function(){
 	}
 
 	function AppendPrestamo(respuesta){
-		var prestamo = '', resto = 0, totales = 0;
-		prestamo += '<tr>'+
+		var prestamos = '', resto = 0, totales = 0;
+
+		$.each(respuesta, function(index, prestamo){
+			//required = (index == 0) ? "required" : "";
+			prestamos += 	'<tr>'+
+							'<td class="TDcheck"><input type="checkbox" class="CheckPagoPrestamo" name="prestamos[]" value="'+prestamo.id_prestamo+'"/></td>'+
+							'<input type="hidden" class="TdRestoPrestamo" name="resto[]" value="'+(parseFloat(prestamo.pres_cantidad) - parseFloat(prestamo.pres_abonado))+'"/>'+
+							'<td>'+prestamo.created_at+'</td>'+
+							'<td>$'+FormatMoney(prestamo.pres_abonado)+'</td>'+
+							'<td class="TDabono"><input type="number" class="form-control abonado" name="abono[]" value="0.00" step="0.01" max="'+(parseFloat(prestamo.pres_cantidad) - parseFloat(prestamo.pres_abonado))+'" required/></td>'+
+							'<th>'+prestamo.pres_descripcion+'</th>'+
+					    '</tr>';
+
+					    resto += (parseFloat(prestamo.pres_cantidad) - parseFloat(prestamo.pres_abonado));
+		});
+		$('#BodyEmpleadoPrestamo').empty().append(prestamos);
+		$('#pago_empleado').prop('max',resto);
+
+
+
+
+
+		/*prestamo += '<tr>'+
 						//'<input type="hidden" class="TdResto" name="resto" value="'+(parseFloat(respuesta.pres_cantidad) - parseFloat(respuesta.pres_abonado))+'"/>'+
 						'<td class="text-center">'+respuesta.id_prestamo+'</td>'+
 						'<td>$'+FormatMoney(parseFloat(respuesta.pres_cantidad) - parseFloat(respuesta.pres_abonado))+'</td>'+
@@ -200,7 +277,7 @@ $(document).ready(function(){
 		resto += (parseFloat(respuesta.pres_cantidad) - parseFloat(respuesta.pres_abonado));
 
 		$('#BodyEmpleadoPrestamo').empty().append(prestamo);
-		$('#pago_empleado').prop('max',resto);
+		$('#pago_empleado').prop('max',resto);*/
 	}
 
 	function PeticionesAjax(url,tipo,datos = {},funcion = ""){

@@ -339,7 +339,7 @@
 				  	<form action="{{ route('post_pago_prestamo') }}" method="POST">
 				  		{{ csrf_field() }}
 				  		<div class="row card-body">
-					  		<div class="col-md-8">
+					  		<div class="col-md-6">
 					  			<label>Deudores</label>
 							  	<select name="deudor" required class="form-control" id="SelectEmpleadoPendiente">
 									<option value="">Seleccionar Empleado</option>
@@ -348,8 +348,8 @@
 									<?php } ?> 
 								</select>
 					  		</div>
-					  		<!-- <div class="col-md-3">
-					  			<label>Cuenta</label>
+					  		<div class="col-md-3">
+					  			<!--<label>Cuenta</label>
 					  			<div class="input-group">
 					  				<div class="input-group-addon"><span class="icon icon-credit-card"></span></div>
 					  				<select name="cuenta" required class="form-control">
@@ -359,9 +359,9 @@
 					  						<option value="{{$cuenta->ct_nombre}}">{{$cuenta->ct_nombre}}</option>
 					  					@endforeach
 					  				</select>
-					  			</div>
-					  		</div> -->
-					  		<div class="col">
+					  			</div>-->
+					  		</div> 
+					  		<div class="col-md-3">
 					  			<label>Total a Pagar</label>
 					  			<div class="input-group">
 					  				<input type="number" class="form-control" name="pago_total" step="0.01" min="0.1" value="0" id="pago_empleado" readonly>
@@ -375,7 +375,9 @@
 						            <thead>
 						                <th class="text-center">No. Prestamo</th>
 						                <th>Resto</th>
+						                <th>Fecha del Prestamo</th>
 						                <th>Total Abonado</th>
+						                <th class="text-center">Cantidad a Abonar</th>
 						                <th>Memo</th>
 						            </thead>
 						            <tbody id="BodyEmpleadoPrestamo">
