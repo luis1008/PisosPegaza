@@ -39,6 +39,7 @@ $(document).ready(function(){
 	// Prestamo
 	$('#SelectEmpleadoPendiente').change(function(){
 		var valor = $(this).val();
+		console.log(valor);
 		if (valor != "") {
 			var flag = PeticionesAjax("/GetPrestamosPendientes", "GET", {id:valor}, AppendPrestamo);
 			$('#BtnPagoEmpleado').prop('disabled',!flag);
@@ -248,11 +249,14 @@ $(document).ready(function(){
 
 		$.each(respuesta, function(index, prestamo){
 			//required = (index == 0) ? "required" : "";
-			prestamos += 	'<tr>'+
-							'<td class="TDcheck"><input type="checkbox" class="CheckPagoPrestamo" name="prestamos[]" value="'+prestamo.id_prestamo+'"/></td>'+
+			prestamos += '<tr>'+
 							'<input type="hidden" class="TdRestoPrestamo" name="resto[]" value="'+(parseFloat(prestamo.pres_cantidad) - parseFloat(prestamo.pres_abonado))+'"/>'+
-							'<td>'+prestamo.created_at+'</td>'+
+							'<td class="TDcheck"><input type="checkbox" class="CheckPagoPrestamo" name="prestamos[]" value="'+respuesta.id_prestamo+'"/></td>'+
+							'<th class="text-center">'+prestamo.id_prestamo+'</th>'+
+							'<td>$'+FormatMoney(prestamo.pres_cantidad)+'</td>'+
 							'<td>$'+FormatMoney(prestamo.pres_abonado)+'</td>'+
+							'<td>$'+FormatMoney(parseFloat(prestamo.pres_cantidad) - parseFloat(prestamo.pres_abonado))+'</td>'+
+							'<td>'+prestamo.created_at+'</td>'+
 							'<td class="TDabono"><input type="number" class="form-control abonado" name="abono[]" value="0.00" step="0.01" max="'+(parseFloat(prestamo.pres_cantidad) - parseFloat(prestamo.pres_abonado))+'" required/></td>'+
 							'<th>'+prestamo.pres_descripcion+'</th>'+
 					    '</tr>';

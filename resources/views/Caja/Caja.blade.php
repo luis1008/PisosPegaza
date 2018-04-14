@@ -101,9 +101,8 @@
 	      <a class="dropdown-item" data-toggle="pill" href="#pills-produccion" role="tab"><span class="icon icon-eye"></span> Ver</a>
 	      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#produccion_pedido"><span class="icon icon-forward"></span> Enviar</a>
 	      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ajuste_inventario"><span class="icon icon-cog"></span> Ajuste Inventario</a>
-	      @foreach($PedidosProduccion as $pr)
-	      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#AgregarProduccion-{{$pr->id_produccion}}"><span class="icon icon-plus"></span> Agregar Producción</a>
-	      @endforeach
+	      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#AgregarProduccion"><span class="icon icon-plus"></span> Agregar Producción</a>
+	      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ImprimirInventario"><span class="icon icon-file-pdf"></span> Imprimir Inventario</a>
 	    </div>
 	  </li>
 	</ul> <!-- /ul nav -->
@@ -344,12 +343,12 @@
 							  	<select name="deudor" required class="form-control" id="SelectEmpleadoPendiente">
 									<option value="">Seleccionar Empleado</option>
 									<?php foreach($EmpleadosPendientes as $prestamo){ ?>
-										<option value="<?php echo $prestamo->id_prestamo ?>"><?php echo $prestamo->empleado ?></option>
+										<option value="<?php echo $prestamo->empleado ?>"><?php echo $prestamo->empleado ?></option>
 									<?php } ?> 
 								</select>
 					  		</div>
 					  		<div class="col-md-3">
-					  			<!--<label>Cuenta</label>
+					  			<label>Cuenta</label>
 					  			<div class="input-group">
 					  				<div class="input-group-addon"><span class="icon icon-credit-card"></span></div>
 					  				<select name="cuenta" required class="form-control">
@@ -359,7 +358,7 @@
 					  						<option value="{{$cuenta->ct_nombre}}">{{$cuenta->ct_nombre}}</option>
 					  					@endforeach
 					  				</select>
-					  			</div>-->
+					  			</div>
 					  		</div> 
 					  		<div class="col-md-3">
 					  			<label>Total a Pagar</label>
@@ -373,12 +372,14 @@
 						  	<div class="col-md-12" style="margin-top:15px;">
 						        <table class="table table-hover table-sm">
 						            <thead>
+						            	<th class="text-center"></th>
 						                <th class="text-center">No. Prestamo</th>
+						                <th>Prestado</th>
+						                <th>Total Abonado</th>
 						                <th>Resto</th>
 						                <th>Fecha del Prestamo</th>
-						                <th>Total Abonado</th>
-						                <th class="text-center">Cantidad a Abonar</th>
-						                <th>Memo</th>
+						                <th>Cantidad a Abonar</th>
+						                <th class="text-center">Memo</th>
 						            </thead>
 						            <tbody id="BodyEmpleadoPrestamo">
 					                    <tr>
@@ -394,8 +395,9 @@
  		</div>
 	  	<!-- Tab Pedido -->
 	  	<div class="tab-pane fade" id="pills-pedido" role="tabpanel">
-			<div class="card text-black bg-light">
-				<div class="card-header text-center text-white bg-danger"><b>PEDIDOS</b></div>
+	  	<div class="card">
+	  			<div class="card-header text-center text-white bg-danger" data-toggle="collapse" href="#CollapsePedidos" aria-expanded="true" aria-controls="CollapsePedidos"><b><span class="icon icon-circle-down"></span> PEDIDOS</b></div>
+	  			<div id="CollapsePedidos" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
 		        <table class="table table-hover table-sm">
 		            <thead>
 		                <th>No. Nota</th>
@@ -505,6 +507,122 @@
 		        </table>
 		    </div>
 	  	</div>
+		<br>
+		<!-- COBRANZA -->
+		<div class="card">
+	  			<div class="card-header text-center text-white bg-dark" data-toggle="collapse" href="#CollapseCobranza" aria-expanded="true" aria-controls="CollapseCobranza"><b><span class="icon icon-circle-down"></span> COBRANZA</b></div>
+	  			<div id="CollapseCobranza" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+		        <table class="table table-hover table-sm">
+		            <thead>
+		                <th>No. Nota</th>
+		                <th>Pedido</th>
+		                <th>Entrega</th>
+		                <th>Cliente</th>
+		                <th>Destino</th>
+		            </thead>
+		            <tbody>
+		                <?php if(count($cobranza) < 1) { ?>
+		                    <tr>
+		                        <td colspan="5">NO SE ENCONTRO NINGÚN REGISTRO</td>
+		                    </tr>
+		                <?php } ?>
+		                <?php foreach ($cobranza as $co) { ?>
+		                    <tr>
+		                        <td><?php echo $co->pe_nota ?></td>
+		                        <td><?php echo $co->pe_fecha_pedido ?></td>
+		                        <td><?php echo $co->pe_fecha_entrega ?></td>
+		                        <td><?php echo $co->cliente->cl_nombre ?></td>
+		                        <td><?php echo $co->pe_destino_pedido ?></td>
+		                        <td>
+		                            <button type="button" class="btn btn-dark btn-sm tooltips2" title="Información" data-toggle="modal" data-target="#info-<?php echo $co->id_pedido ?>"><span class="icon icon-info"></span></button>
+		                        	<?php if ($co->pe_status != "PREPARADO PARA ENTREGAR"): ?>
+		                        		<a target="_blank()" href="<?php echo route('pdf_pedido',['id'=>$co->id_pedido,'preorden'=>1,'copia'=>1]) ?>" class="btn btn-danger btn-sm tooltips2" title="Nota"><span class="icon icon-file-pdf"></span></a>
+		                        	<?php else : ?>
+		                        		<a target="_blank()" href="<?php echo route('pdf_pedido',['id'=>$co->id_pedido,'preorden'=>0,'copia'=>1]) ?>" class="btn btn-danger btn-sm tooltips2" title="Nota"><span class="icon icon-file-pdf"></span></a>
+		                        	<?php endif ?>
+		                            <a href="<?php echo route('get_view_update_pedido',$co->id_pedido) ?>" class="btn btn-dark btn-sm tooltips2" title="Modificar"><span class="icon icon-pencil"></span></a>
+		                        </td>
+		                    </tr>
+		                    <!-- INFORMACION DE PEDIDO -->
+		                    <div class="modal fade" id="info-<?php echo $co->id_pedido ?>" tabindex="-1" role="dialog" aria-labelledby="infos" aria-hidden="true">
+		                        <div class="modal-dialog modal-lg" role="document">
+		                            <div class="modal-content">
+		                                <div class="modal-header">
+		                                    <h5 class="modal-title" id="infos">Informacion del Pedido</h5>
+		                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                                        <span aria-hidden="true">&times;</span>
+		                                    </button>
+		                                </div>
+		                                <div class="modal-body">
+		                                	<div class="form-row">
+		                                		<div class="col">
+		                                			<p class="border-Title Red"><b>Estatus: </b><?php echo $co->pe_status ?></p>
+		                                		</div>
+		                                		<div class="col">
+		                                			<p class="border-Title-Inverse Black"><b>Ciudad: </b><?php echo $co->pe_destino_ciudad ?></p>
+		                                		</div>
+		                                	</div>
+		                                	<div class="form-row">
+		                                		<div class="col">
+		                                			<p class="border-Title Red"><b>Termino: </b><?php echo $co->pe_termino ?></p>
+		                                		</div>
+		                                		<div class="col">
+		                                			<p class="border-Title-Inverse Black"><b>Forma Pago: </b><?php echo $co->pe_forma_pago ?></p>
+		                                		</div>
+		                                		<div class="col-md-12">
+		                                			<p class="border-Title Black"><b>Memo: </b><br><?php echo $co->pe_memo; ?></p>
+		                                		</div>
+		                                	</div>
+		                                	<div class="col text-center bg-danger text-white" style="font-size:20px;"><b>Pedido</b></div>
+											<div class="form-row">
+												<div class="col-md-2 text-center">
+													<p><b>Cantidad</b></p>
+												</div>
+												<div class="col-md-6">
+													<p><b>Producto</b></p>
+												</div>
+												<div class="col-md-2">
+													<p><b>Precio</b></p>
+												</div>
+												<div class="col-md-2">
+													<p><b>SubTotal</b></p>
+												</div>
+											</div>
+		                            		<?php foreach($co->productos as $pro) { ?>
+												<div class="form-row">
+													<div class="col-md-2 text-center">
+														<p><?php echo $pro->pivot->det_prod_cantidad ?></p>
+													</div>
+													<div class="col-md-6">
+														<p><?php echo $pro->pd_nombre ?></p>
+													</div>
+													<div class="col-md-2">
+														<p>$<?php echo number_format($pro->pivot->det_prod_precio,2) ?></p>
+													</div>
+													<div class="col-md-2">
+														<p>$<?php echo number_format($pro->pivot->det_prod_subtotal,2) ?></p>
+													</div>
+												</div>
+											<?php } ?>
+											<div class="row" style="border-top: 1px solid black;">
+												<div class="col-md-2 text-center">
+													<p class="border-Title Black"><b>Total</b></p>
+												</div>
+												<div class="col-md-2 text-center">
+													<p><b>$<?php echo number_format($co->pe_importe,2) ?></b></p>
+												</div>
+											</div>
+										</div>
+		                            </div>
+		                        </div>
+		                    </div>
+		                <?php } ?>
+		            </tbody>
+		        </table>
+
+		    </div>
+	  	</div>
+	</div>
 	  	<!-- Tab Compra -->
 	  	<div class="tab-pane fade" id="pills-compra" role="tabpanel">
 			<div class="card text-black bg-light">
@@ -1676,14 +1794,13 @@
 				</div>
 				<div class="modal-body">
 					<form action="<?php echo route('post_prestamo') ?>" method="POST">
-
 						{{csrf_field()}}
 						<div class="form-row">
 							<div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-user"></span></span>
-										<select name="empleado" id="emp" class="form-control select-person" required>
-											<option value="">Seleccionar Empleado</option>
+										<select name="empleado" id="emp" class="form-control select-emp" required>
+											<option value="" hidden>Seleccionar Empleado</option>
 											<option value="add">Otros</option>
 											@foreach($empleados as $emp)
 											<option value="{{$emp->em_nombre}}">{{$emp->em_nombre}}</option>
@@ -1747,42 +1864,26 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<form action="<?php echo route('post_producto')?>" method="POST">
-                        {{csrf_field()}}
+					<form method="POST" id="form-Per">
+                        <input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
 						<div class="form-row">
                             <div class="form-group col">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-user"></span></span>
-									<input type="text" class="form-control" name="nombre" placeholder="NOMBRE" required>
+									<input type="text" class="form-control form-clearPer" name="nombre" placeholder="NOMBRE" required>
 								</div>
 							</div>
-                          	<div class="form-group col">
+							<div class="form-group col">
 								<div class="input-group">
-									<span class="input-group-addon"><span class="icon icon-road"></span></span>
-									<input type="text" class="form-control input-costo" name="domicilio"  placeholder="DOMICILIO" required>
+									<span class="input-group-addon"><span class="icon icon-user"></span></span>
+									<input type="text" class="form-control form-clearPer" name="telefono" placeholder="TELEFONO" required>
 								</div>
 							</div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col">
-								<div class="input-group">
-									<span class="input-group-addon"><span class="icon icon-phone"></span></span>
-									<input type="number" class="form-control" name="telefono"  placeholder="TELEFONO" required>
-								</div>
-							</div>
-						   	<div class="form-group col">
-								<div class="input-group">
-									<span class="input-group-addon"><span class="icon icon-coin-mail"></span></span>
-									<input type="number" class="form-control" name="correo"  placeholder="CORREO" required>
-								</div>
-							</div>
-                        
-                        </div>
-
                         <div class="modal-footer">
                             <button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button> 
-                            <button type="button" class="btn btn-danger btn-closePD" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
-                            <button type="submit" class="btn btn-dark"><span class="icon icon-floppy-disk"></span> Guardar</button>
+                            <button type="button" class="btn btn-danger btn-closePR" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
+                            <button type="button" class="btn btn-dark btn-SubmitPer"><span class="icon icon-floppy-disk"></span> Guardar</button>
                         </div>
 					</form>
 				</div>
@@ -2142,7 +2243,7 @@
 		</div>
 	</div>
 
-		<!-- Modal COMPRA -> AGREGAR NUEVO PRODUCTO <OPTION> -->
+	<!-- Modal COMPRA -> AGREGAR NUEVO PRODUCTO <OPTION> -->
 	<div class="modal fade" id="NewProducto" tabindex="-1" role="dialog" aria-labelledby="productos" aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
@@ -2378,37 +2479,6 @@
 		</div>
 	</div>
 
-	<!-- Modal MENSAJE ERROR -->
-	<div class="modal fade" id="MensajeError" tabindex="-1" role="dialog" aria-labelledby="MensajeErrors" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="MensajeErrors">Error!</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<div class="mensaje-error-ajax"></div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Modal IMAGEN CARGANDO -->
-	<div class="modal fade" id="ImgCargando" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="Cargando" aria-hidden="true">
-		<div class="modal-dialog modal-sm" role="document">
-			<div class="modal-content">
-				<div class="modal-body text-center">
-					<img src="{{asset('img/cargando.gif')}}" >
-				</div>
-			</div>
-		</div>
-	</div>
-
 	@foreach($PedidosProduccion as $pr)
 		<!-- Modal Finalizar Produccion-->
 		<div class="modal fade" id="FinalizarProduccion-{{$pr->id_produccion}}" tabindex="-1" role="dialog" aria-labelledby="viaticos" aria-hidden="true">
@@ -2477,7 +2547,7 @@
 
 	@foreach($PedidosProduccion as $pr)
 		<!-- Modal Agregar Produccion-->
-		<div class="modal fade" id="AgregarProduccion-{{$pr->id_produccion}}" tabindex="-1" role="dialog" aria-labelledby="viaticos" aria-hidden="true">
+		<div class="modal fade" id="AgregarProduccion" tabindex="-1" role="dialog" aria-labelledby="viaticos" aria-hidden="true">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -2540,6 +2610,56 @@
 			</div>
 		</div>
 	@endforeach
+
+	<!-- Modal Imprimir Inventario-->
+		<div class="modal fade" id="ImprimirInventario" tabindex="-1" role="dialog" aria-labelledby="viaticos" aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="viaticos">Imprimir Inventario</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<h2 class="text-center">MODULO EN PROCESO...</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	<!-- Modal MENSAJE ERROR -->
+	<div class="modal fade" id="MensajeError" tabindex="-1" role="dialog" aria-labelledby="MensajeErrors" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="MensajeErrors">Error!</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="mensaje-error-ajax"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal IMAGEN CARGANDO -->
+	<div class="modal fade" id="ImgCargando" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="Cargando" aria-hidden="true">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-body text-center">
+					<img src="{{asset('img/cargando.gif')}}" >
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
 @stop
 
 @section('js')
@@ -2550,6 +2670,7 @@
 	<script src="<?php echo asset('js/movimiento_temporal.js') ?>"></script>
 	<script src="<?php echo asset('js/cobranza.js') ?>"></script>
 	<script src="<?php echo asset('js/ajuste_inventario.js') ?>"></script>
+	
 	<script>
 		// PAGAR COMPRA
 		function ValidarCantidadPagar(num){

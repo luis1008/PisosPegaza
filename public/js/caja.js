@@ -352,6 +352,42 @@ $(document).ready(function(){
 		//});
 	}
 
+	// SCRIPT PARA AGREGAR NUEVA PERSONA EN PRESTAMOS
+	$('.select-emp').change(function(){
+		var valor = $(this).val();
+		if (valor === "add") {
+			$('#prestamo').modal('hide');
+			$('#NewPersona').modal('show');
+			$(this).val("");
+		}
+	});
+
+		$('.btn-closePR').click(function(){
+		$('#NewPersona').modal('hide');
+		$('.form-clearPer').val("");
+		$('#prestamo').modal('show');
+	});
+
+
+		$('.btn-SubmitPer').click(function(){
+		$.post('/SetEmpleado',$('#form-Per').serialize()).done(function(data){
+			if (data === "exito") {
+				$('#NewPersona').modal('hide');
+				//volver a pintar los option del proveedor
+				GetAjaxEmpleado();
+				$('.form-clearPer').val("");
+				$('#prestamo').modal('show');
+			}
+		}).fail(function(error){
+			$('.mensaje-error-ajax').empty();
+			$.each(error.responseJSON,function(index, mensaje){
+				$('.mensaje-error-ajax').append("<p style='color:red;font-weight:bold;'>"+mensaje[0]+"</p>");
+			});
+			$('#MensajeError').modal('show');
+		});
+	});
+
+
 	// SCRIPT PARA AGREGAR NUEVO PROVEEDOR EN COMPRAS
 	$('.select-prov').change(function(){
 		var valor = $(this).val();
@@ -398,6 +434,17 @@ $(document).ready(function(){
 		});
 	}
 
+	function GetAjaxEmpleado(){
+		$('.select-emp').empty();
+		$.get("/GetEmpleado").done(function(data){
+			var options = '';
+			options += '<option value="">SELECCIONAR EMPLEADO</option><option value="add">OTROS</option>';
+			$.each(data,function(index,empleado){
+				options += '<option value="'+empleado.id_empleado+'">'+empleado.em_nombre+'</option>';
+			});
+			$('.select-emp').append(options);
+		});
+	}
 	// FUNCIONES QUE CALCULAN DE LOS PRECIOS Y SUBTOTALES
 	$(document).on('change','input[name="precio[]"]', function(){
         CalcularSubTotal();

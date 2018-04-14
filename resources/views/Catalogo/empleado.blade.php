@@ -515,6 +515,17 @@
                                             <span class="input-group-addon"><span class="icon icon-user"></span></span>
                                             <input type="text" class="form-control" name="nombre"  placeholder="Nombre Completo" value="<?php echo old('nombre') ?>" required>
                                         </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group col">
+                                        <div class="input-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><span class="icon icon-phone"></span></span>
+                                                <input type="text" class="form-control" name="telefono"  placeholder="Telefono" value="<?php echo old('telefono') ?>" required>
+                                            </div>
+                                        </div>
                                     </div>	
                                 </div>
                                         

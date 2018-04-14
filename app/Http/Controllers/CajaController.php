@@ -27,11 +27,12 @@ use pegaza\Produccion;
 use pegaza\Gastos;
 use pegaza\GastoFijo;
 use pegaza\Egresos;
+use pegaza\Persona;
 
 class CajaController extends Controller
 {
     public function caja(){
-        $emp = Empleado::where('em_status','=','1')->get();
+        $emp = Empleado::where('em_status','=','1')->orderBy('em_nombre')->get();
         $veh = Vehiculo::where('vh_status','=','1')->get();
         $cob = Pedido::where('pe_status','=','ENTREGADO')->where('pe_pago_status','!=','PAGADO')->get();
         $pre = Pedido::where('pe_status','=','PREPARADO PARA ENTREGAR')->get();
@@ -52,9 +53,9 @@ class CajaController extends Controller
         $mov_comp = Compra::where('cm_status','PENDIENTE')->where('cm_movimiento','0')->where('cm_proveedor','0')->get();
         $pend = \DB::table('detalle_viaje')->join('pedidos','pedidos.id_pedido','=','detalle_viaje.pedido_id')->select('pedidos.id_pedido')->where('detalle_viaje.det_status','PENDIENTE')->get();
         $pedidos_pendientes_produccion = Pedido::where('pe_status','PENDIENTE PARA PRODUCCION')->get();
-        $ClientesPendientesPorPagar    = Pedido::where('pe_pago_status','!=','PAGADO')->where('pe_status','ENTREGADO')->orderBy('pe_fecha_pedido')->groupBy('cliente_id')->get();
+        $ClientesPendientesPorPagar    = Pedido::where('pe_pago_status','!=','PAGADO')->orderBy('pe_fecha_pedido')->groupBy('cliente_id')->get();
         $ProveedoresPendientesPorPagar = Compra::where('cm_status','!=','PAGADO')->orderBy('created_at')->groupBy('proveedor_id')->get();
-        $EmpleadosPendientesPorPagar   = Prestamo::where('pres_tipo','=','PERSONAL')->where('pres_status','=','APROBADO')->whereRaw('pres_abonado < pres_cantidad')->orderBy('created_at')->get();
+        $EmpleadosPendientesPorPagar   = Prestamo::where('pres_tipo','=','PERSONAL')->where('pres_status','=','APROBADO')->whereRaw('pres_abonado < pres_cantidad')->orderBy('created_at')->groupBy('empleado')->get();
         $CatalogoCuentas               = Cuenta::where('ct_status','1')->orderBy('ct_nombre')->get();
         $PedidosProduccion             = Produccion::where('pr_completo','PENDIENTE')->orderBy('created_at')->get();
         $CatalogoGastos                = Gastos::where('ga_status','1')->orderBy('ga_concepto')->get();
@@ -71,8 +72,8 @@ class CajaController extends Controller
                                 ->with('EmpleadosPendientes',$EmpleadosPendientesPorPagar)
                                 ->with('PedidosProduccion',$PedidosProduccion)
                                 ->with('pedidos',$ped)
-                                ->with('ultima_nota',$u_pe)
                                 ->with('cobranza',$cob)
+                                ->with('ultima_nota',$u_pe)
                                 ->with('preparados',$pre)
                                 ->with('ciudades',$ciu)
                                 ->with('viajes',$viaj)
@@ -190,6 +191,20 @@ class CajaController extends Controller
         $pre->save();
 
         return redirect()->route('caja');
+    }
+
+    public function post_persona(Request $request){
+        //dd($request);
+        $per = new Persona();
+        $per->per_nombre        = $request->nombre;
+        $per->per_telefono      = $request->telefono;
+        $per->save();
+
+                if ($request->ajax()) {
+            return response()->json("exito");
+        }else {
+            return redirect()->route('caja');
+        }
     }
 
     // COMPRAS
@@ -633,6 +648,7 @@ class CajaController extends Controller
         $m_abono->ab_abono    = $request->pago_total;
         $m_abono->ab_numero   = $m_prestamo->abonos->count() + 1;
         $m_abono->prestamo_id = $request->deudor;
+        $m_abono->ab_pago     = $request->cuenta;
         $m_abono->save();
 
         return redirect()->route('caja');

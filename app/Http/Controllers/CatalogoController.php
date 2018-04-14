@@ -525,6 +525,7 @@ class CatalogoController extends Controller
         $empleado =  new Empleado();
 
         $empleado->em_nombre            = $request->nombre;
+        $empleado->em_telefono          = $request->telefono;
         $empleado->em_curp              = $request->curp;
         $empleado->em_num_seg_social    = $request->seg_social;
         $empleado->em_fecha_inicio      = $request->fecha_inicio;
@@ -563,7 +564,11 @@ class CatalogoController extends Controller
 
         }
 
-        return redirect()->route('empleado');
+        if ($request->ajax()) {
+            return response()->json("exito");
+        }else {
+            return redirect()->route('empleado');
+        }
     }
 
     public function put_empleado($id){

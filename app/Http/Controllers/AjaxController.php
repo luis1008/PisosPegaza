@@ -17,6 +17,7 @@ use pegaza\Compra;
 use pegaza\Contacto;
 use pegaza\Prestamo;
 use pegaza\Gasto;
+use pegaza\Empleado;
 
 class AjaxController extends Controller
 {
@@ -54,7 +55,7 @@ class AjaxController extends Controller
 
     public function GetPrestamosPendientes(Request $request){
         if ($request->ajax()) {
-            $prestamos = Prestamo::find($request->id)->where('pres_status','=','APROBADO')->get();
+            $prestamos = Prestamo::where('empleado','=',$request->id)->where('pres_status','=','APROBADO')->get();
             return response()->json($prestamos);
         }
     }
@@ -167,6 +168,27 @@ class AjaxController extends Controller
         if ($request->ajax()) {
             $prov = Proveedor::where('pv_status','=','1')->orderBy('pv_nombre')->get();
             return response()->json($prov);
+        }
+    }
+
+    public function GetEmpleado(Request $request){
+        if ($request->ajax()) {
+            $emp = Empleado::where('em_status','=','1')->orderBy('em_nombre')->get();
+            return response()->json($emp);
+        }
+    }
+
+    public function SetEmpleado(Request $request){
+        if ($request->ajax()) {
+            //Validar campos required
+            $this->validate($request, ['nombre' => 'required','telefono' => 'required'],['nombre.required' => 'EL CAMPO NOMBRE ES OBLIGATORIO', 'telefono.required' => 'EL CAMPO TELEFONO ES OBLIGATORIO']);
+            // INSERTAR NUEVA CUENTA
+            $emp = new Empleado();
+            $emp->em_nombre    = $request->nombre;
+            $emp->em_telefono  = $request->telefono;
+            $emp->save();
+
+            return response()->json("exito");
         }
     }
 

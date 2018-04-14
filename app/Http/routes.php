@@ -409,6 +409,8 @@ Route::group(['middleware' => 'auth'],function(){
 	Route::get('/GetPrecioProductoSelected', 'AjaxController@GetPrecioProductoSelected');
 	Route::get('/GetPrecioMateriaPrimaSelected', 'AjaxController@GetPrecioMateriaPrimaSelected');
 	Route::get('/GetProveedor', 'AjaxController@GetProveedor');
+	Route::get('/GetEmpleado', 'AjaxController@GetEmpleado');
+	Route::post('/SetEmpleado', 'AjaxController@SetEmpleado');
 	Route::get('/GetCliente', 'AjaxController@GetCliente');
 	Route::get('/GetClienteSelected', 'AjaxController@GetClienteSelected');
 	Route::get('/GetPrecioUltimaCompra', 'AjaxController@GetPrecioUltimaCompra');

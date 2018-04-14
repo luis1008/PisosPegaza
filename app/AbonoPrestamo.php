@@ -12,7 +12,8 @@ class AbonoPrestamo extends Model
 
     protected $fillable   = ['ab_numero',
                              'prestamo_id',
-                             'ab_abono'];
+                             'ab_abono',
+                             'ab_pago'];
 
     public function prestamo(){
         return $this->belongsTo('pegaza\Prestamo', 'prestamo_id');        
