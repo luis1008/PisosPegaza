@@ -31,6 +31,10 @@ class Prestamo extends Model
         return $this->hasMany('pegaza\AbonoPrestamo','prestamo_id');
     }
 
+    public function empleado(){
+        return $this->belongsTo('pegaza\Empleado','empleado_id');
+    }
+
     //MUTATORS
     public function getCreatedAtAttribute($valor){
         return Carbon::parse($valor)->format('d-m-Y');

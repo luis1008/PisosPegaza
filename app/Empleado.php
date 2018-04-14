@@ -40,6 +40,10 @@ class Empleado extends Model
         return $this->hasOne('pegaza\Compra','empleado_id');
     }
 
+    public function prestamos(){
+        return $this->hasMany('pegaza\Prestamo','empleado_id');
+    }
+
     // Mutators
     public function setEmCurpAttribute($valor){
         if ($valor == null || $valor == "") {

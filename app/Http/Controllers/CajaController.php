@@ -55,7 +55,7 @@ class CajaController extends Controller
         $pedidos_pendientes_produccion = Pedido::where('pe_status','PENDIENTE PARA PRODUCCION')->get();
         $ClientesPendientesPorPagar    = Pedido::where('pe_pago_status','!=','PAGADO')->orderBy('pe_fecha_pedido')->groupBy('cliente_id')->get();
         $ProveedoresPendientesPorPagar = Compra::where('cm_status','!=','PAGADO')->orderBy('created_at')->groupBy('proveedor_id')->get();
-        $EmpleadosPendientesPorPagar   = Prestamo::where('pres_tipo','=','PERSONAL')->where('pres_status','=','APROBADO')->whereRaw('pres_abonado < pres_cantidad')->orderBy('created_at')->groupBy('empleado')->get();
+        $EmpleadosPendientesPorPagar   = Prestamo::where('pres_tipo','=','PERSONAL')->where('pres_status','=','APROBADO')->whereRaw('pres_abonado < pres_cantidad')->orderBy('created_at')->groupBy('empleado_id')->get();
         $CatalogoCuentas               = Cuenta::where('ct_status','1')->orderBy('ct_nombre')->get();
         $PedidosProduccion             = Produccion::where('pr_completo','PENDIENTE')->orderBy('created_at')->get();
         $CatalogoGastos                = Gastos::where('ga_status','1')->orderBy('ga_concepto')->get();
@@ -172,13 +172,13 @@ class CajaController extends Controller
     }
 
     // PRESTAMO
-    public function post_prestamo(Request $request){
+    public function post_prestamo(Request $request, $id){
         //dd($request);
         $pre = new Prestamo();
         $pre->pres_cantidad     = $request->prestamo;
         $pre->pres_descripcion  = $request->descripcion;
         $pre->pres_tipo         = $request->tipo;
-        $pre->empleado          = $request->empleado;
+        $pre->empleado_id       = $id;
         $pre->save();
 
         return redirect()->route('caja');
@@ -640,16 +640,43 @@ class CajaController extends Controller
 
     public function post_pago_prestamo(Request $request){
         
-        $m_prestamo = Prestamo::find($request->deudor);
-        $m_prestamo->pres_abonado += $request->pago_total;
-        $m_prestamo->save();
+        $v_pago  = $request->pago_total;
 
-        $m_abono = new AbonoPrestamo();
-        $m_abono->ab_abono    = $request->pago_total;
-        $m_abono->ab_numero   = $m_prestamo->abonos->count() + 1;
-        $m_abono->prestamo_id = $request->deudor;
-        $m_abono->ab_pago     = $request->cuenta;
-        $m_abono->save();
+        for ($i = 0; $i < sizeof($request->deudor); $i++) {
+
+          /*  $v_resto = $request->resto[$i];
+
+            if ($v_resto <= $v_pago) {
+                $this->AbonarCompraProveedor($request->compras[$i], $v_resto, $request->cuenta);
+            } elseif ($v_pago > 0){
+                $this->AbonarCompraProveedor($request->compras[$i], $v_pago, $request->cuenta);
+            }
+
+            $v_pago -= $v_resto;*/
+            $this->AbonarPrestamoEmpleado($request->deudor[$i], $request->abono[$i], $request->cuenta);
+        }
+
+        return redirect()->route('caja');
+    }
+
+    public function AbonarPrestamoEmpleado($id, $pago, $cuenta){
+
+        $prestamo = Prestamo::find($id);
+        //dd($id, $pago, $cuenta);
+        $prestamo->pres_abonado += $pago;
+        if (($prestamo->pres_abonado >= $prestamo->pres_cantidad) && $prestamo->pres_pago_status != "PAGADO") {
+            $prestamo->pres_pago_status = "PAGADO";
+        } elseif (($prestamo->pres_abonado < $prestamo->pres_cantidad) && $prestamo->pres_pago_status == "PENDIENTE"){
+            $prestamo->pres_pago_status = "ABONADO";
+        }
+        $prestamo->save();
+
+        $abono = new AbonoPrestamo();
+        $abono->ab_abono    = $pago;
+        $abono->ab_pago     = $cuenta;
+        $abono->ab_numero   = $prestamo->abonos->count() + 1;
+        $abono->empleado    = $id;
+        $abono->save();
 
         return redirect()->route('caja');
     }

@@ -342,8 +342,8 @@
 					  			<label>Deudores</label>
 							  	<select name="deudor" required class="form-control" id="SelectEmpleadoPendiente">
 									<option value="">Seleccionar Empleado</option>
-									<?php foreach($EmpleadosPendientes as $prestamo){ ?>
-										<option value="<?php echo $prestamo->empleado ?>"><?php echo $prestamo->empleado ?></option>
+									<?php foreach($EmpleadosPendientes as $emp){ ?>
+										<option value="<?php echo $emp->empleado->id_empleado ?>"><?php echo $emp->empleado->em_nombre ?></option>
 									<?php } ?> 
 								</select>
 					  		</div>
@@ -841,7 +841,7 @@
 							<tr>
 								<th><?php echo str_pad($pre->id_prestamo , 2, "0", STR_PAD_LEFT) ?></th>
 								<td><?php echo $pre->created_at ?></td>
-								<td><?php echo $pre->empleado ?></td>
+								<td><?php echo $pre->empleado->em_nombre ?></td>
 								<td>$<?php echo number_format($pre->pres_cantidad,2) ?></td>
 								<td><?php echo $pre->pres_descripcion ?></td>
 	                            <td><?php echo $pre->pres_tipo ?></td>
@@ -1793,8 +1793,10 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<form action="<?php echo route('post_prestamo') ?>" method="POST">
+					@foreach($empleados as $emp)
+					<form action="<?php echo route('post_prestamo', $emp->id_empleado) ?>" method="POST">
 						{{csrf_field()}}
+						@endforeach
 						<div class="form-row">
 							<div class="form-group col">
 								<div class="input-group">
@@ -1803,7 +1805,7 @@
 											<option value="" hidden>Seleccionar Empleado</option>
 											<option value="add">Otros</option>
 											@foreach($empleados as $emp)
-											<option value="{{$emp->em_nombre}}">{{$emp->em_nombre}}</option>
+											<option value="{{$emp->id_empleado}}">{{$emp->em_nombre}}</option>
 											@endforeach
 										</select>
 								</div>

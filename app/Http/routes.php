@@ -259,7 +259,7 @@ Route::group(['middleware' => 'auth'],function(){
 	]);
 
 	// PRESTAMO
-	Route::post('/Prestamo',[
+	Route::post('/Prestamo/{id}',[
 		'uses' => 'CajaController@post_prestamo',
 		'as'   => 'post_prestamo'
 	]);
@@ -371,7 +371,7 @@ Route::group(['middleware' => 'auth'],function(){
 		'as'   => 'post_pago_compra'
 	]);
 
-	Route::post('/PagoPrestamo',[
+	Route::post('/PagoPrestamoEmpleado',[
 		'uses' => 'CajaController@post_pago_prestamo',
 		'as'   => 'post_pago_prestamo'
 	]);
