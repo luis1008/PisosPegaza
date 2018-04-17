@@ -571,6 +571,29 @@ class CajaController extends Controller
         return redirect()->route('caja');
     }
 
+    public function agregar_produccion(Request $request){
+
+        $produccion = new Produccion();
+        $produccion->pr_encargado = $request->encargado;
+        $produccion->pr_ayudante  = $request->ayudante;
+        $produccion->pr_turno     = $request->turno;
+        $produccion->pr_completo  = "FINALIZADO";
+        $produccion->pr_memo      = $request->memo;
+        $produccion->save();
+
+        for ($i=0; $i < sizeof($request->CantidadExcesos); $i++) {
+        $inv = new Inventario();
+        $inv->producto_id   = $request->ProductosExcesos[$i];
+        $inv->produccion_id = $produccion->id_produccion;
+        $inv->in_memo       = $produccion->pr_memo;
+        $inv->in_cantidad   = $request->CantidadExcesos[$i];
+        $inv->in_operacion  = "SUMA";
+        $inv->save();
+        }
+
+        return redirect()->route('caja');
+    }
+
     // AJUSTE DE INVENTARIO
     public function ajuste_inventario(Request $request){
 

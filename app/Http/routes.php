@@ -344,6 +344,11 @@ Route::group(['middleware' => 'auth'],function(){
 		'as'   => 'post_pedido_produccion'
 	]);
 
+	Route::post('/AgregarProduccion',[
+		'uses' => 'CajaController@agregar_produccion',
+		'as'   => 'agregar_produccion'
+	]);
+
 	Route::get('/PedidoProduccion/{id}',[
 		'uses' => 'CajaController@cancelacion_produccion',
 		'as'   => 'cancelacion_produccion'

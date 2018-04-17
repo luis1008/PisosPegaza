@@ -2547,7 +2547,7 @@
 		</div>
 	@endforeach
 
-	@foreach($PedidosProduccion as $pr)
+	
 		<!-- Modal Agregar Produccion-->
 		<div class="modal fade" id="AgregarProduccion" tabindex="-1" role="dialog" aria-labelledby="viaticos" aria-hidden="true">
 			<div class="modal-dialog modal-lg" role="document">
@@ -2559,9 +2559,8 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<form action="{{route('finalizar_produccion',$pr->id_produccion)}}" method="POST">
-							<input type="hidden" name="_token" value="{{csrf_token()}}">
-							<input type="hidden" name="_method" value="PUT">
+						<form action="<?php echo route('agregar_produccion') ?>" method="POST">
+						{{csrf_field()}}
 							<div class="form-row">
 								<div class="form-group col-md-6">
 									<label>Encargado</label>
@@ -2588,6 +2587,13 @@
 										</select>
 									</div>
 								</div>
+								<div class="form-group col-md-6">
+									<label>Memo</label>
+									<div class="input-group">
+										<div class="input-group-addon"><span class="icon icon-user"></span></div>
+										<input type="text" name="memo" class="form-control" placeholder="OBSERVACIONES">
+									</div>
+								</div>
 							</div>
 							<div class="form-row">
 								<div class="col text-center bg-danger text-white" style="font-size:20px;"><b>Agregar Producto(s)</b></div>
@@ -2611,7 +2617,6 @@
 				</div>
 			</div>
 		</div>
-	@endforeach
 
 	<!-- Modal Imprimir Inventario-->
 		<div class="modal fade" id="ImprimirInventario" tabindex="-1" role="dialog" aria-labelledby="viaticos" aria-hidden="true">

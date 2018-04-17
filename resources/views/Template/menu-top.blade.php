@@ -18,7 +18,7 @@
 	          <a class="dropdown-item" href="{{route('proveedor')}}"><span class="icon icon-user-tie"></span> Proveedor</a>
 	          <a class="dropdown-item" href="{{route('vehiculo')}}"><span class="icon icon-truck"></span> Vehiculo</a>
 	          <a class="dropdown-item" href="{{route('mat_prima')}}"><span class="icon icon-droplet"></span> Materia Prima</a>
-	          <a class="dropdown-item" href="{{route('producto')}}"><span class="icon icon-briefcase"></span> Produto</a>
+	          <a class="dropdown-item" href="{{route('producto')}}"><span class="icon icon-briefcase"></span> Producto</a>
 	        </div>
 	      </li>
 	    </ul>
