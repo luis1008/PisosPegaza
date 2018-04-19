@@ -1270,7 +1270,7 @@
 							</div>
 							<div class="form-group col">
 								<label>Fecha</label>
-								<input type="text" class="form-control" value="<?php echo date('d-m-Y') ?>" readonly>
+								<input type="text" name="fecha" class="form-control" value="<?php echo date('d-m-Y') ?>">
 							</div>
 						</div>
 						<div class="form-row">
@@ -1374,7 +1374,7 @@
 						<div class="modal-footer">
 							<button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button>
 							<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="icon icon-cross"></span> Cerrar</button>
-							<button type="submit" class="btn btn-dark BtnPedidoNuevo" disabled><span class="icon icon-floppy-disk"></span> Guardar</button>
+							<button type="submit" class="btn btn-dark BtnPedidoNuevo"><span class="icon icon-floppy-disk"></span> Guardar</button>
 						</div>
 					</form>
 				</div>
@@ -1646,6 +1646,15 @@
 									<select name="destino" id="dest" class="form-control" required>
 										<option value="">Seleccionar Destino</option>
 									</select>
+								</div>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col">
+								<!--<label>Destino</label>-->
+								<div class="input-group">
+									<span class="input-group-addon"><span class="icon icon-eye"></span></span>
+									<textarea name="notas" class="form-control input-notas" placeholder="NOTAS"></textarea>
 								</div>
 							</div>
 						</div>
@@ -2522,12 +2531,21 @@
 										</select>
 									</div>
 								</div>
+							<div class="form-group col-md-6">
+								<div class="form-group col">
+									<label>Fecha</label>
+									<div class="input-group">
+										<div class="input-group-addon"><span class="icon icon-clock"></span></div>
+										<input type="text" name="fecha" class="form-control" value="<?php echo date('d-m-Y') ?>">
+									</div>
+									</div>
+							</div>
 							</div>
 							<div class="form-row">
 								<div class="col text-center bg-danger text-white" style="font-size:20px;"><b>Exceso de Producto</b></div>
 								<div class="col-md-12">
 									<p><b>Si se excede de productos solicitados, favor de especificar los productos excedidos para afectar inventario, caso al contrario omitir este proceso.</b></p>
-								</div>
+							</div>
 							</div>
 							<div class="form-row" style="margin-bottom:25px;">
 								<div class="text-center col-md-12">
@@ -2549,7 +2567,7 @@
 
 	
 		<!-- Modal Agregar Produccion-->
-		<div class="modal fade" id="AgregarProduccion" tabindex="-1" role="dialog" aria-labelledby="viaticos" aria-hidden="true">
+	<div class="modal fade" id="AgregarProduccion" tabindex="-1" role="dialog" aria-labelledby="viaticos" aria-hidden="true">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -2594,6 +2612,15 @@
 										<input type="text" name="memo" class="form-control" placeholder="OBSERVACIONES">
 									</div>
 								</div>
+								<div class="form-group col-md-6">
+								<div class="form-group col">
+									<label>Fecha</label>
+									<div class="input-group">
+										<div class="input-group-addon"><span class="icon icon-clock"></span></div>
+										<input type="text" name="fecha" class="form-control" value="<?php echo date('d-m-Y') ?>">
+									</div>
+									</div>
+							</div>
 							</div>
 							<div class="form-row">
 								<div class="col text-center bg-danger text-white" style="font-size:20px;"><b>Agregar Producto(s)</b></div>
@@ -2616,7 +2643,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+	</div>
 
 	<!-- Modal Imprimir Inventario-->
 		<div class="modal fade" id="ImprimirInventario" tabindex="-1" role="dialog" aria-labelledby="viaticos" aria-hidden="true">

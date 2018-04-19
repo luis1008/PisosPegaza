@@ -53,7 +53,7 @@ class CajaController extends Controller
         $mov_comp = Compra::where('cm_status','PENDIENTE')->where('cm_movimiento','0')->where('cm_proveedor','0')->get();
         $pend = \DB::table('detalle_viaje')->join('pedidos','pedidos.id_pedido','=','detalle_viaje.pedido_id')->select('pedidos.id_pedido')->where('detalle_viaje.det_status','PENDIENTE')->get();
         $pedidos_pendientes_produccion = Pedido::where('pe_status','PENDIENTE PARA PRODUCCION')->get();
-        $ClientesPendientesPorPagar    = Pedido::where('pe_pago_status','!=','PAGADO')->orderBy('pe_fecha_pedido')->groupBy('cliente_id')->get();
+        $ClientesPendientesPorPagar    = Pedido::where('pe_pago_status','!=','PAGADO')->where('pe_status','=','ENTREGADO')->orderBy('pe_fecha_pedido')->groupBy('cliente_id')->get();
         $ProveedoresPendientesPorPagar = Compra::where('cm_status','!=','PAGADO')->orderBy('created_at')->groupBy('proveedor_id')->get();
         $EmpleadosPendientesPorPagar   = Prestamo::where('pres_tipo','=','PERSONAL')->where('pres_status','=','APROBADO')->whereRaw('pres_abonado < pres_cantidad')->orderBy('created_at')->groupBy('empleado_id')->get();
         $CatalogoCuentas               = Cuenta::where('ct_status','1')->orderBy('ct_nombre')->get();
@@ -305,6 +305,7 @@ class CajaController extends Controller
         $pedido->pe_termino         = $request->termino;
         $pedido->pe_importe         = $request->importe;
         $pedido->pe_forma_pago      = $request->forma_pago;
+        $pedido->pe_notas_cl        = $request->notas;
         $pedido->pe_status          = $request->status;
         //$pedido->pe_pago_status     = $request->pago_status;
         if($pedido->pe_forma_pago == "ABONADO"){
@@ -441,6 +442,7 @@ class CajaController extends Controller
         //dd($request);
         $viaje = new Viaje();
         $viaje->vi_kilometraje_inicial = $request->inicial;
+        $viaje->vi_fecha               = $request->fecha;
         $viaje->empleado_id            = $request->repartidor;
         $viaje->vehiculo_id            = $request->transporte;
         $viaje->vi_destino             = $request->destino;
@@ -552,6 +554,7 @@ class CajaController extends Controller
         $produccion->pr_ayudante  = $request->ayudante;
         $produccion->pr_turno     = $request->turno;
         $produccion->pr_completo  = "FINALIZADO";
+        $produccion->pr_fecha     = $request->fecha;
         $produccion->save();
 
         $produccion->pedidos->each(function($pedido,$pos){
@@ -579,6 +582,7 @@ class CajaController extends Controller
         $produccion->pr_turno     = $request->turno;
         $produccion->pr_completo  = "FINALIZADO";
         $produccion->pr_memo      = $request->memo;
+        $produccion->pr_fecha     = $request->fecha;
         $produccion->save();
 
         for ($i=0; $i < sizeof($request->CantidadExcesos); $i++) {

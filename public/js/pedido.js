@@ -71,6 +71,10 @@ $(document).ready(function(){
                     $('.input-cheque').hide().val("0");
                 }
             });
+
+            $.get('/GetClienteSelected',{id:id}).done(function(data){
+                $('.input-notas').val(data.cl_observacion);
+            });
         }
     });
 
