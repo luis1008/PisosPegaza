@@ -25,6 +25,10 @@ class MovimientoTemporal extends Model
         return $this->belongsToMany('pegaza\Compra', 'detalle_movimientos', 'movimiento_temporal_id', 'compra_id')->withPivot('ct_concepto','ct_gasto','ct_nota');
     }
 
+    public function abonos(){
+        return $this->belongsToMany('pegaza\AbonoCompra', 'detalle_movimientos', 'movimiento_temporal_id', 'compra_id')->withPivot('ab_abono','ab_pago');
+    }
+
     //MUTATORS
     public function getCreatedAtAttribute($valor){
         return Carbon::parse($valor)->format('d-m-Y');

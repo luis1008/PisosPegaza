@@ -20,6 +20,9 @@ class AbonoCompra extends Model
         return $this->belongsTo('pegaza\Compra', 'compra_id');        
     }
 
+    public function movimientos(){
+        return $this->belongsToMany('pegaza\MovimientoTemporal', 'detalle_movimientos', 'movimiento_temporal_id', 'compra_id')->withPivot('ab_abono','ab_pago');
+    }
     //MUTATORS
     public function getCreatedAtAttribute($valor){
         return Carbon::parse($valor)->format('d/m/Y');

@@ -94,6 +94,7 @@ class CajaController extends Controller
         //dd($request);
         $mov = new MovimientoTemporal();
         $mov->mt_entregado = $request->entregado;
+        $mov->mt_fecha = $request->fecha_movimiento;
         $mov->empleado  = $request->empleado;
         $mov->save();
 
@@ -582,7 +583,7 @@ class CajaController extends Controller
         $produccion->pr_turno     = $request->turno;
         $produccion->pr_completo  = "FINALIZADO";
         $produccion->pr_memo      = $request->memo;
-        $produccion->pr_fecha     = $request->fecha;
+        //$produccion->pr_fecha     = $request->fecha;
         $produccion->save();
 
         for ($i=0; $i < sizeof($request->CantidadExcesos); $i++) {

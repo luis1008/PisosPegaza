@@ -151,7 +151,7 @@
 							<div class="form-group col-md-3">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-stack"></span></span>
-                                    <input type="number" class="form-control" name="cantidad" min="0.1" step="0.001" placeholder="CANTIDAD" required>
+                                    <input type="number" class="form-control" name="cantidad" min="0.1" step="0.001" placeholder="CONTENIDO" required>
                                 </div>
                             </div>
                             

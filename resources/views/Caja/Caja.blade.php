@@ -1270,7 +1270,10 @@
 							</div>
 							<div class="form-group col">
 								<label>Fecha</label>
-								<input type="text" name="fecha" class="form-control" value="<?php echo date('d-m-Y') ?>">
+								<div class="input-group date fecha_viaje" id="picker-container">
+									<span class="input-group-addon"><span class="icon icon-calendar"></span></span>
+									<input type="text" class="form-control" name="fecha" value="<?php echo date('Y-m-d') ?>" required>
+								</div>
 							</div>
 						</div>
 						<div class="form-row">
@@ -1571,14 +1574,14 @@
 								<label>Fecha Pedido</label>
 								<div class="input-group date fecha_pedido" id="picker-container">
 									<span class="input-group-addon"><span class="icon icon-calendar"></span></span>
-									<input type="text" class="form-control" name="fecha_pedido" value="<?php echo date('Y-m-d') ?>" readonly required>
+									<input type="text" class="form-control" name="fecha_pedido" value="<?php echo date('Y-m-d') ?>" required>
 								</div>
 							</div>
 							<div class="form-group col">
 								<label>Fecha Entrega</label>
 								<div class="input-group date fecha_entrega" id="picker-container2">
 									<span class="input-group-addon"><span class="icon icon-calendar"></span></span>
-									<input type="text" class="form-control" name="fecha_programada" value="<?php echo date('Y-m-d') ?>" readonly required>
+									<input type="text" class="form-control" name="fecha_programada" value="<?php echo date('Y-m-d') ?>" required>
 								</div>
 							</div>
 						</div>
@@ -1743,10 +1746,11 @@
 									<input type="text" class="form-control" name="empleado" placeholder="PERSONA QUE REALIZA EL MOVIMIENTO" required>
 								</div>
 							</div>
-							<div class="form-group col">
-								<div class="input-group">
+						<div class="form-group col">
+								<!--<label>Fecha Pedido</label>-->
+								<div class="input-group date fecha_movimiento" id="picker-container">
 									<span class="input-group-addon"><span class="icon icon-calendar"></span></span>
-									<input type="text" class="form-control" value="<?php echo date('d-m-Y') ?>" required readonly>
+									<input type="text" class="form-control" name="fecha_movimiento" value="<?php echo date('Y-m-d') ?>" required>
 								</div>
 							</div>
 						</div>
@@ -2613,13 +2617,13 @@
 									</div>
 								</div>
 								<div class="form-group col-md-6">
-								<div class="form-group col">
+								<!--<div class="form-group col">
 									<label>Fecha</label>
 									<div class="input-group">
 										<div class="input-group-addon"><span class="icon icon-clock"></span></div>
-										<input type="text" name="fecha" class="form-control" value="<?php echo date('d-m-Y') ?>">
+										<input type="text" name="fecha" class="form-control" value="<?php //echo date('d-m-Y') ?>">
 									</div>
-									</div>
+								</div>-->
 							</div>
 							</div>
 							<div class="form-row">
@@ -2748,6 +2752,22 @@
 		    language:'es',
 		    container: "#picker-container",
 		    title:"Fecha Pedido"
+		});
+
+		$('.fecha_viaje').datepicker({
+		    format: 'yyyy-mm-dd',
+		    autoclose:true,
+		    language:'es',
+		    container: "#picker-container",
+		    title:"Fecha Viaje"
+		});
+
+		$('.fecha_movimiento').datepicker({
+		    format: 'yyyy-mm-dd',
+		    autoclose:true,
+		    language:'es',
+		    container: "#picker-container",
+		    title:"Fecha Movimiento"
 		});
 
 		$('.fecha_entrega').datepicker({
