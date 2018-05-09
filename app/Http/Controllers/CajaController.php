@@ -155,6 +155,8 @@ class CajaController extends Controller
         }
 
         return redirect()->route('caja');
+
+
     }
 
     public function post_AddOtroConcepto(Request $request){
@@ -719,6 +721,8 @@ class CajaController extends Controller
         } elseif (($pedido->pe_total_abonado < $pedido->pe_importe) && $pedido->pe_pago_status == "PENDIENTE"){
             $pedido->pe_pago_status = "ABONADO";
         }
+            //ACTUALIZA EL STATUS DEL PEDIDO
+        $pedido->pe_status        = 'ENTREGADO';
         $pedido->save();
 
         $abonos = new AbonoPedido();

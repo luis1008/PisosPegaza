@@ -40,7 +40,10 @@
 	          <a class="dropdown-item" href="{{route('get_pedidos')}}"><span class="icon icon-coin-dollar"></span> Cobranza</a>
 	          <a class="dropdown-item" href="{{route('get_produccion')}}"><span class="icon icon-hammer"></span> Producción</a>
 	          <a class="dropdown-item" href="{{route('get_compras')}}"><span class="icon icon-price-tag"></span> Compras</a>
-	      	  <a class="dropdown-item" href="{{route('get_caja')}}"><span class="icon icon-credit-card"></span> Caja</a></div>
+	      	  <a class="dropdown-item" href="{{route('get_caja')}}"><span class="icon icon-coin-dollar"></span> Caja</a>
+	      	  <a class="dropdown-item" href="{{route('get_cuentas')}}"><span class="icon icon-credit-card"></span> Cuentas</a>
+	      	  <a class="dropdown-item" href="{{route('get_egresos')}}"><span class="icon icon-coin-dollar"></span> Gastos</a></div>
+	      	  
 	      </li>
 	    </ul>
 	    <ul class="navbar-nav ml-auto">

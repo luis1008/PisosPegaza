@@ -7,6 +7,8 @@ use pegaza\Compra;
 use pegaza\Pedido;
 use pegaza\Produccion;
 use pegaza\Prestamo;
+use pegaza\AbonoPedido;
+use pegaza\Egresos;
 
 use pegaza\Http\Requests;
 
@@ -15,10 +17,27 @@ class ReporteController extends Controller
 	public function get_pedidos(Request $request){
         //dd($id);
 
-        $ped = Pedido::Fechas($request->inicial, $request->final)->where('pe_status','=','EN CAMINO A COBRAR')->get();
+        $ped = Pedido::Fechas($request->inicial, $request->final)->where('pe_pago_status','!=','PAGADO')->get();
         
         return view('Reportes.ReporteCobranza')->with('pedidos',$ped);
     }
+
+    public function get_cuentas(Request $request){
+        //dd($id);
+
+        $cuent = AbonoPedido::Fechas($request->inicial, $request->final)->get();
+        
+        return view('Reportes.ReporteCuentas')->with('cuentas',$cuent);
+    }
+
+    public function get_egresos(Request $request){
+        //dd($id);
+
+        $egre = Egresos::Fechas($request->inicial, $request->final)->get();
+        
+        return view('Reportes.ReporteEgresos')->with('egresos',$egre);
+    }
+
 
     public function get_compras(Request $request){
         //dd($id);

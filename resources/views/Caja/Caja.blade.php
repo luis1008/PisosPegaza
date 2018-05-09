@@ -622,7 +622,7 @@
 
 		    </div>
 	  	</div>
-	</div>
+		</div>
 	  	<!-- Tab Compra -->
 	  	<div class="tab-pane fade" id="pills-compra" role="tabpanel">
 			<div class="card text-black bg-light">
@@ -954,6 +954,7 @@
 						<th>Efectivo Entregado</th>
 						<th>Concepto(s)</th>
 						<th>Estatus</th>
+						<th>Opciones</th>
 					</thead>
 					<tbody>
 						<?php if(count($mtPendientes) < 1){ ?>
@@ -1242,7 +1243,7 @@
 				</table>
 			</div>
 	  	</div>
-
+	  	</div>
 	</div> <!-- /Tab Content -->
 
 	<!-- Modal VIAJES-->
