@@ -40,6 +40,7 @@
                 <th width="100">Abonado</th>
                 <th width="100">Fecha Pedido</th>
                 <th width="100" class="text-center">Fecha Entrega</th>
+                <th width="100" class="text-center">Detalle</th>
             </thead>
             <tbody>
                 <?php if(count($pedidos) < 1) { ?>
@@ -55,6 +56,9 @@
                         <td>{{'$'.number_format($pedido->pe_total_abonado,2)}}</td>
                         <td>{{$pedido->pe_fecha_pedido}}</td>
                         <td>{{$pedido->pe_fecha_entrega}}</td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-dark btn-sm tooltips2" title="Detalle" data-toggle="modal" data-target="#info-<?php echo $pedido->id_pedido ?>"><span class="icon icon-eye"></span></button>
+                        </td>
                     </tr>
                 <?php } ?>
             </tbody>

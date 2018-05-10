@@ -66,7 +66,7 @@
 							<td>
 								<select name="forma_pago[]">
 									<option value="">Seleccionar</option>
-									<option value="EFECTIVO">EFECTIVO</option>
+									<option value="CAJA">CAJA</option>
 									<option value="TRANSFERENCIA">TRANSFERENCIA</option>
 									<option value="CHEQUE">CHEQUE</option>
 
@@ -111,7 +111,7 @@
 							<td>
 								<select name="forma_pago[]">
 									<option value="">Seleccionar</option>
-									<option value="EFECTIVO">EFECTIVO</option>
+									<option value="CAJA">CAJA</option>
 									<option value="TRANSFERENCIA">TRANSFERENCIA</option>
 									<option value="CHEQUE">CHEQUE</option>
 

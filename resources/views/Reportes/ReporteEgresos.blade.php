@@ -30,6 +30,7 @@
             </div>
         </div>
     </form>
+
     <div class="card text-black bg-light">
         <div class="card-header text-center text-white bg-danger"><b>GASTOS</b></div>
         <table class="table table-hover table-sm">
@@ -40,17 +41,17 @@
                 <th width="10" class="text-center">Fecha</th>
             </thead>
             <tbody>
-                <?php if(count($egresos) < 1) { ?>
+                <?php if(count($gastos) < 1) { ?>
                     <tr>
                         <td colspan="5" class="text-center">NO SE ENCONTRO NINGÚN REGISTRO</td>
                     </tr>
                 <?php } ?>
-                <?php foreach ($egresos as $egreso) { ?>
+                <?php foreach ($gastos as $gasto) { ?>
                     <tr>
-                        <th class="text-center">{{$egreso->eg_nota}}</th>
-                        <td class="text-center">{{$egreso->eg_concepto}}</td>
-                        <td class="text-center">{{'$'.number_format($egreso->eg_importe)}}</td>
-                        <td class="text-center">{{$egreso->created_at}}</td>
+                        <th class="text-center">{{$gasto->ga_nota}}</th>
+                        <td class="text-center">{{$gasto->ga_concepto}}</td>
+                        <td class="text-center">{{'$'.number_format($gasto->ga_importe)}}</td>
+                        <td class="text-center">{{$gasto->created_at}}</td>
                     </tr>
                 <?php } ?>
             </tbody>

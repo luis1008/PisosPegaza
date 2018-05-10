@@ -501,14 +501,15 @@ class CajaController extends Controller
                 $this->AbonarPedidoCliente($request->id_pedido[$i], $request->abono[$i], $request->forma_pago[$i]);
             }
 
-            //TABLA EGRESOS
+            //TABLA GASTOS
             for ($i=0; $i < sizeof($request->nota) ; $i++) { 
-                    $egresos =  new Egresos();
-                    $egresos->eg_nota       = $request->nota[$i];
-                    $egresos->eg_concepto   = $request->concepto[$i];
-                    $egresos->eg_importe    = $request->importe[$i];
-                    $egresos->viaje_id      = $viaje->id_viaje;
-                    $egresos->save();
+
+                $gastos = new Gastos();
+                $gastos->ga_nota       = $request->nota[$i];
+                $gastos->ga_concepto   = $request->concepto[$i];
+                $gastos->ga_importe    = $request->importe[$i];
+                $gastos->viaje_id      = $request->id;
+                $gastos->save();
             }
 
 

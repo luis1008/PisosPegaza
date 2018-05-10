@@ -8,7 +8,7 @@ use pegaza\Pedido;
 use pegaza\Produccion;
 use pegaza\Prestamo;
 use pegaza\AbonoPedido;
-use pegaza\Egresos;
+use pegaza\Gastos;
 
 use pegaza\Http\Requests;
 
@@ -33,9 +33,9 @@ class ReporteController extends Controller
     public function get_egresos(Request $request){
         //dd($id);
 
-        $egre = Egresos::Fechas($request->inicial, $request->final)->get();
+        $gasto = Gastos::Fechas($request->inicial, $request->final)->get();
         
-        return view('Reportes.ReporteEgresos')->with('egresos',$egre);
+        return view('Reportes.ReporteEgresos')->with('gastos',$gasto);
     }
 
 
