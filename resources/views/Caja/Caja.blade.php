@@ -1459,7 +1459,7 @@
 											$producto_array = []; 
 										?>
 										<tr>
-											<td><input type="checkbox" name="pedidos[]" class="CheckPedido" value="<?php echo $pedido->pe_nota ?>" required></td>
+											<td><input type="checkbox" name="pedidos[]" class="CheckPedido" value="<?php echo $pedido->id_pedido ?>" required></td>
 											<td><?php echo $pedido->cliente->cl_nombre ?></td>
 											<td class="li-productos">
 												<ul>

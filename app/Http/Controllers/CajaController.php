@@ -519,6 +519,7 @@ class CajaController extends Controller
     
     // PRODUCCION
     public function post_pedido_produccion(Request $request){
+
         $produccion = new Produccion();
         $produccion->pr_memo       = $request->memo;
         $produccion->pr_productos  = collect($request->productos)->implode('|');
@@ -558,7 +559,6 @@ class CajaController extends Controller
         $produccion->pr_ayudante  = $request->ayudante;
         $produccion->pr_turno     = $request->turno;
         $produccion->pr_completo  = "FINALIZADO";
-        $produccion->pr_fecha     = $request->fecha;
         $produccion->save();
 
         $produccion->pedidos->each(function($pedido,$pos){
