@@ -9,6 +9,7 @@ use pegaza\Produccion;
 use pegaza\Prestamo;
 use pegaza\AbonoPedido;
 use pegaza\Gastos;
+use pegaza\Inventario;
 
 use pegaza\Http\Requests;
 
@@ -58,5 +59,26 @@ class ReporteController extends Controller
         $prod = Produccion::Fechas($request->inicial, $request->final)->where('pr_completo','=','FINALIZADO')->get();
         
         return view('Reportes.ReporteProduccion')->with('producciones',$prod);
+    }
+
+        public function get_inventario(Request $request){
+        //dd($id);
+        $inv = Inventario::Fechas($request->inicial, $request->final)->SUM('in_cantidad')->GROUPBY('producto_id')->get();
+        
+        return view('Reportes.ReporteInventario')->with('inventarios',$inv);
+    }
+
+     public function get_pedido_entregado(Request $request){
+        //dd($id);
+         $ped = Pedido::Fechas($request->inicial, $request->final)->where('pe_status','=','ENTREGADO')->get();
+        
+        return view('Reportes.ReportePedidos')->with('pedidos',$ped);
+    }
+
+      public function get_prestamo(Request $request){
+        //dd($id);
+         $pres = Prestamo::Fechas($request->inicial, $request->final)->where('pres_status','=','APROBADO')->get();
+        
+        return view('Reportes.ReportePrestamo')->with('prestamos',$pres);
     }
 }

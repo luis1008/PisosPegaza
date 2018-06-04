@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-05-2018 a las 20:58:35
+-- Tiempo de generación: 30-05-2018 a las 04:40:22
 -- Versión del servidor: 10.1.31-MariaDB
 -- Versión de PHP: 7.0.28
 
@@ -62,10 +62,8 @@ CREATE TABLE `abono_pedido` (
 --
 
 INSERT INTO `abono_pedido` (`id_abono_pedido`, `ap_abono`, `ap_numero`, `pedido_id`, `ap_pago`, `ap_no_cheque`, `ap_status_cheque`, `ap_folio`, `created_at`, `updated_at`) VALUES
-(1, 500.00, 1, 1, 'CAJA', '0', 'NINGUNO', '0', '2018-05-02', '2018-05-02'),
-(2, 400.00, 1, 2, 'CAJA', '0', 'NINGUNO', '1', '2018-05-02', '2018-05-02'),
-(3, 500.00, 2, 1, 'CAJA', '0', 'NINGUNO', '0', '2018-05-10', '2018-05-10'),
-(4, 600.00, 2, 2, '', '0', 'NINGUNO', '1', '2018-05-10', '2018-05-10');
+(1, 0.00, 1, 1, 'EFECTIVO', '0', 'NINGUNO', '0', '2018-05-20', '2018-05-20'),
+(2, 0.00, 1, 2, 'EFECTIVO', '0', 'NINGUNO', '1', '2018-05-20', '2018-05-20');
 
 -- --------------------------------------------------------
 
@@ -260,18 +258,6 @@ CREATE TABLE `detalle_movimientos` (
   `ct_nota` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Volcado de datos para la tabla `detalle_movimientos`
---
-
-INSERT INTO `detalle_movimientos` (`id_concepto`, `movimiento_temporal_id`, `compra_id`, `ct_concepto`, `ct_gasto`, `ct_nota`) VALUES
-(1, 1, 0, 'LUZ', 300.00, '1'),
-(2, 1, 0, 'AGUA', 300.00, '2'),
-(3, 1, 0, 'TELEFONO', 400.00, '3'),
-(4, 2, 0, 'PAPELERIA', 500.00, '6'),
-(5, 3, 0, 'REFACCIONES', 500.00, '9'),
-(6, 4, 0, 'PAPELERIA', 500.00, '98');
-
 -- --------------------------------------------------------
 
 --
@@ -294,8 +280,8 @@ CREATE TABLE `detalle_pedido` (
 --
 
 INSERT INTO `detalle_pedido` (`id_det_pedido`, `pedido_id`, `producto_id`, `pegaza_id`, `det_prod_cantidad`, `det_prod_precio`, `det_prod_subtotal`, `det_prod_status`) VALUES
-(1, 1, 2, 0, 2, 750.00, 1500.00, 1),
-(2, 2, 1, 0, 8, 300.00, 2400.00, 1);
+(1, 1, 2, 0, 1, 750.00, 750.00, 1),
+(2, 2, 1, 0, 1, 300.00, 300.00, 1);
 
 -- --------------------------------------------------------
 
@@ -308,6 +294,13 @@ CREATE TABLE `detalle_produccion` (
   `produccion_id` int(11) NOT NULL,
   `pedido_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `detalle_produccion`
+--
+
+INSERT INTO `detalle_produccion` (`id_detalle`, `produccion_id`, `pedido_id`) VALUES
+(2, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -354,16 +347,6 @@ CREATE TABLE `detalle_viaje` (
   `det_tipo` enum('COBRANZA','ENTREGA') NOT NULL DEFAULT 'ENTREGA',
   `det_status` enum('ENTREGADO','COBRADO','PENDIENTE','NO SE ENTREGO') NOT NULL DEFAULT 'PENDIENTE'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `detalle_viaje`
---
-
-INSERT INTO `detalle_viaje` (`id_detalle`, `viaje_id`, `pedido_id`, `det_tipo`, `det_status`) VALUES
-(1, 1, 1, 'ENTREGA', 'PENDIENTE'),
-(2, 1, 2, 'COBRANZA', 'PENDIENTE'),
-(3, 2, 1, 'COBRANZA', 'PENDIENTE'),
-(4, 2, 2, 'COBRANZA', 'PENDIENTE');
 
 -- --------------------------------------------------------
 
@@ -462,13 +445,6 @@ CREATE TABLE `egresos` (
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
---
--- Volcado de datos para la tabla `egresos`
---
-
-INSERT INTO `egresos` (`id_egresos`, `eg_nota`, `eg_concepto`, `eg_importe`, `viaje_id`, `created_at`, `updated_at`) VALUES
-(1, '1', 'GASOLINA', 300.0000, 1, '2018-05-02 23:23:38', '2018-05-02 23:23:38');
-
 -- --------------------------------------------------------
 
 --
@@ -495,9 +471,7 @@ CREATE TABLE `empleado` (
 --
 
 INSERT INTO `empleado` (`id_empleado`, `em_nombre`, `em_telefono`, `em_curp`, `em_num_seg_social`, `em_fecha_inicio`, `em_num_licencia`, `em_vigencia_licencia`, `em_tipo`, `em_status`, `created_at`, `updated_at`) VALUES
-(1, 'JORGE LUIS GUTIERREZ MARTINEZ', 'N/A', 'JLGM101093HCMTRR03', '123456789', '2017-11-20', NULL, NULL, 'BASE', 1, '0000-00-00 00:00:00', '2017-12-22 17:59:04'),
-(2, 'XOCHITL', 'N/A', 'GFVD020303HCMNRS05', NULL, '2017-11-20', NULL, NULL, 'BASE', 1, '2017-11-21 18:13:34', '2017-12-22 18:46:55'),
-(3, 'JESUS GONZALEZ JUAREZ', 'N/A', 'GOKK020269HCMNRS05', '25436547', '2017-11-20', '1236546', '2020-06-08', 'CONTRATO', 1, '2017-11-21 18:14:09', '2017-12-23 17:13:35');
+(1, 'JORGE BARRAGAN LOPEZ', '3121900293', NULL, NULL, 'PRESTAMO', NULL, NULL, NULL, 1, '2018-05-28 08:38:13', '2018-05-28 08:38:13');
 
 -- --------------------------------------------------------
 
@@ -623,16 +597,6 @@ CREATE TABLE `movimiento_temporal` (
   `updated_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Volcado de datos para la tabla `movimiento_temporal`
---
-
-INSERT INTO `movimiento_temporal` (`id_movimiento_temporal`, `mt_entregado`, `mt_fecha`, `mt_firma`, `mt_status`, `mt_gasto`, `empleado`, `created_at`, `updated_at`) VALUES
-(1, 1000.00, '2018-05-10', 1, 'FINALIZADO', 1000.00, 'LUZ MARIA GOMEZ ESPARZA', '2018-05-10', '2018-05-10'),
-(2, 500.00, '2018-05-10', 1, 'FINALIZADO', 500.00, 'EDUARDO LARIOS', '2018-05-10', '2018-05-10'),
-(3, 500.00, '2018-05-10', 1, 'FINALIZADO', 500.00, 'SARAHI ROMERO', '2018-05-10', '2018-05-10'),
-(4, 500.00, '2018-05-10', 1, 'FINALIZADO', 500.00, 'ROBERTO HERRERA BALTAZAR', '2018-05-10', '2018-05-10');
-
 -- --------------------------------------------------------
 
 --
@@ -664,8 +628,8 @@ CREATE TABLE `pedidos` (
 --
 
 INSERT INTO `pedidos` (`id_pedido`, `cliente_id`, `pe_importe`, `pe_total_abonado`, `pe_nota`, `pe_fecha_pedido`, `pe_fecha_entrega`, `pe_destino_pedido`, `pe_destino_ciudad`, `pe_memo`, `pe_termino`, `pe_forma_pago`, `pe_pago_status`, `pe_status`, `pe_notas_cl`, `created_at`, `updated_at`) VALUES
-(1, 2, 1500.00, 1000.00, '0', '2018-05-02', '2018-05-02', 'HIDALGO #256, BUGAMBILIA', 'TECOMAN', 'NADA', '1 SEMANA', 'EFECTIVO', 'ABONADO', 'ENTREGADO', 'NO HAY OBSERVACIONES', '2018-05-02 23:13:34', '2018-05-10 15:02:17'),
-(2, 1, 2400.00, 1000.00, '1', '2018-05-02', '2018-05-02', 'FLOR DE LAUREL #122, LOMA ALTA', 'COLIMA', 'NADA.', '1 MES', 'EFECTIVO', 'ABONADO', 'ENTREGADO', 'ULTIMO PRECIO: $345', '2018-05-02 23:14:08', '2018-05-10 15:02:17');
+(1, 2, 750.00, 0.00, '0', '2018-05-20', '2018-05-20', 'HIDALGO #256, BUGAMBILIA', 'TECOMAN', 'NADA', '1 SEMANA', 'EFECTIVO', 'PENDIENTE', 'ENTREGADO', 'NO HAY OBSERVACIONES', '2018-05-20 21:48:57', '2018-05-20 21:54:35'),
+(2, 1, 300.00, 0.00, '1', '2018-05-20', '2018-05-20', 'FLOR DE LAUREL #122, LOMA ALTA', 'COLIMA', 'NADA', '1 MES', 'EFECTIVO', 'PENDIENTE', 'ENTREGADO', 'ULTIMO PRECIO: $345', '2018-05-20 21:56:55', '2018-05-20 21:56:55');
 
 -- --------------------------------------------------------
 
@@ -688,6 +652,13 @@ CREATE TABLE `prestamo` (
   `updated_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `prestamo`
+--
+
+INSERT INTO `prestamo` (`id_prestamo`, `pres_cantidad`, `pres_abonado`, `pres_status`, `pres_descripcion`, `empleado_id`, `viaje_id`, `movimiento_temporal_id`, `pres_tipo`, `pres_pago_status`, `created_at`, `updated_at`) VALUES
+(1, 500.00, 0.00, 'PENDIENTE', 'PRUEBA', 1, 0, 0, 'PERSONAL', 'PENDIENTE', '2018-05-28', '2018-05-28');
+
 -- --------------------------------------------------------
 
 --
@@ -706,6 +677,13 @@ CREATE TABLE `produccion` (
   `created_at` date NOT NULL,
   `updated_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `produccion`
+--
+
+INSERT INTO `produccion` (`id_produccion`, `pr_encargado`, `pr_ayudante`, `pr_turno`, `pr_completo`, `pr_memo`, `pr_productos`, `pr_materiales`, `created_at`, `updated_at`) VALUES
+(2, 'JESUS', 'CARLOS', 'MATUTINO', 'FINALIZADO', 'NO HAY NINGÚN COMENTARIO', '1 PEGAZA ORO', '', '2018-05-20', '2018-05-20');
 
 -- --------------------------------------------------------
 
@@ -792,7 +770,7 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id_usuario`, `empleado_id`, `perfil`, `usuario`, `us_status`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 1, 'ADMIN', 'JORGE', 1, '$2y$10$fozx4Ah2/kvk4h1vhBo3su7sEjUQe9iQdNyKdApewGzilb9nh6lOu', 'C4Xqbw6IyAVyr7mlhMUspNpIf900OeenUUGpicn2Bguy4H20ekjDzWF6CqLE', '2017-11-21', '2018-05-10'),
+(1, 1, 'ADMIN', 'JORGE', 1, '$2y$10$fozx4Ah2/kvk4h1vhBo3su7sEjUQe9iQdNyKdApewGzilb9nh6lOu', 'V92qF40WMmwDHrcU9xRXlkmQRqZ0h1YIdFcpNwgVmQfGuj6FdUvugDGTzbO7', '2017-11-21', '2018-05-28'),
 (2, 2, 'ADMIN', 'XOCHITL', 1, '$2y$10$xEIRMKVMHmXokj7/xH6RL.bKl5GudwgKwgMNZBE4qK24rPT8f7yGu', '', '2017-11-21', '2017-11-21'),
 (3, 3, 'ADMIN', 'JESUS', 1, '$2y$10$oA3Vhdo3VR10mvS12hz4o.NoYzTpCVWs8n11odUJueE.A6hoEPaYS', 'We98TbWrUgQk8Ggt8XrtKYhw1RfAF7df2cOpeWEJHVmYe57eTuLZuZTRoMD7', '2017-11-21', '2017-12-20');
 
@@ -839,14 +817,6 @@ CREATE TABLE `viaje` (
   `created_at` date NOT NULL,
   `updated_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `viaje`
---
-
-INSERT INTO `viaje` (`id_viaje`, `vi_kilometraje_inicial`, `vi_fecha`, `vi_kilometraje_final`, `empleado_id`, `vehiculo_id`, `vi_destino`, `vi_viaticos`, `vi_status`, `vi_observaciones`, `created_at`, `updated_at`) VALUES
-(1, '1997', '2018-05-02', '2500', 3, 'FTP-05-06', 'TECOMAN', 300.00, 1, 'NADA.', '2018-05-02', '2018-05-02'),
-(2, '2500', '2018-05-10', '290', 3, 'FTP-05-06', 'TECOMAN', 500.00, 1, 'NADA.', '2018-05-10', '2018-05-10');
 
 --
 -- Índices para tablas volcadas
@@ -1094,7 +1064,7 @@ ALTER TABLE `abono_compra`
 -- AUTO_INCREMENT de la tabla `abono_pedido`
 --
 ALTER TABLE `abono_pedido`
-  MODIFY `id_abono_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_abono_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `abono_prestamo`
@@ -1148,7 +1118,7 @@ ALTER TABLE `cuentas`
 -- AUTO_INCREMENT de la tabla `detalle_movimientos`
 --
 ALTER TABLE `detalle_movimientos`
-  MODIFY `id_concepto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_concepto` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_pedido`
@@ -1160,7 +1130,7 @@ ALTER TABLE `detalle_pedido`
 -- AUTO_INCREMENT de la tabla `detalle_produccion`
 --
 ALTER TABLE `detalle_produccion`
-  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_requisitos`
@@ -1178,7 +1148,7 @@ ALTER TABLE `detalle_requisito_producto`
 -- AUTO_INCREMENT de la tabla `detalle_viaje`
 --
 ALTER TABLE `detalle_viaje`
-  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `documentos`
@@ -1202,13 +1172,13 @@ ALTER TABLE `domicilio`
 -- AUTO_INCREMENT de la tabla `egresos`
 --
 ALTER TABLE `egresos`
-  MODIFY `id_egresos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_egresos` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `empleado`
 --
 ALTER TABLE `empleado`
-  MODIFY `id_empleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_empleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `fallas`
@@ -1244,7 +1214,7 @@ ALTER TABLE `materia_prima`
 -- AUTO_INCREMENT de la tabla `movimiento_temporal`
 --
 ALTER TABLE `movimiento_temporal`
-  MODIFY `id_movimiento_temporal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_movimiento_temporal` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `pedidos`
@@ -1256,13 +1226,13 @@ ALTER TABLE `pedidos`
 -- AUTO_INCREMENT de la tabla `prestamo`
 --
 ALTER TABLE `prestamo`
-  MODIFY `id_prestamo` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_prestamo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `produccion`
 --
 ALTER TABLE `produccion`
-  MODIFY `id_produccion` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_produccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `producto`
@@ -1286,7 +1256,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `viaje`
 --
 ALTER TABLE `viaje`
-  MODIFY `id_viaje` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_viaje` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

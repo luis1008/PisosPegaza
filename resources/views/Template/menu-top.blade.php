@@ -39,10 +39,13 @@
 	        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 	          <a class="dropdown-item" href="{{route('get_pedidos')}}"><span class="icon icon-coin-dollar"></span> Cobranza</a>
 	          <a class="dropdown-item" href="{{route('get_produccion')}}"><span class="icon icon-hammer"></span> Producción</a>
-	          <a class="dropdown-item" href="{{route('get_compras')}}"><span class="icon icon-price-tag"></span> Compras</a>
+	          <a class="dropdown-item" href="{{route('get_compras')}}"><span class="icon icon-price-tag"></span> Proveedor</a>
 	      	  <a class="dropdown-item" href="{{route('get_caja')}}"><span class="icon icon-coin-dollar"></span> Caja</a>
 	      	  <a class="dropdown-item" href="{{route('get_cuentas')}}"><span class="icon icon-credit-card"></span> Cuentas</a>
 	      	  <a class="dropdown-item" href="{{route('get_egresos')}}"><span class="icon icon-coin-dollar"></span> Gastos Viajes</a>
+	      	  <a class="dropdown-item" href="{{route('get_inventario')}}"><span class="icon icon-coin-dollar"></span> Inventario</a>
+	      	  <a class="dropdown-item" href="{{route('get_pedido_entregado')}}"><span class="icon icon-truck"></span> Pedidos</a>
+	      	  <a class="dropdown-item" href="{{route('get_prestamo')}}"><span class="icon icon-coin-dollar"></span> Prestamos</a>
 	     	</div>
 	      	  
 	      </li>

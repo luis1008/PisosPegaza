@@ -39,4 +39,18 @@ class Prestamo extends Model
     public function getCreatedAtAttribute($valor){
         return Carbon::parse($valor)->format('d-m-Y');
     }
+
+        //Scope
+    public function scopeFechas($query, $Inicio , $Final)
+    {
+        if(trim($Inicio) != "" && trim($Final) == ""){
+            
+            return $query->whereRaw("pe_fecha_pedido >= '$Inicio'");
+
+        } elseif(trim($Inicio) != "" && trim($Final) != "") {
+
+            return $query->whereRaw("pe_fecha_pedido BETWEEN '$Inicio' AND '$Final'");
+
+        }
+    } 
 }

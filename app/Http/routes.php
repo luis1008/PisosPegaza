@@ -413,6 +413,21 @@ Route::group(['middleware' => 'auth'],function(){
 		'as'	=> 'get_produccion' //Nombre de la ruta
 	]);
 
+	Route::get('/ReportesInventario',[
+		'uses'  => 'ReporteController@get_inventario', //A que controlador y despues del @ es a que funcion dentro del controlador
+		'as'	=> 'get_inventario' //Nombre de la ruta
+	]);
+
+	Route::get('/ReportesPedidos',[
+		'uses'  => 'ReporteController@get_pedido_entregado', //A que controlador y despues del @ es a que funcion dentro del controlador
+		'as'	=> 'get_pedido_entregado' //Nombre de la ruta
+	]);
+
+	Route::get('/ReportesPrestamos',[
+		'uses'  => 'ReporteController@get_prestamo', //A que controlador y despues del @ es a que funcion dentro del controlador
+		'as'	=> 'get_prestamo' //Nombre de la ruta
+	]);
+
 	//PDF
 	Route::get('/NotaPedido/{id}/{preorden?}/{copia?}', 'PdfController@pdf_pedido')->name('pdf_pedido');
 	Route::get('/TicketViaje/{id}/{copia?}', 'PdfController@ticket_viaje')->name('ticket_viaje');
