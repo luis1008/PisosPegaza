@@ -42,7 +42,7 @@
 	          <a class="dropdown-item" href="{{route('get_compras')}}"><span class="icon icon-price-tag"></span> Proveedor</a>
 	      	  <a class="dropdown-item" href="{{route('get_caja')}}"><span class="icon icon-coin-dollar"></span> Caja</a>
 	      	  <a class="dropdown-item" href="{{route('get_cuentas')}}"><span class="icon icon-credit-card"></span> Cuentas</a>
-	      	  <a class="dropdown-item" href="{{route('get_egresos')}}"><span class="icon icon-coin-dollar"></span> Gastos Viajes</a>
+	      	  <a class="dropdown-item" href="{{route('get_egresos')}}"><span class="icon icon-coin-dollar"></span> Gastos</a>
 	      	  <a class="dropdown-item" href="{{route('get_inventario')}}"><span class="icon icon-coin-dollar"></span> Inventario</a>
 	      	  <a class="dropdown-item" href="{{route('get_pedido_entregado')}}"><span class="icon icon-truck"></span> Pedidos</a>
 	      	  <a class="dropdown-item" href="{{route('get_prestamo')}}"><span class="icon icon-coin-dollar"></span> Prestamos</a>

@@ -10,11 +10,13 @@ use pegaza\Prestamo;
 use pegaza\AbonoPedido;
 use pegaza\Gastos;
 use pegaza\Inventario;
+use pegaza\MovimientoTemporal;
 
 use pegaza\Http\Requests;
 
 class ReporteController extends Controller
 {
+
 	public function get_pedidos(Request $request){
         //dd($id);
 
@@ -30,7 +32,6 @@ class ReporteController extends Controller
         
         return view('Reportes.ReporteCuentas')->with('cuentas',$cuent);
     }
-
     public function get_egresos(Request $request){
         //dd($id);
 
@@ -38,7 +39,6 @@ class ReporteController extends Controller
         
         return view('Reportes.ReporteEgresos')->with('gastos',$gasto);
     }
-
 
     public function get_compras(Request $request){
         //dd($id);

@@ -19,6 +19,7 @@ use pegaza\Usuario;
 use pegaza\Contrato;
 use pegaza\Falla;
 use pegaza\Gastos;
+use pegaza\CatGastos;
 
 class CatalogoController extends Controller
 {
@@ -167,20 +168,19 @@ class CatalogoController extends Controller
 
         return redirect()->route('cuentas');
 
-    }
+    }   
 
-    
-            //GASTOS
+        //GASTOS
         public function gastos(Request $request){
-        $gasto = Gastos::paginate(25);
+        $gasto = CatGastos::paginate(25);
         return view('Catalogo.gastos')->with('gastos',$gasto);
     }
-
+        
     public function post_gasto(Request $request){
         //Lado izquierdo son los campos del modelo que especifico y del lado derecho son los names de los inputs de la vista del formulario
-        $gastos =  new Gastos();
+        $gastos =  new CatGastos();
 
-        $gastos->ga_concepto = $request->concepto;
+        $gastos->catga_gastos = $request->concepto;
         $gastos->save();
 
         return redirect()->route('gastos');
@@ -188,8 +188,8 @@ class CatalogoController extends Controller
 
     public function put_gasto($id){
 
-        $gastos = Gastos::find($id);
-        $gastos->ga_status = !$gastos->ga_status;
+        $gastos = CatGastos::find($id);
+        $gastos->catga_status = !$gastos->catga_status;
         $gastos->save();
 
         return redirect()->route('gastos');
@@ -198,8 +198,8 @@ class CatalogoController extends Controller
 
     public function put_datos_gasto(Request $request, $id){
 
-        $gastos = Gastos::find($id);
-        $gastos->ga_concepto = $request->concepto;
+        $gastos = CatGastos::find($id);
+        $gastos->catga_concepto = $request->concepto;
         $gastos->save();
 
         return redirect()->route('gastos');

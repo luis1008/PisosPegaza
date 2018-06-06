@@ -44,7 +44,8 @@ class CajaController extends Controller
         $cli = Cliente::where('cl_status','=','1')->orderBy('cl_nombre')->get();
         $ped = Pedido::where('pe_status','!=','ENTREGADO')->get();
         $ped_ade = Pedido::where('pe_pago_status','!=','PAGADO')->get();
-        $prod = Producto::where('pd_status','=','1')->orderBy('pd_nombre')->get();
+        $prod = Producto::where('pd_status','=','1')->where('pd_tipo','=','NO ENSAMBLADO')->orderBy('pd_nombre')->get();
+        $inv = Inventario::where('in_cantidad','>','0')->get();
         $mp = MateriaPrima::where('mp_status','=','1')->orderBy('mp_nombre')->get();
         $u_pe = Pedido::select('pe_nota')->orderBy('id_pedido','DESC')->first();
         $u_pe = ($u_pe) ? $u_pe->pe_nota + 1 : "0";
@@ -85,6 +86,7 @@ class CajaController extends Controller
                                 ->with('cuentas',$CatalogoCuentas)
                                 ->with('pendientes',$pedidos_pendientes_produccion)
                                 ->with('productos',$prod)
+                                ->with('inventarios',$inv)
                                 ->with('cat_gastos',$CatalogoGastos);
 
     }
@@ -110,9 +112,12 @@ class CajaController extends Controller
             'id' => $mov->id_movimiento_temporal,
             'fecha'   => $mov->created_at,
         ];
+
         return view('Imprimir.ticket_movimiento',['datos'=>$datos]);
         
     }
+
+
 
     public function put_MTPendiente(Request $request){
         //dd($request);
@@ -153,7 +158,7 @@ class CajaController extends Controller
             $pre->empleado               = $mov->empleado;
             $pre->save();
         }
-
+            //dd($request);
         return redirect()->route('caja');
 
 
@@ -482,6 +487,7 @@ class CajaController extends Controller
         $gastos->ga_importe    = $request->importe;
         $gastos->ga_concepto   = $request->concepto;
         $gastos->viaje_id      = $request->id;
+        $gastos->ga_tipo       = "VIAJE";
         $gastos->save();
         
         return view('Viajes.Reporte');  

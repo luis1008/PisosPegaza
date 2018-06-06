@@ -134,14 +134,14 @@
 	                    <?php $total_comp=\DB::table('compras')->SUM('cm_total_abonado'); ?>
 	                    <?php $total_mov_temp=\DB::table('movimiento_temporal')->SUM('mt_gasto'); ?>
 	                    <?php $total_viaje=\DB::table('viaje')->SUM('vi_viaticos'); ?>
-	                    <?php $total_egreso=\DB::table('egresos')->SUM('eg_importe'); ?>
+	                    <?php $total_gasto=\DB::table('gastos')->SUM('ga_importe'); ?>
 	                    <?php $total_prestamo=\DB::table('prestamo')->SUM('pres_cantidad'); ?>
 	                    <!-- SUMA EL TOTAL DE EGRESOS -->
-	                    <?php $total_egresos=$total_comp+$total_mov_temp+$total_viaje+$total_egreso+$total_prestamo ?>
+	                    <?php $total_gastos=$total_comp+$total_mov_temp+$total_viaje+$total_gasto+$total_prestamo ?>
 	                    <!-- PINTA EL TOTAL DE EGRESOS -->
-	                	<td><?php echo '$'. number_format($total_egresos,2) ?></td>
+	                	<td><?php echo '$'. number_format($total_gastos,2) ?></td>
 	                	<!-- PINTA EL SALDO -->
-	                	<?php $total_saldo=$total_ingresos - $total_egresos ?>
+	                	<?php $total_saldo=$total_ingresos - $total_gastos ?>
 	                	<td><?php echo '$'. number_format($total_saldo,2) ?></td>  		      
 	                </tr>
 		        </tbody>
@@ -149,7 +149,7 @@
 			<br>
 	  
 	  		<div class="card">
-	  			<div class="card-header text-center text-white bg-dark" data-toggle="collapse" href="#CollapseProductos" aria-expanded="true" aria-controls="CollapseProductos"><b><span class="icon icon-circle-down"></span> Productos en Existencia</b></div>
+	  			<div class="card-header text-center text-white bg-dark" data-toggle="collapse" href="#CollapseProductos" aria-expanded="true" aria-controls="CollapseProductos"><b><span class="icon icon-circle-down"></span> Productos No Ensamblados en Existencia</b></div>
 	  			<div id="CollapseProductos" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
         			<table class="table table-hover table-sm">
 			            <thead>
@@ -165,11 +165,40 @@
 			                    </tr>
 			                <?php } ?>
 			                <?php foreach ($productos as $pd) { ?>
-			                    <tr class='<?php if($pd->pd_cantidad!=0){ echo "table-success"; } else { echo "table-danger"; } ?>'>
+			                	<?php $cantidad_total=\DB::table('compra_producto')->where('producto_id',$pd->id_producto)->SUM('det_cantidad'); ?>
+			                     <tr class='<?php if($cantidad_total!=0){ echo "table-success"; } else { echo "table-danger"; } ?>'>			     
 			                        <th><?php echo  str_pad($pd->id_producto, 2, "0", STR_PAD_LEFT) ?></th>
 			                        <td><?php echo $pd->pd_nombre ?></td>
 			                        <td><?php echo $pd->pd_tipo ?></td>
-			                        <td><?php echo number_format($pd->pd_cantidad) ?></td>
+			                        <!-- TOTAL DE PRODUCTO NO ENSAMBLADO -->
+			                        <td>{{$cantidad_total or "0"}}</td>
+			                    </tr>
+			                <?php } ?>
+			            </tbody>
+		        	</table>
+		        </div>
+		    </div>
+		    <br>
+		    <div class="card">
+	  			<div class="card-header text-center text-white bg-danger" data-toggle="collapse" href="#CollapseProductosEnsamblados" aria-expanded="true" aria-controls="CollapseProductosEnsamblados"><b><span class="icon icon-circle-down"></span> Productos Ensamblados en Existencia</b></div>
+	  			<div id="CollapseProductosEnsamblados" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+        			<table class="table table-hover table-sm">
+			            <thead>
+			                <th>No. Producto</th>
+			                <th>Nombre</th>
+			                <th>Cantidad</th>
+			            </thead>
+			            <tbody>
+			                <?php if(count($inventarios) < 1) { ?>
+			                    <tr>
+			                        <td colspan="4">NO SE ENCONTRO NINGÚN REGISTRO</td>
+			                    </tr>
+			                <?php } ?>
+			                <?php foreach ($inventarios as $inv) { ?>
+			                    <tr class='<?php if($inv->in_cantidad!=0){ echo "table-success"; } else { echo "table-danger"; } ?>'>
+			                        <th><?php echo  str_pad($inv->producto_id, 2, "0", STR_PAD_LEFT) ?></th>
+			                        <td><?php echo $inv->producto->pd_nombre ?></td>
+			                        <td><?php echo number_format($inv->in_cantidad) ?></td>
 			                    </tr>
 			                <?php } ?>
 			            </tbody>
@@ -178,7 +207,7 @@
 		    </div>
 			<br>
 			<div class="card">
-	  			<div class="card-header text-center text-white bg-danger" data-toggle="collapse" href="#CollapseMateria" aria-expanded="true" aria-controls="CollapseMateria"><b><span class="icon icon-circle-down"></span> Materia Prima en Existencia</b></div>
+	  			<div class="card-header text-center text-white bg-dark" data-toggle="collapse" href="#CollapseMateria" aria-expanded="true" aria-controls="CollapseMateria"><b><span class="icon icon-circle-down"></span> Materia Prima en Existencia</b></div>
 	  			<div id="CollapseMateria" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
 		        	<table class="table table-hover table-sm">
 			            <thead>
@@ -1177,11 +1206,11 @@
 								<td>
 									<a class="btn btn-dark btn-sm tooltips2"  title="Finalizar" target="_blank()" href="<?php echo route('get_viaje',$viaje->id_viaje) ?>"><span class="icon icon-checkmark"></span></a>
 								</td>
-								<td>
+								<!--<td>
 									<a class="btn btn-danger btn-sm tooltips2" title="Detalle" target="_blank()" href="<?php echo route('get_viaje_caja',$viaje->id_viaje) ?>"><span class="icon icon-eye"></span></a>
-								</td>
+								</td>-->
 								<td>
-									<a class="btn btn-dark btn-sm tooltips2" title="Nota" target="_blank()" href="<?php echo route('ticket_viaje',['id'=>$viaje->id_viaje,'copia'=>1]) ?>"><span class="icon icon-ticket"></span></a>
+									<a class="btn btn-danger btn-sm tooltips2" title="Nota" target="_blank()" href="<?php echo route('ticket_viaje',['id'=>$viaje->id_viaje,'copia'=>1]) ?>"><span class="icon icon-ticket"></span></a>
 								</td>
 							</tr>
 						@endforeach
@@ -2672,7 +2701,7 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="MensajeErrors">Error!</h5>
+					<h5 class="modal-title" id="MensajeErrors">¡Error!</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>

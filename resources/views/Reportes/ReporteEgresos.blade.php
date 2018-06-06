@@ -32,12 +32,13 @@
     </form>
 
     <div class="card text-black bg-light">
-        <div class="card-header text-center text-white bg-danger"><b>GASTOS</b></div>
+        <div class="card-header text-center text-white bg-danger"><b>GASTOS DE VIAJES</b></div>
         <table class="table table-hover table-sm">
             <thead>
                 <th width="10" class="text-center"># Nota</th>
                 <th width="10" class="text-center">Concepto</th>
                 <th width="10" class="text-center">Importe</th>
+                <th width="10" class="text-center"># Viaje</th>
                 <th width="10" class="text-center">Fecha</th>
             </thead>
             <tbody>
@@ -51,6 +52,7 @@
                         <th class="text-center">{{$gasto->ga_nota}}</th>
                         <td class="text-center">{{$gasto->ga_concepto}}</td>
                         <td class="text-center">{{'$'.number_format($gasto->ga_importe)}}</td>
+                        <td class="text-center">{{$gasto->viaje_id}}</td>
                         <td class="text-center">{{$gasto->created_at}}</td>
                     </tr>
                 <?php } ?>
