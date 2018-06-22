@@ -41,7 +41,7 @@ class AjaxController extends Controller
 
     public function GetPedidosPendientesPago(Request $request){
         if ($request->ajax()) {
-            $pedidos = Pedido::where('cliente_id','=',$request->id)->where('pe_pago_status','!=','PAGADO')->where('pe_status','=','ENTREGADO')->orderBy('pe_fecha_pedido')->groupBy('cliente_id')->get();
+            $pedidos = Pedido::where('cliente_id','=',$request->id)->where('pe_pago_status','!=','PAGADO')->where('pe_status','=','ENTREGADO')->orderBy('pe_fecha_pedido')->get();
             return response()->json($pedidos);
         }
     }
