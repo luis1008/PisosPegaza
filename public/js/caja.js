@@ -91,7 +91,7 @@ $(document).ready(function(){
                                 '</div>'+
                                 '<div class="form-group col-md-2 DivPrecio">'+
                                     '<label>Precio</label>'+
-                                    '<input type="number" name="precio[]" class="form-control" value="0.0000" step="0.0001" min="1" placeholder="$" required>'+
+                                    '<input type="number" name="precio[]" class="form-control" value="0.0000" step="0.0001" placeholder="$" required>'+
                                 '</div>'+
                                 '<div class="form-group col-md-2 DivSub">'+
                                     '<label>Sub. Total</label>'+

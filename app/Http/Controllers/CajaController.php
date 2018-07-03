@@ -28,6 +28,7 @@ use pegaza\Gastos;
 use pegaza\GastoFijo;
 use pegaza\Egresos;
 use pegaza\Persona;
+use pegaza\CorteCaja;
 
 class CajaController extends Controller
 {
@@ -714,6 +715,17 @@ class CajaController extends Controller
         $abono->ab_numero   = $prestamo->abonos->count() + 1;
         $abono->empleado    = $id;
         $abono->save();
+
+        return redirect()->route('caja');
+    }
+
+     public function post_corte_caja(Request $request){
+
+        $corte = new CorteCaja();
+        $corte->crt_ingresos = $request->total_ingresos;
+        $corte->crt_egresos  = $request->total_gastos;
+        $corte->crt_saldo    = $request->total_saldo;
+        $corte->save();
 
         return redirect()->route('caja');
     }

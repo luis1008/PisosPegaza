@@ -428,6 +428,13 @@ Route::group(['middleware' => 'auth'],function(){
 		'as'	=> 'get_prestamo' //Nombre de la ruta
 	]);
 
+	//CORTE DE CAJA
+
+	Route::post('/CorteCaja',[
+		'uses' => 'CajaController@post_corte_caja',
+		'as'   => 'post_corte_caja'
+	]);
+
 	//PDF
 	Route::get('/NotaPedido/{id}/{preorden?}/{copia?}', 'PdfController@pdf_pedido')->name('pdf_pedido');
 	Route::get('/TicketViaje/{id}/{copia?}', 'PdfController@ticket_viaje')->name('ticket_viaje');

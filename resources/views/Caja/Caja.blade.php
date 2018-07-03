@@ -123,26 +123,42 @@
 	                <!-- TOTAL DE INGRESOS -->
 	                <tr>
 	                    <th>Totales</th>
-	                    <?php $total_pedido=\DB::table('pedidos')->SUM('pe_total_abonado'); ?>
+	                    <?php $total_pedido=\DB::table('pedidos')->where('pe_status','=','ENTREGADO')->SUM('pe_total_abonado'); ?>
 	                    <?php $total_ab_prestamos=\DB::table('abono_prestamo')->SUM('ab_abono'); ?>
 	                    <!-- SUMA EL TOTAL DE INGRESOS -->
 	                    <?php $total_ingresos=$total_pedido+$total_ab_prestamos ?>
 	                    <!-- PINTA EL TOTAL DE INGRESOS -->
-	                	<td><?php echo '$'. number_format($total_ingresos,2) ?></td>  
+	                <form action="{{route('post_corte_caja')}}" method="POST">
+					{{csrf_field()}}
+	                	<td><?php echo '$'. number_format($total_ingresos,3) ?></td>  
+						
 
 	                <!-- TOTAL DE EGRESOS -->
-	                    <?php $total_comp=\DB::table('compras')->SUM('cm_total_abonado'); ?>
+	                    <?php $total_comp=\DB::table('compras')->where('cm_bodega','=','1')->SUM('cm_total_abonado'); ?>
 	                    <?php $total_mov_temp=\DB::table('movimiento_temporal')->SUM('mt_gasto'); ?>
 	                    <?php $total_viaje=\DB::table('viaje')->SUM('vi_viaticos'); ?>
 	                    <?php $total_gasto=\DB::table('gastos')->SUM('ga_importe'); ?>
-	                    <?php $total_prestamo=\DB::table('prestamo')->SUM('pres_cantidad'); ?>
+	                    <?php $total_prestamo=\DB::table('prestamo')->where('pres_status','=','APROBADO')->SUM('pres_cantidad'); ?>
 	                    <!-- SUMA EL TOTAL DE EGRESOS -->
 	                    <?php $total_gastos=$total_comp+$total_mov_temp+$total_viaje+$total_gasto+$total_prestamo ?>
 	                    <!-- PINTA EL TOTAL DE EGRESOS -->
-	                	<td><?php echo '$'. number_format($total_gastos,2) ?></td>
+	                	<td><?php echo '$'. number_format($total_gastos,3) ?></td>
+	                    
 	                	<!-- PINTA EL SALDO -->
 	                	<?php $total_saldo=$total_ingresos - $total_gastos ?>
-	                	<td><?php echo '$'. number_format($total_saldo,2) ?></td>  		      
+	                	<td><?php echo '$'. number_format($total_saldo,3) ?></td>  	
+	                	
+	                	<!-- CORTE DE CAJA -->
+	                	<?php $total_saldo=$total_ingresos - $total_gastos ?>
+	                	<input type="number" name="total_ingresos" style="display:none" value="<?php $total_ingresos ?>">
+	                	<input type="number" name="total_gastos" style="display:none" value="<?php $total_gastos ?>">
+	                	<input type="number" name="total_saldo" style="display:none" value="<?php $total_saldo ?>">
+	                	<td>
+	                		<div class="input-group-btn">
+					  			<button type="submit" class="btn btn-dark tooltips2" title="Corte de Caja" id="BtnPagoClientePedidos"><span class="icon icon-coin-dollar"></span> Corte</button>
+					  		</div>
+					  	</form>
+					  	</td>	      
 	                </tr>
 		        </tbody>
 		    </table>
