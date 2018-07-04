@@ -154,49 +154,19 @@
 	                	<input type="number" name="total_gastos" style="display:none" value="<?php $total_gastos ?>">
 	                	<input type="number" name="total_saldo" style="display:none" value="<?php $total_saldo ?>">
 	                	<td>
-	                		<div class="input-group-btn">
+	                		<!--<div class="input-group-btn">
 					  			<button type="submit" class="btn btn-dark tooltips2" title="Corte de Caja" id="BtnPagoClientePedidos"><span class="icon icon-coin-dollar"></span> Corte</button>
-					  		</div>
+					  		</div>-->
 					  	</form>
 					  	</td>	      
 	                </tr>
 		        </tbody>
 		    </table>
 			<br>
-	  
-	  		<div class="card">
-	  			<div class="card-header text-center text-white bg-dark" data-toggle="collapse" href="#CollapseProductos" aria-expanded="true" aria-controls="CollapseProductos"><b><span class="icon icon-circle-down"></span> Productos No Ensamblados en Existencia</b></div>
-	  			<div id="CollapseProductos" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
-        			<table class="table table-hover table-sm">
-			            <thead>
-			                <th>No. Producto</th>
-			                <th>Nombre</th>
-			                <th>Tipo</th>
-			                <th>Cantidad</th>
-			            </thead>
-			            <tbody>
-			                <?php if(count($productos) < 1) { ?>
-			                    <tr>
-			                        <td colspan="4">NO SE ENCONTRO NINGÚN REGISTRO</td>
-			                    </tr>
-			                <?php } ?>
-			                <?php foreach ($productos as $pd) { ?>
-			                	<?php $cantidad_total=\DB::table('compra_producto')->where('producto_id',$pd->id_producto)->SUM('det_cantidad'); ?>
-			                     <tr class='<?php if($cantidad_total!=0){ echo "table-success"; } else { echo "table-danger"; } ?>'>			     
-			                        <th><?php echo  str_pad($pd->id_producto, 2, "0", STR_PAD_LEFT) ?></th>
-			                        <td><?php echo $pd->pd_nombre ?></td>
-			                        <td><?php echo $pd->pd_tipo ?></td>
-			                        <!-- TOTAL DE PRODUCTO NO ENSAMBLADO -->
-			                        <td>{{$cantidad_total or "0"}}</td>
-			                    </tr>
-			                <?php } ?>
-			            </tbody>
-		        	</table>
-		        </div>
-		    </div>
+	 
 		    <br>
 		    <div class="card">
-	  			<div class="card-header text-center text-white bg-danger" data-toggle="collapse" href="#CollapseProductosEnsamblados" aria-expanded="true" aria-controls="CollapseProductosEnsamblados"><b><span class="icon icon-circle-down"></span> Productos Ensamblados en Existencia</b></div>
+	  			<div class="card-header text-center text-white bg-dark" data-toggle="collapse" href="#CollapseProductosEnsamblados" aria-expanded="true" aria-controls="CollapseProductosEnsamblados"><b><span class="icon icon-circle-down"></span> Inventario de Productos</b></div>
 	  			<div id="CollapseProductosEnsamblados" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
         			<table class="table table-hover table-sm">
 			            <thead>
@@ -211,10 +181,11 @@
 			                    </tr>
 			                <?php } ?>
 			                <?php foreach ($inventarios as $inv) { ?>
+			                	<?php $cantidad_total=\DB::table('inventario')->where('producto_id',$inv->producto_id)->SUM('in_cantidad'); ?>
 			                    <tr class='<?php if($inv->in_cantidad!=0){ echo "table-success"; } else { echo "table-danger"; } ?>'>
 			                        <th><?php echo  str_pad($inv->producto_id, 2, "0", STR_PAD_LEFT) ?></th>
 			                        <td><?php echo $inv->producto->pd_nombre ?></td>
-			                        <td><?php echo number_format($inv->in_cantidad) ?></td>
+			                        <td>{{$cantidad_total or "0"}}</td>
 			                    </tr>
 			                <?php } ?>
 			            </tbody>
@@ -223,7 +194,7 @@
 		    </div>
 			<br>
 			<div class="card">
-	  			<div class="card-header text-center text-white bg-dark" data-toggle="collapse" href="#CollapseMateria" aria-expanded="true" aria-controls="CollapseMateria"><b><span class="icon icon-circle-down"></span> Materia Prima en Existencia</b></div>
+	  			<div class="card-header text-center text-white bg-danger" data-toggle="collapse" href="#CollapseMateria" aria-expanded="true" aria-controls="CollapseMateria"><b><span class="icon icon-circle-down"></span> Inventario de Materia Prima</b></div>
 	  			<div id="CollapseMateria" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
 		        	<table class="table table-hover table-sm">
 			            <thead>

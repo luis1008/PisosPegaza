@@ -46,7 +46,7 @@ class CajaController extends Controller
         $ped = Pedido::where('pe_status','!=','ENTREGADO')->get();
         $ped_ade = Pedido::where('pe_pago_status','!=','PAGADO')->get();
         $prod = Producto::where('pd_status','=','1')->where('pd_tipo','=','NO ENSAMBLADO')->orderBy('pd_nombre')->get();
-        $inv = Inventario::where('in_cantidad','>','0')->get();
+        $inv = Inventario::where('in_cantidad','>','0')->SUM('in_cantidad')->groupBy('producto_id')->get();
         $mp = MateriaPrima::where('mp_status','=','1')->orderBy('mp_nombre')->get();
         $u_pe = Pedido::select('pe_nota')->orderBy('id_pedido','DESC')->first();
         $u_pe = ($u_pe) ? $u_pe->pe_nota + 1 : "0";
@@ -247,6 +247,8 @@ class CajaController extends Controller
                 //dd($request);
                  // GUARDAR TABLA DETALLE compra_producto
                 $compra->productoscompra()->attach($request->material[$i], ['det_cantidad'=>$request->cantidad[$i],'det_precio'=>$request->precio[$i],'det_subtotal'=>$request->subtotal[$i]]);
+
+                $compra->inventarios()->attach($request->material[$i], ['in_cantidad'=>$request->cantidad[$i]]);
             }
         }
 
@@ -719,7 +721,7 @@ class CajaController extends Controller
         return redirect()->route('caja');
     }
 
-     public function post_corte_caja(Request $request){
+    public function post_corte_caja(Request $request){
 
         $corte = new CorteCaja();
         $corte->crt_ingresos = $request->total_ingresos;
