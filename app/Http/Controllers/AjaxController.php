@@ -48,7 +48,7 @@ class AjaxController extends Controller
 
     public function GetComprasPendientesPago(Request $request){
         if ($request->ajax()) {
-            $compras = Compra::where('proveedor_id','=',$request->id)->where('cm_status','!=','PAGADO')->get();
+            $compras = Compra::where('proveedor_id','=',$request->id)->where('cm_status','!=','PAGADO')->where('cm_bodega', '=', '1')->get();
             return response()->json($compras);
         }
     }
