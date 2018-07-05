@@ -213,7 +213,7 @@ $(document).ready(function(){
 							'<td>'+pedido.pe_termino+'</td>'+
 							'<td>$'+FormatMoney(parseFloat(pedido.pe_importe) - parseFloat(pedido.pe_total_abonado))+'</td>'+
 							'<td>$'+FormatMoney(pedido.pe_total_abonado)+'</td>'+
-							'<td class="TDabono"><input type="number" class="form-control abonado" name="abono[]" value="0.00" step="0.01" max="'+(parseFloat(pedido.pe_importe) - parseFloat(pedido.pe_total_abonado))+'" required/></td>'+
+							'<td class="TDabono"><input type="number" class="form-control abonado" name="abono[]" value="0.0000" step="0.0001" max="'+(parseFloat(pedido.pe_importe) - parseFloat(pedido.pe_total_abonado))+'" required/></td>'+
 					    '</tr>';
 
 
@@ -235,7 +235,7 @@ $(document).ready(function(){
 							'<td>'+compra.cm_termino+'</td>'+
 							'<td>$'+FormatMoney(parseFloat(compra.cm_total) - parseFloat(compra.cm_total_abonado))+'</td>'+
 							'<td>$'+FormatMoney(compra.cm_total_abonado)+'</td>'+
-							'<td class="TDabono"><input type="number" class="form-control abonado" name="abono[]" value="0.00" step="0.01" max="'+(parseFloat(compra.cm_total) - parseFloat(compra.cm_total_abonado))+'" required/></td>'+
+							'<td class="TDabono"><input type="number" class="form-control abonado" name="abono[]" value="0.0000" step="0.0001" max="'+(parseFloat(compra.cm_total) - parseFloat(compra.cm_total_abonado))+'" required/></td>'+
 					    '</tr>';
 
 					    resto += (parseFloat(compra.cm_total) - parseFloat(compra.cm_total_abonado));
@@ -257,7 +257,7 @@ $(document).ready(function(){
 							'<td>$'+FormatMoney(prestamo.pres_abonado)+'</td>'+
 							'<td>$'+FormatMoney(parseFloat(prestamo.pres_cantidad) - parseFloat(prestamo.pres_abonado))+'</td>'+
 							'<td>'+prestamo.created_at+'</td>'+
-							'<td class="TDabono"><input type="number" class="form-control abonado" name="abono[]" value="0.00" step="0.01" max="'+(parseFloat(prestamo.pres_cantidad) - parseFloat(prestamo.pres_abonado))+'" required/></td>'+
+							'<td class="TDabono"><input type="number" class="form-control abonado" name="abono[]" value="0.0000" step="0.0001" max="'+(parseFloat(prestamo.pres_cantidad) - parseFloat(prestamo.pres_abonado))+'" required/></td>'+
 							'<th>'+prestamo.pres_descripcion+'</th>'+
 					    '</tr>';
 

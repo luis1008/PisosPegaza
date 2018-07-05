@@ -179,7 +179,7 @@ $(document).ready(function(){
                     form += '<div class="form-row">'+
                                 '<div class="form-group col-md-1 DivCantidad">'+
                                     '<label>Cant.</label>'+
-                                    '<input type="text" name="cantidad[]" class="form-control" value="1" placeholder="NECESITA" required>'+
+                                    '<input type="text" name="cantidad[]" class="form-control" value="0.0000" step="0.0001" placeholder="NECESITA" required>'+
                                 '</div>'+
                                 '<div class="form-group col-md-6">'+
                                     '<label>Producto</label>'+
@@ -250,7 +250,7 @@ $(document).ready(function(){
                                 '<input type="hidden" value="'+id+'" id="id">'+
                                 '<div class="form-group col-md-1 DivCantidad">'+
                                     '<label>Cant.</label>'+
-                                    '<input type="text" name="cantidad2[]" class="form-control" value="1" placeholder="NECESITA" required>'+
+                                    '<input type="text" name="cantidad2[]" class="form-control" value="0.0000" step="0.0001" placeholder="NECESITA" required>'+
                                 '</div>'+
                                 '<div class="form-group col-md-6">'+
                                     '<label>Producto</label>'+

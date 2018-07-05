@@ -24,7 +24,7 @@ $(document).ready(function(){
                     form += '<div class="form-row">'+
                                 '<div class="form-group col-md-2">'+
                                     '<label>Cant.</label>'+
-                                    '<input step="0.01" type="number" name="CantMaterial[]" class="form-control" value="1" placeholder="NECESITA" required>'+
+                                    '<input step="0.0001" type="number" name="CantMaterial[]" class="form-control" value="1" placeholder="NECESITA" required>'+
                                 '</div>'+
                                 '<div class="form-group col-md-7">'+
                                     '<label>Material</label>'+
@@ -70,7 +70,7 @@ $(document).ready(function(){
                     form += '<div class="form-row">'+
                                 '<div class="form-group col-md-2">'+
                                     '<label>Cant.</label>'+
-                                    '<input step="0.01" type="number" name="CantProducto[]" class="form-control" value="1" placeholder="NECESITA" required>'+
+                                    '<input step="0.0001" type="number" name="CantProducto[]" class="form-control" value="1" placeholder="NECESITA" required>'+
                                 '</div>'+
                                 '<div class="form-group col-md-7">'+
                                     '<label>Producto</label>'+
