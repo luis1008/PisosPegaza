@@ -97,7 +97,7 @@
                                             <div class="form-group col-md-3">
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><span class="icon icon-coin-dollar"></span></span>
-                                                    <input type="number" class="form-control" step="0.01" min="0.1" name="precio" value="{{$mp->mp_precio}}" placeholder="PRECIO" required>
+                                                    <input type="number" class="form-control" step="0.0001" name="precio" value="{{$mp->mp_precio}}" placeholder="PRECIO" required>
                                                 </div>
                                             </div>
                                         </div>
