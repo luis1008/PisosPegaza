@@ -151,7 +151,7 @@
 							<div class="form-group col-md-3">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="icon icon-stack"></span></span>
-                                    <input type="number" class="form-control" name="cantidad" min="0.1" step="0.001" placeholder="CONTENIDO" required>
+                                    <input type="number" class="form-control" name="cantidad" step="0.0001" placeholder="CONTENIDO" required>
                                 </div>
                             </div>
                             
@@ -175,7 +175,7 @@
                             <div class="form-group col-md-3">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="icon icon-coin-dollar"></span></span>
-									<input type="number" class="form-control" name="precio" min="0.1" step="0.01" placeholder="PRECIO" required>
+									<input type="number" class="form-control" name="precio" step="0.0001" placeholder="PRECIO" required>
 								</div>
 							</div>
                         </div>

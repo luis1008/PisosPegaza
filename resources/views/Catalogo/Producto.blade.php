@@ -77,14 +77,14 @@
                                             <div class="form-group col">
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><span class="icon icon-coin-dollar"></span></span>
-                                                    <input type="number" class="form-control input-costo" name="costo"  placeholder="COSTO" value="{{$pd->pd_costo}}" required>
+                                                    <input type="number" class="form-control input-costo" name="costo" step="0.0001" placeholder="COSTO" value="{{$pd->pd_costo}}" required>
                                                 </div>
                                             </div>
                                             
                                              <div class="form-group col">
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><span class="icon icon-coin-dollar"></span></span>
-                                                    <input type="number" class="form-control" name="precio_venta" value="{{$pd->pd_precio_venta}}" placeholder="PRECIO DE VENTA" required>
+                                                    <input type="number" class="form-control" name="precio_venta" value="{{$pd->pd_precio_venta}}" step="0.0001" placeholder="PRECIO DE VENTA" required>
                                                 </div>
                                             </div>
                                         </div>
