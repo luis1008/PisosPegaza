@@ -33,7 +33,7 @@ class ViajeController extends Controller
 
     public function get_egresos_viaje($id){
         //dd($id);
-        $egre  = Egresos::find($id);
+        $egre  = Gastos::find($id);
         
         return view('Viajes.Reporte_Caja')->with('egresos',$egre);
     }

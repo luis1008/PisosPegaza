@@ -1214,6 +1214,8 @@
 				<table class="table table-hover table-sm">
 					<thead>
 						<th>Fecha</th>
+						<th class="text-center">Nota</th>
+						<th class="text-center">Cliente</th>
 						<th class="text-center">Productos</th>
 						<th class="text-center">Materiales</th>
 						<th>Memo</th>
@@ -1227,6 +1229,26 @@
 						@foreach($PedidosProduccion as $pr)
 							<tr>
 								<td><?php echo $pr->created_at ?></td>
+								<th>
+									<ul>
+										<?php 
+											$PrProductos = explode('|', $pr->pr_productos);
+											foreach ($PrProductos as $pd) {
+												echo "<li>".$pd."</li>";
+											}
+										?>
+									</ul>
+								</th>
+								<th>
+									<ul>
+										<?php 
+											$PrProductos = explode('|', $pr->pr_productos);
+											foreach ($PrProductos as $pd) {
+												echo "<li>".$pd."</li>";
+											}
+										?>
+									</ul>
+								</th>
 								<th>
 									<ul>
 										<?php 

@@ -331,6 +331,7 @@ Route::group(['middleware' => 'auth'],function(){
 		'uses' => 'ViajeController@get_viaje_caja',
 		'as'   => 'get_viaje_caja'
 	]);
+	
 
 	//GASTOS
 	Route::post('/Gastos/{id}',[

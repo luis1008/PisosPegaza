@@ -507,7 +507,7 @@ class CajaController extends Controller
 
             //TABLA ABONO_PEDIDO
             for ($i=0; $i < sizeof($request->abono) ; $i++) { 
-                $this->AbonarPedidoCliente($request->id_pedido[$i], $request->abono[$i], $request->forma_pago[$i]);
+                $this->AbonarPedidoCliente($request->id_pedido[$i], $request->abono[$i], $request->forma_pago[$i], $request->ncheque[$i]);
             }
 
             //TABLA GASTOS
@@ -651,7 +651,7 @@ class CajaController extends Controller
             }
 
             $v_pago -= $v_resto;*/
-            $this->AbonarPedidoCliente($request->pedidos[$i], $request->abono[$i], $request->cuenta);
+            $this->AbonarPedidoCliente($request->pedidos[$i], $request->abono[$i], $request->cuenta, $request->ncheque[$i]);
         }
 
         return redirect()->route('caja');
@@ -733,7 +733,7 @@ class CajaController extends Controller
     }
 
     // FUNCION RECICLABLES
-    public function AbonarPedidoCliente($id, $pago, $cuenta){
+    public function AbonarPedidoCliente($id, $pago, $cuenta, $ncheque){
 
         $pedido = Pedido::find($id);
         $pedido->pe_total_abonado += $pago;
@@ -751,6 +751,7 @@ class CajaController extends Controller
         $abonos->ap_numero    = $pedido->abonos->count() + 1;
         $abonos->pedido_id    = $id;
         $abonos->ap_pago      = $cuenta;
+        $abonos->ap_no_cheque = $ncheque;
         $abonos->ap_folio     = $pedido->pe_nota;//AQUI QUE ONDA?
         $abonos->save();
     }

@@ -51,6 +51,7 @@
 				<th>Destino</th>
 				<th>Estatus</th>
 				<th>Forma de Pago</th>
+				<th>Numero de Cheque</th>
 				<th>Abonar/Pagar</th>
 			</thead>
 			<tbody>
@@ -65,12 +66,16 @@
 							<td><?php echo $pedido->pivot->det_status ?></td>
 							<td>
 								<select name="forma_pago[]">
-									<option value="">Seleccionar</option>
-									<option value="CAJA">CAJA</option>
+									<option value="">Forma de Pago</option>
+									<option value="EFECTIVO">EFECTIVO</option>
 									<option value="TRANSFERENCIA">TRANSFERENCIA</option>
 									<option value="CHEQUE">CHEQUE</option>
 
 								</select>
+							</td>
+							<td>
+								<input type="hidden" name="id_pedido[]" value="<?php echo $pedido->id_pedido ?> ">
+								<input type="text" class="form-control" name="ncheque[]" placeholder="#">
 							</td>
 							<td>
 								<input type="hidden" name="id_pedido[]" value="<?php echo $pedido->id_pedido ?> ">
@@ -110,12 +115,16 @@
 							<td><?php echo $pedido->pivot->det_status ?></td>
 							<td>
 								<select name="forma_pago[]">
-									<option value="">Seleccionar</option>
-									<option value="CAJA">CAJA</option>
+									<option value="">Forma de Pago</option>
+									<option value="EFECTIVO">EFECTIVO</option>
 									<option value="TRANSFERENCIA">TRANSFERENCIA</option>
 									<option value="CHEQUE">CHEQUE</option>
 
 								</select>
+							</td>
+							<td>
+								<input type="hidden" name="id_pedido[]" value="<?php echo $pedido->id_pedido ?> ">
+								<input type="text" class="form-control" name="ncheque[]" placeholder="#">
 							</td>
 							<td>
 								<input type="hidden" name="id_pedido[]" value="<?php echo $pedido->id_pedido ?> ">

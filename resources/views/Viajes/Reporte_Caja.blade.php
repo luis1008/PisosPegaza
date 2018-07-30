@@ -99,7 +99,7 @@
 	<br>
 	<br>
 	<!--<div class="card">
-		<div class="card-header bg-danger text-center text-white"><b>Egresos</b></div>	
+		<div class="card-header bg-danger text-center text-white"><b>Gastos</b></div>	
 	<table class="table table-sm">
 			<thead>
 				<th>Nota</th>
@@ -107,12 +107,12 @@
 				<th>Importe</th>
 			</thead>
 			<tbody>
-				<?php //foreach ($viajes->egresos as $egreso): ?>
-					<?php //if ($viajes->vi_status===1): ?>
+				<?php //foreach ($egresos->gastos as $egreso): ?>
+					<?php //if ($egresos->vi_status===1): ?>
 						<tr>
-							<td><?php //echo $egreso->eg_nota ?></td>
-							<td><?php //echo $egreso->eg_concepto ?></td>
-							<td><?php //echo $egreso->eg_importe ?></td>
+							<td><?php //echo $egreso->ga_nota ?></td>
+							<td><?php //echo $egreso->ga_concepto ?></td>
+							<td><?php //echo $egreso->ga_importe ?></td>
 						</tr>	
 					<?php //endif ?>
 				<?php //endforeach ?>
