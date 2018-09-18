@@ -12,5 +12,9 @@ class CatGastos extends Model
     
     protected $fillable   = ['catga_gastos',                          
                              'catga_status'];
+    
 
+    public function viajes(){
+        return $this->hasMany('pegaza\Viaje','gasto_id');
+    }
 }

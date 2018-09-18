@@ -1166,7 +1166,8 @@
 	  	<!-- Tab Viajes -->
 	  	<div class="tab-pane fade" id="pills-viajes" role="tabpanel">
 			<div class="card text-black bg-light">
-			<div class="card-header text-center text-white bg-danger"><b>VIAJES</b></div>
+				<div class="card-header text-center text-white bg-danger" data-toggle="collapse" href="#CollapseViajes" aria-expanded="true" aria-controls="CollapseViajes"><b><span class="icon icon-circle-down"></span> VIAJES</b></div>
+	  			<div id="CollapseViajes" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
 			<!-- <div class="card-body"> -->
 				<table class="table table-hover table-sm text-center">
 					<thead>
@@ -1203,6 +1204,48 @@
 						@endforeach
 					</tbody>
 				</table>
+			</div>
+			<br>
+			<br>
+			<div class="card-header text-center text-white bg-dark" data-toggle="collapse" href="#CollapseViajesFin" aria-expanded="true" aria-controls="CollapseViajesFin"><b><span class="icon icon-circle-down"></span> VIAJES FINALIZADOS</b></div>
+	  			<div id="CollapseViajesFin" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+			<!-- <div class="card-body"> -->
+				<table class="table table-hover table-sm text-center">
+					<thead>
+						<th>No. Viaje</th>
+						<th class="text-center">Repartidor</th>
+						<th class="text-center">Vehículo</th>
+						<th class="text-center">Destino</th>
+						<th class="text-center">Fecha</th>
+						<th class="text-center">Opciones</th>
+					</thead>
+					<tbody>
+						<?php if (count($viajes_fin) < 1): ?>
+							<tr>
+								<td colspan="6">NO SE ENCONTRO NINGÚN REGISTRO</td>
+							</tr>
+						<?php endif ?>
+						@foreach($viajes_fin as $viaje)
+							<tr>
+								<th><?php echo str_pad($viaje->id_viaje , 2, "0", STR_PAD_LEFT) ?></th>
+								<td><?php echo $viaje->empleado->em_nombre ?></td>
+								<td><?php echo $viaje->vehiculo->vh_nombre ?></td>
+								<td><?php echo $viaje->vi_destino ?></td>
+								<td><?php echo $viaje->created_at ?></td>
+								<!--<td>
+									<a class="btn btn-dark btn-sm tooltips2"  title="Finalizar" target="_blank()" href="<?php echo route('get_viaje',$viaje->id_viaje) ?>"><span class="icon icon-checkmark"></span></a>
+								</td>-->
+								<!--<td>
+									<a class="btn btn-danger btn-sm tooltips2" title="Detalle" target="_blank()" href="<?php echo route('get_viaje_caja',$viaje->id_viaje) ?>"><span class="icon icon-eye"></span></a>
+								</td>-->
+								<td>
+									<a class="btn btn-danger btn-sm tooltips2" title="Nota" target="_blank()" href="<?php echo route('ticket_viaje',['id'=>$viaje->id_viaje,'copia'=>1]) ?>"><span class="icon icon-ticket"></span></a>
+								</td>
+							</tr>
+						@endforeach
+					</tbody>
+				</table>
+			</div>
 			<!-- </div> -->
 			</div>
 	  	</div>
@@ -1213,7 +1256,7 @@
 				<div class="card-header text-center text-white bg-danger"><b>PEDIDOS EN PRODUCCION</b></div>
 				<table class="table table-hover table-sm">
 					<thead>
-						<th>Fecha</th>
+						<th class="text-center">Fecha</th>
 						<th class="text-center">Nota</th>
 						<th class="text-center">Cliente</th>
 						<th class="text-center">Productos</th>
@@ -1228,27 +1271,13 @@
 						@endif
 						@foreach($PedidosProduccion as $pr)
 							<tr>
-								<td><?php echo $pr->created_at ?></td>
-								<th>
-									<ul>
-										<?php 
-											$PrProductos = explode('|', $pr->pr_productos);
-											foreach ($PrProductos as $pd) {
-												echo "<li>".$pd."</li>";
-											}
-										?>
-									</ul>
-								</th>
-								<th>
-									<ul>
-										<?php 
-											$PrProductos = explode('|', $pr->pr_productos);
-											foreach ($PrProductos as $pd) {
-												echo "<li>".$pd."</li>";
-											}
-										?>
-									</ul>
-								</th>
+								<td class="text-center"><?php echo $pr->created_at ?></td>
+						<?php foreach ($enproduccion as $pedido) ?>
+
+								<td class="text-center"><?php echo $pedido->pe_nota ?></td>
+
+								<td class="text-center"><?php echo $pedido->cliente->cl_nombre ?></td>
+
 								<th>
 									<ul>
 										<?php 
@@ -2368,7 +2397,7 @@
 	</div>
 
 	<!-- Modal COMPRA -> AGREGAR NUEVO GASTO <OPTION> -->
-	<!-- <div class="modal fade" id="NewGasto" tabindex="-1" role="dialog" aria-labelledby="NewGastos" aria-hidden="true">
+	 <div class="modal fade" id="NewGasto" tabindex="-1" role="dialog" aria-labelledby="gastos" aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -2397,7 +2426,7 @@
 				</div>
 			</div>
 		</div>
-	</div> -->
+	</div> 
 
 	<!-- Modal COMPRA -> INSERTAR NUEVO PROVEEDOR <OPTION> -->
 	<div class="modal fade" id="proveedor" tabindex="-1" role="dialog" aria-labelledby="proveedores" aria-hidden="true">

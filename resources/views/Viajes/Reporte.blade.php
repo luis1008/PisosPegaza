@@ -75,7 +75,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="id_pedido[]" value="<?php echo $pedido->id_pedido ?> ">
-								<input type="text" class="form-control" name="ncheque[]" placeholder="#">
+								<input type="text" class="form-control" name="ncheque[]" placeholder="#Cheque">
 							</td>
 							<td>
 								<input type="hidden" name="id_pedido[]" value="<?php echo $pedido->id_pedido ?> ">
@@ -99,8 +99,9 @@
 				<th>Importe</th>
 				<th>Abonado</th>
 				<th>Resto</th>
-				<th>Estatus</th>
+				<th>Status Pago</th>
 				<th>Forma de Pago</th>
+				<th>Numero de Cheque</th>
 				<th>Abonar/Pagar</th>
 			</thead>
 			<tbody>
@@ -124,7 +125,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="id_pedido[]" value="<?php echo $pedido->id_pedido ?> ">
-								<input type="text" class="form-control" name="ncheque[]" placeholder="#">
+								<input type="text" class="form-control" name="ncheque[]" placeholder="#Cheque">
 							</td>
 							<td>
 								<input type="hidden" name="id_pedido[]" value="<?php echo $pedido->id_pedido ?> ">
@@ -143,9 +144,25 @@
 			<div class="AddEgreso" style="padding: 25px 0 0 25px"></div>	
 	</div> 
 	<br>
-	<div class="col-md-12 text-center">
-		<Button type="button" class="btn btn-egreso btn-dark"> <span class="icon icon-plus"></span> <b>Egreso</b></Button>
+	<div class="input-group">
+	<span class="input-group-addon"><span class="icon icon-user"></span></span>
+	<select name="gasto" id="gt" class="" required>
+		<option value="" hidden>Seleccionar Gasto</option>
+		<!--<option value="add">Nuevo Gasto</option>-->
+		<?php foreach($gastos as $gt){ ?>
+		<option value="<?php echo $gt->id_cat_gastos?>"><?php echo $gt->catga_gastos ?></option>
+								<?php } ?>
+	</select>          
+	<!--<label>Importe</label>-->
+			<div class="input-group">
+				<span class="input-group-addon icon-coin-dollar"></span>
+				<input type="text" class="" name="final" placeholder="IMPORTE">
+			</div>
 	</div>
+	<br>
+	<!--<div class="col-md-12 text-center">
+		<Button type="button" class="btn btn-egreso btn-dark"> <span class="icon icon-plus"></span> <b>Egreso</b></Button>
+	</div>-->
 	
 	<div class="form-row">
 		<div class="form-group col-md-3">
@@ -157,13 +174,45 @@
 		</div>
 		<div class="form-group col-md-12">
 			<label>Observaciones</label>
-			<textarea name="descripcion" id="" cols="30" rows="10" class="form-control"></textarea>
+			<textarea name="descripcion" id="" cols="30" rows="10" class="form-control" placeholder="Escriba sus Observaciones del Viaje..."></textarea>
 		</div>
 		<div class="form-group col-md-12 text-center">
 			<button class="btn btn-danger">Finalizar Viaje</button>
 		</div>
 	</div>
 	</form>
+
+	<!-- Modal COMPRA -> AGREGAR NUEVO GASTO <OPTION> -->
+	 <div class="modal fade" id="NewGasto" tabindex="-1" role="dialog" aria-labelledby="gastos" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="NewGastos">NUEVO GASTO</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form method="POST" id="form-Gast">
+						{{ csrf_field() }}
+						<div class="form-row">
+	                            <div class="form-group col">
+								<div class="input-group">
+									<span class="input-group-addon"><span class="icon icon-pencil"></span></span>
+									<input type="text" class="form-control form-clearGast" name="concepto" placeholder="NOMBRE GASTO" required>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="reset"  class="btn btn-dark"><span class="icon icon-fire"></span> Limpiar</button>
+							<button type="button" class="btn btn-danger btn-closeGast"><span class="icon icon-cross"></span> Cerrar</button>
+							<button type="button" class="btn btn-dark btn-SubmitGast"><span class="icon icon-floppy-disk"></span> Guardar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div> 
 	<!-- Modal EGRESOS -->
 	<!--
 	<div class="modal fade" id="egreso" tabindex="-1" role="dialog" aria-labelledby="egresos" aria-hidden="true">

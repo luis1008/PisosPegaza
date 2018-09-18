@@ -18,6 +18,7 @@ use pegaza\Contacto;
 use pegaza\Prestamo;
 use pegaza\Gasto;
 use pegaza\Empleado;
+use pegaza\CatGasto;
 
 class AjaxController extends Controller
 {
@@ -196,6 +197,13 @@ class AjaxController extends Controller
         if ($request->ajax()) {
             $cli = Cliente::where('cl_status','=','1')->orderBy('cl_nombre')->get();
             return response()->json($cli);
+        }
+    }
+
+    public function GetGasto(Request $request){
+        if ($request->ajax()) {
+            $gast = CatGasto::where('catga_status','=','1')->orderBy('catga_gastos')->get();
+            return response()->json($gast);
         }
     }
 

@@ -14,11 +14,16 @@ class Viaje extends Model
                              'vehiculo_id',   
                              'vi_kilometraje_inicial', 
                              'vi_destino', 
-                             'vi_viaticos'];
+                             'vi_viaticos',
+                             'gasto_id'];
 
     public function pedidos(){
         return $this->belongsToMany('pegaza\Pedido', 'detalle_viaje','viaje_id','pedido_id')->withPivot('det_tipo','det_status');
     }
+
+    public function gasto(){
+        return $this->belongsTo('pegaza\Cliente','gasto_id');
+    } 
 
     public function empleado(){
         return $this->belongsTo('pegaza\Empleado','empleado_id');
