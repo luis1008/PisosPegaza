@@ -173,7 +173,13 @@ class CatalogoController extends Controller
         //GASTOS
         public function gastos(Request $request){
         $gasto = CatGastos::paginate(25);
-        return view('Catalogo.gastos')->with('gastos',$gasto);
+        
+          if ($request->ajax()) {
+            return response()->json("exito");
+        } else {
+            return view('Catalogo.gastos')->with('gastos',$gasto);
+        }
+        
     }
         
     public function post_gasto(Request $request){

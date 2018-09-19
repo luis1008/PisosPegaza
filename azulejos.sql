@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-05-2018 a las 04:40:22
+-- Tiempo de generación: 18-09-2018 a las 10:01:34
 -- Versión del servidor: 10.1.31-MariaDB
 -- Versión de PHP: 7.0.28
 
@@ -62,8 +62,16 @@ CREATE TABLE `abono_pedido` (
 --
 
 INSERT INTO `abono_pedido` (`id_abono_pedido`, `ap_abono`, `ap_numero`, `pedido_id`, `ap_pago`, `ap_no_cheque`, `ap_status_cheque`, `ap_folio`, `created_at`, `updated_at`) VALUES
-(1, 0.00, 1, 1, 'EFECTIVO', '0', 'NINGUNO', '0', '2018-05-20', '2018-05-20'),
-(2, 0.00, 1, 2, 'EFECTIVO', '0', 'NINGUNO', '1', '2018-05-20', '2018-05-20');
+(1, 0.00, 1, 1, 'EFECTIVO', '0', 'NINGUNO', '0', '2018-07-29', '2018-07-29'),
+(2, 50.00, 2, 1, 'CHEQUE', '0', 'NINGUNO', '0', '2018-07-29', '2018-07-29'),
+(3, 0.00, 1, 2, 'EFECTIVO', '0', 'NINGUNO', '1', '2018-07-29', '2018-07-29'),
+(4, 400.00, 2, 2, 'CHEQUE', '0', 'NINGUNO', '1', '2018-07-29', '2018-07-29'),
+(5, 500.00, 3, 2, 'CHEQUE', '4698', 'NINGUNO', '1', '2018-07-29', '2018-07-29'),
+(6, 0.00, 1, 3, 'EFECTIVO', '0', 'NINGUNO', '2', '2018-07-29', '2018-07-29'),
+(7, 1000.00, 2, 3, 'EFECTIVO', '', 'NINGUNO', '2', '2018-07-29', '2018-07-29'),
+(8, 0.00, 1, 4, 'EFECTIVO', '0', 'NINGUNO', '3', '2018-09-18', '2018-09-18'),
+(9, 0.00, 1, 5, 'EFECTIVO', '0', 'NINGUNO', '4', '2018-09-18', '2018-09-18'),
+(10, 250.00, 3, 3, 'EFECTIVO', '', 'NINGUNO', '2', '2018-09-18', '2018-09-18');
 
 -- --------------------------------------------------------
 
@@ -73,7 +81,7 @@ INSERT INTO `abono_pedido` (`id_abono_pedido`, `ap_abono`, `ap_numero`, `pedido_
 
 CREATE TABLE `abono_prestamo` (
   `id_ab_prestamo` int(11) NOT NULL,
-  `ab_abono` double(6,2) NOT NULL DEFAULT '0.00',
+  `ab_abono` double(6,3) NOT NULL DEFAULT '0.000',
   `ab_pago` varchar(100) NOT NULL DEFAULT 'CAJA',
   `ab_numero` int(2) NOT NULL DEFAULT '0',
   `prestamo_id` int(11) NOT NULL,
@@ -81,6 +89,42 @@ CREATE TABLE `abono_prestamo` (
   `created_at` date NOT NULL,
   `updated_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `catalogo_gastos`
+--
+
+CREATE TABLE `catalogo_gastos` (
+  `id_cat_gastos` int(11) NOT NULL,
+  `catga_gastos` varchar(200) COLLATE latin1_spanish_ci NOT NULL,
+  `catga_status` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `catalogo_gastos`
+--
+
+INSERT INTO `catalogo_gastos` (`id_cat_gastos`, `catga_gastos`, `catga_status`, `created_at`, `updated_at`) VALUES
+(1, 'LUZ', 1, '2018-06-06 16:21:00', '2018-06-06 16:21:00'),
+(2, 'GASOLINA', 1, '2018-06-06 16:21:12', '2018-06-06 16:21:12'),
+(3, 'AGUA', 1, '2018-06-06 16:21:19', '2018-06-06 16:21:19'),
+(4, 'COMIDA', 1, '2018-06-06 16:21:27', '2018-06-06 16:21:27'),
+(5, 'TELEFONO', 1, '2018-09-18 02:09:12', '2018-09-18 02:09:12'),
+(6, 'PAPELERIA', 1, '2018-09-18 02:10:39', '2018-09-18 02:10:39'),
+(7, 'TONER', 1, '2018-09-18 02:11:49', '2018-09-18 02:11:49'),
+(8, 'MANTENIMIENTO', 1, '2018-09-18 02:14:13', '2018-09-18 02:14:13'),
+(9, 'MECANICO', 1, '2018-09-18 02:15:06', '2018-09-18 02:15:06'),
+(10, 'GASTO 3', 1, '2018-09-18 02:15:55', '2018-09-18 02:15:55'),
+(11, 'GASTO 4', 1, '2018-09-18 02:20:22', '2018-09-18 02:20:22'),
+(12, 'GASTO 5', 1, '2018-09-18 02:25:21', '2018-09-18 02:25:21'),
+(13, 'GASTO 6', 1, '2018-09-18 02:26:07', '2018-09-18 02:26:07'),
+(14, 'GASTO 7', 1, '2018-09-18 02:26:34', '2018-09-18 02:26:34'),
+(15, 'GASTO 8', 1, '2018-09-18 02:27:21', '2018-09-18 02:27:21'),
+(16, 'GASTO 9', 1, '2018-09-18 02:34:09', '2018-09-18 02:34:09');
 
 -- --------------------------------------------------------
 
@@ -110,9 +154,8 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`id_cliente`, `cl_nombre`, `cl_rfc`, `cl_observacion`, `cl_correo`, `cl_telefono`, `cl_nombre_contacto`, `cl_nombre_dueno`, `cl_forma_pago`, `cl_tipo_cliente`, `cl_termino_credito`, `cl_status`, `created_at`, `updated_at`) VALUES
-(1, 'FERRETERIA MARISOL', 'FRMA020192HM25', 'ULTIMO PRECIO: $345', 'MARI@GMAIL.COM', '3121032699', 'YOLANDA', 'MARISOL', 'EFECTIVO', 'NORMAL', '1 MES', 1, '2017-12-19 20:36:19', '2017-12-22 22:55:06'),
-(2, 'CONTRUCTOR GALINDO', 'COGA250695JMN20', 'NO HAY OBSERVACIONES', 'CONTRU-GALINDO@HOTMAIL.COM', '3121045899', 'JULIETA', 'RICARDO GALINDO', 'EFECTIVO', 'NORMAL', '1 SEMANA', 1, '2017-12-19 20:38:13', '2017-12-19 20:38:13'),
-(3, '', '', 'NO HAY OBSERVACIONES', 'htc@htc', '', '', '', '', '', '', 1, '2018-02-21 12:31:06', '2018-02-21 12:31:06');
+(1, 'ABEL CHAVEZ CERVANTES', 'ELDV0965', 'NO HAY OBSERVACIONES', 'abel.chavez@gmail.com', '3141905632', 'ABEL CHAVEZ CERVANTES', 'ABEL CHAVEZ CERVANTES', 'EFECTIVO', 'NORMAL', 'CONTADO', 1, '2018-06-06 16:24:34', '2018-06-06 16:24:34'),
+(2, 'ALONSO GUEDEA MENDEZ', 'ALGM101093AN5', 'NO HAY OBSERVACIONES', 'alonso.guedea@gmail.com', '3121149087', 'ALONSO GUEDEA MENDEZ', 'ALONSO GUEDEA MENDEZ', 'EFECTIVO', 'NORMAL', '1 MES', 1, '2018-09-18 00:13:36', '2018-09-18 00:13:36');
 
 -- --------------------------------------------------------
 
@@ -139,6 +182,14 @@ CREATE TABLE `compras` (
   `updated_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `compras`
+--
+
+INSERT INTO `compras` (`id_compra`, `proveedor_id`, `cm_pago`, `cm_status`, `cm_bodega`, `empleado_id`, `cm_num_entrada`, `cm_termino`, `cm_movimiento`, `cm_proveedor`, `cm_nota`, `cm_tipo`, `cm_total`, `cm_total_abonado`, `created_at`, `updated_at`) VALUES
+(1, 1, 'CREDITO', 'PENDIENTE', 1, 1, '123', '1 MES', 0, 1, '1', 'MATERIA PRIMA', 600.00, 0.00, '2018-07-05', '2018-07-05'),
+(2, 1, 'CREDITO', 'PENDIENTE', 0, 0, '', '1 MES', 0, 1, '2', '', 10000.00, 0.00, '2018-07-05', '2018-07-05');
+
 -- --------------------------------------------------------
 
 --
@@ -154,6 +205,13 @@ CREATE TABLE `compra_mp` (
   `det_subtotal` double(7,2) NOT NULL DEFAULT '0.00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `compra_mp`
+--
+
+INSERT INTO `compra_mp` (`id_detalle`, `compra_id`, `mp_id`, `det_cantidad`, `det_precio`, `det_subtotal`) VALUES
+(1, 1, 2, 4.500, 120.00, 600.00);
+
 -- --------------------------------------------------------
 
 --
@@ -168,6 +226,13 @@ CREATE TABLE `compra_producto` (
   `det_precio` double(7,2) NOT NULL DEFAULT '0.00',
   `det_subtotal` double(7,2) NOT NULL DEFAULT '0.00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `compra_producto`
+--
+
+INSERT INTO `compra_producto` (`id_detalle`, `compra_id`, `producto_id`, `det_cantidad`, `det_precio`, `det_subtotal`) VALUES
+(1, 2, 4, 10, 1000.00, 10000.00);
 
 -- --------------------------------------------------------
 
@@ -190,12 +255,7 @@ CREATE TABLE `contacto` (
 --
 
 INSERT INTO `contacto` (`id_contacto`, `cn_nombre`, `cn_telefono`, `cn_status`, `proveedor_id`, `created_at`, `updated_at`) VALUES
-(1, 'JORGE GUTIERREZ', '3121044897', 1, 1, '2017-12-19 20:40:08', '2017-12-19 20:40:08'),
-(2, 'LUIS GONZALEZ', '3124587799', 1, 1, '2017-12-19 20:40:08', '2017-12-22 23:30:30'),
-(3, 'ARTURO SANCHEZ', '3121895577', 1, 2, '2017-12-19 20:44:12', '2017-12-19 20:44:12'),
-(4, 'PEPE DEL TORO', '3121042133', 1, 2, '2017-12-22 23:31:23', '2017-12-22 23:31:23'),
-(5, 'JOSE', '3121051236', 1, 3, '2017-12-28 02:17:41', '2017-12-28 02:17:41'),
-(6, 'ANA DELGADO AYALA', '3121908753', 1, 4, '2018-01-11 21:31:48', '2018-01-11 21:31:48');
+(1, 'CESAR RAMOS BRIZUELA', '330987', 1, 1, '2018-06-06 16:05:03', '2018-06-06 16:05:03');
 
 -- --------------------------------------------------------
 
@@ -210,14 +270,20 @@ CREATE TABLE `contratos` (
   `cont_fecha_fin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `contratos`
+-- Estructura de tabla para la tabla `corte_caja`
 --
 
-INSERT INTO `contratos` (`id_contrato`, `empleado_id`, `cont_fecha_inicio`, `cont_fecha_fin`) VALUES
-(1, 4, '2017-12-14', '2018-02-24'),
-(2, 3, '2017-11-20', '2018-06-30'),
-(3, 3, '2018-01-01', '2018-12-01');
+CREATE TABLE `corte_caja` (
+  `id_corte` int(11) NOT NULL,
+  `crt_ingresos` double(6,3) NOT NULL DEFAULT '0.000',
+  `crt_egresos` double(6,3) NOT NULL DEFAULT '0.000',
+  `crt_saldo` double(6,3) NOT NULL DEFAULT '0.000',
+  `created_at` date NOT NULL,
+  `updated_at` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -238,10 +304,10 @@ CREATE TABLE `cuentas` (
 --
 
 INSERT INTO `cuentas` (`id_cuentas`, `ct_nombre`, `ct_status`, `created_at`, `updated_at`) VALUES
-(1, 'BANCO BANORTE', 1, '2017-12-23 23:31:11', '2017-12-23 23:31:58'),
-(2, 'BANCO SANTANDER', 1, '2017-12-23 23:32:18', '2017-12-23 23:32:18'),
-(3, 'BANCO BANCOMER', 1, '2017-12-23 23:32:26', '2017-12-23 23:32:26'),
-(4, 'BANCO HSBC', 1, '2017-12-23 23:32:34', '2017-12-23 23:32:34');
+(1, 'BANCO', 1, '2018-06-06 16:21:37', '2018-06-06 16:21:37'),
+(2, 'CAJA', 1, '2018-06-06 16:21:43', '2018-06-06 16:21:43'),
+(3, 'CHEQUE', 1, '2018-06-06 16:21:51', '2018-06-06 16:21:51'),
+(4, 'VIAJES', 1, '2018-06-06 16:21:57', '2018-06-06 16:21:57');
 
 -- --------------------------------------------------------
 
@@ -280,8 +346,23 @@ CREATE TABLE `detalle_pedido` (
 --
 
 INSERT INTO `detalle_pedido` (`id_det_pedido`, `pedido_id`, `producto_id`, `pegaza_id`, `det_prod_cantidad`, `det_prod_precio`, `det_prod_subtotal`, `det_prod_status`) VALUES
-(1, 1, 2, 0, 1, 750.00, 750.00, 1),
-(2, 2, 1, 0, 1, 300.00, 300.00, 1);
+(1, 1, 6, 0, 10, 5.00, 50.00, 1),
+(2, 2, 3, 0, 5, 280.00, 1400.00, 1),
+(3, 3, 2, 0, 5, 250.00, 1250.00, 1),
+(4, 4, 6, 0, 5, 150.00, 750.00, 1),
+(5, 5, 2, 0, 5, 250.00, 1250.00, 1);
+
+--
+-- Disparadores `detalle_pedido`
+--
+DELIMITER $$
+CREATE TRIGGER `Restar_Stock_Producto` AFTER INSERT ON `detalle_pedido` FOR EACH ROW BEGIN
+Update inventario
+set inventario.in_cantidad = inventario.in_cantidad - NEW.det_prod_cantidad
+where inventario.producto_id = NEW.producto_id;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -300,7 +381,8 @@ CREATE TABLE `detalle_produccion` (
 --
 
 INSERT INTO `detalle_produccion` (`id_detalle`, `produccion_id`, `pedido_id`) VALUES
-(2, 2, 1);
+(1, 1, 3),
+(2, 2, 4);
 
 -- --------------------------------------------------------
 
@@ -317,6 +399,25 @@ CREATE TABLE `detalle_requisitos` (
   `det_subtotal` double(7,4) NOT NULL DEFAULT '0.0000',
   `det_status` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `detalle_requisitos`
+--
+
+INSERT INTO `detalle_requisitos` (`id_detalle`, `mp_id`, `producto_id`, `det_cantidad`, `det_precio`, `det_subtotal`, `det_status`) VALUES
+(1, 2, 6, 0.500, 120.0000, 1.2000, 1);
+
+--
+-- Disparadores `detalle_requisitos`
+--
+DELIMITER $$
+CREATE TRIGGER `Restar_Stock_MP` AFTER INSERT ON `detalle_requisitos` FOR EACH ROW BEGIN
+Update compra_mp
+set compra_mp.det_cantidad = compra_mp.det_cantidad - NEW.det_cantidad
+where compra_mp.mp_id = NEW.mp_id;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -348,6 +449,18 @@ CREATE TABLE `detalle_viaje` (
   `det_status` enum('ENTREGADO','COBRADO','PENDIENTE','NO SE ENTREGO') NOT NULL DEFAULT 'PENDIENTE'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `detalle_viaje`
+--
+
+INSERT INTO `detalle_viaje` (`id_detalle`, `viaje_id`, `pedido_id`, `det_tipo`, `det_status`) VALUES
+(1, 1, 1, 'ENTREGA', 'PENDIENTE'),
+(2, 2, 2, 'ENTREGA', 'PENDIENTE'),
+(3, 3, 2, 'COBRANZA', 'PENDIENTE'),
+(4, 4, 3, 'ENTREGA', 'PENDIENTE'),
+(5, 5, 3, 'COBRANZA', 'PENDIENTE'),
+(6, 6, 4, 'ENTREGA', 'PENDIENTE');
+
 -- --------------------------------------------------------
 
 --
@@ -372,9 +485,7 @@ CREATE TABLE `documentos` (
 --
 
 INSERT INTO `documentos` (`id_documentos`, `empleado_id`, `acta_nacimiento`, `comprobante_domicilio`, `seguro_social`, `curp`, `ine`, `licencia_conducir`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, 1, 1, 1, 1, '2017-12-20 01:46:39', '2017-12-20 01:46:45'),
-(2, 2, 1, 1, 0, 1, 1, 0, '2017-11-21 18:13:34', '2017-12-22 18:46:55'),
-(3, 3, 1, 1, 1, 1, 1, 1, '2017-11-21 18:14:09', '2017-12-22 18:43:54');
+(1, 1, 1, 1, 1, 1, 1, 1, '2018-06-06 16:23:10', '2018-06-06 16:23:10');
 
 -- --------------------------------------------------------
 
@@ -397,9 +508,8 @@ CREATE TABLE `documentos_cl` (
 --
 
 INSERT INTO `documentos_cl` (`id_documentos_cl`, `cliente_id`, `hacienda`, `comprobante_domicilio`, `ine`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, 1, '2017-12-19 20:36:20', '2017-12-19 20:36:20'),
-(2, 2, 1, 1, 1, '2017-12-19 20:38:14', '2017-12-19 20:38:14'),
-(3, 3, 0, 0, 0, '2018-02-21 12:31:06', '2018-02-21 12:31:06');
+(1, 1, 1, 1, 1, '2018-06-06 16:24:34', '2018-06-06 16:24:34'),
+(2, 2, 1, 1, 1, '2018-09-18 00:13:36', '2018-09-18 00:13:36');
 
 -- --------------------------------------------------------
 
@@ -424,26 +534,8 @@ CREATE TABLE `domicilio` (
 --
 
 INSERT INTO `domicilio` (`id_domicilio`, `dom_calle`, `dom_colonia`, `dom_ciudad`, `dom_codigo_postal`, `dom_status`, `cliente_id`, `created_at`, `updated_at`) VALUES
-(1, 'FLOR DE LAUREL #122', 'LOMA ALTA', 'COLIMA', 28988, 1, 1, '2017-12-19 20:36:19', '2017-12-22 22:50:07'),
-(2, 'HIDALGO #256', 'BUGAMBILIA', 'TECOMAN', 28228, 1, 2, '2017-12-19 20:38:14', '2017-12-22 22:54:19'),
-(3, 'LOPEZ MATERO #345', 'FLORENCIA', 'MANZANILLO', 27578, 1, 1, '2017-12-22 22:53:15', '2017-12-22 22:54:39'),
-(4, '', '', '', 0, 1, 3, '2018-02-21 12:31:06', '2018-02-21 12:31:06');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `egresos`
---
-
-CREATE TABLE `egresos` (
-  `id_egresos` int(11) NOT NULL,
-  `eg_nota` text COLLATE latin1_spanish_ci NOT NULL,
-  `eg_concepto` varchar(200) COLLATE latin1_spanish_ci NOT NULL,
-  `eg_importe` double(7,4) NOT NULL DEFAULT '0.0000',
-  `viaje_id` int(11) NOT NULL DEFAULT '0',
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+(1, 'NIGROMANTE #56', 'CENTRO', 'COLIMA', 28100, 1, 1, '2018-06-06 16:24:34', '2018-06-06 16:24:34'),
+(2, 'AV IGNACIO SANDOVAL', 'JARDINES DE VISTA HERMOSA', 'COLIMA', 29018, 1, 2, '2018-09-18 00:13:36', '2018-09-18 00:13:36');
 
 -- --------------------------------------------------------
 
@@ -471,7 +563,7 @@ CREATE TABLE `empleado` (
 --
 
 INSERT INTO `empleado` (`id_empleado`, `em_nombre`, `em_telefono`, `em_curp`, `em_num_seg_social`, `em_fecha_inicio`, `em_num_licencia`, `em_vigencia_licencia`, `em_tipo`, `em_status`, `created_at`, `updated_at`) VALUES
-(1, 'JORGE BARRAGAN LOPEZ', '3121900293', NULL, NULL, 'PRESTAMO', NULL, NULL, NULL, 1, '2018-05-28 08:38:13', '2018-05-28 08:38:13');
+(1, 'ARMANDO MANZANERO', '3411897632', 'GUMJ931010HCMTRR03', '123456789', '2018-06-01', '12345', '2019-07-01', 'BASE', 1, '2018-06-06 16:23:10', '2018-06-06 16:23:10');
 
 -- --------------------------------------------------------
 
@@ -501,7 +593,7 @@ CREATE TABLE `gastos` (
   `ga_importe` double(7,2) NOT NULL,
   `ga_concepto` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ga_status` tinyint(1) NOT NULL DEFAULT '1',
-  `viaje_id` tinyint(1) NOT NULL,
+  `viaje_id` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` date NOT NULL,
   `updated_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -511,12 +603,12 @@ CREATE TABLE `gastos` (
 --
 
 INSERT INTO `gastos` (`id_gastos`, `ga_nota`, `ga_importe`, `ga_concepto`, `ga_status`, `viaje_id`, `created_at`, `updated_at`) VALUES
-(1, '', 0.00, 'GASOLINA', 1, 0, '2018-05-02', '2018-05-02'),
-(2, '', 0.00, 'LUZ', 1, 0, '2018-05-02', '2018-05-02'),
-(3, '', 0.00, 'TELEFONO', 1, 0, '2018-05-02', '2018-05-02'),
-(4, '', 0.00, 'COMIDA', 1, 0, '2018-05-02', '2018-05-02'),
-(5, '74', 200.00, 'COMIDA', 1, 2, '2018-05-10', '2018-05-10'),
-(6, '63', 300.00, 'CASETA', 1, 2, '2018-05-10', '2018-05-10');
+(1, '1', 200.00, 'GASOLINA', 1, 1, '2018-07-29', '2018-07-29'),
+(2, '2', 100.00, 'GASOLINA', 1, 2, '2018-07-29', '2018-07-29'),
+(3, '3', 100.00, 'GASOLINA', 1, 3, '2018-07-29', '2018-07-29'),
+(4, '4', 200.00, 'GASOLINA', 1, 4, '2018-07-29', '2018-07-29'),
+(5, '5', 100.00, 'COMIDA', 1, 4, '2018-07-29', '2018-07-29'),
+(6, '6', 100.00, 'BEBIDAS', 1, 5, '2018-09-18', '2018-09-18');
 
 -- --------------------------------------------------------
 
@@ -546,12 +638,20 @@ CREATE TABLE `inventario` (
   `in_memo` text,
   `in_cantidad` double(7,3) NOT NULL DEFAULT '0.000',
   `in_operacion` enum('SUMA','RESTA') NOT NULL DEFAULT 'SUMA',
+  `compra_id` int(11) NOT NULL DEFAULT '0',
   `producto_id` int(11) NOT NULL DEFAULT '0',
   `mp_id` int(11) NOT NULL DEFAULT '0',
   `produccion_id` int(11) NOT NULL DEFAULT '0',
   `created_at` date NOT NULL,
   `updated_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `inventario`
+--
+
+INSERT INTO `inventario` (`id_inventario`, `in_memo`, `in_cantidad`, `in_operacion`, `compra_id`, `producto_id`, `mp_id`, `produccion_id`, `created_at`, `updated_at`) VALUES
+(1, NULL, 10.000, 'SUMA', 2, 4, 0, 0, '0000-00-00', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -576,8 +676,9 @@ CREATE TABLE `materia_prima` (
 --
 
 INSERT INTO `materia_prima` (`id_materia_prima`, `mp_nombre`, `mp_precio`, `mp_cantidad`, `mp_unidad`, `mp_status`, `mp_observacion`, `created_at`, `updated_at`) VALUES
-(1, 'CEMENTO GRIS', 180.00, 50.00, 'KILOS', 1, 'NINGUNA OBSERVACIÓN.', '2018-04-30', '2018-04-30'),
-(2, 'LADRILLO ROJO', 200.00, 100.00, 'PIEZAS', 1, 'NINGUNA OBSERVACIÓN.', '2018-04-30', '2018-04-30');
+(1, 'ARCILLA', 150.00, 25.00, 'KILOS', 1, 'NINGUNA OBSERVACIÓN.', '2018-06-06', '2018-06-06'),
+(2, 'CEMENTO BLANCO', 120.00, 50.00, 'KILOS', 1, 'NINGUNA OBSERVACIÓN.', '2018-06-06', '2018-06-06'),
+(3, 'CAL', 150.00, 25.00, 'KILOS', 1, 'NINGUNA OBSERVACIÓN.', '2018-07-10', '2018-07-10');
 
 -- --------------------------------------------------------
 
@@ -628,8 +729,11 @@ CREATE TABLE `pedidos` (
 --
 
 INSERT INTO `pedidos` (`id_pedido`, `cliente_id`, `pe_importe`, `pe_total_abonado`, `pe_nota`, `pe_fecha_pedido`, `pe_fecha_entrega`, `pe_destino_pedido`, `pe_destino_ciudad`, `pe_memo`, `pe_termino`, `pe_forma_pago`, `pe_pago_status`, `pe_status`, `pe_notas_cl`, `created_at`, `updated_at`) VALUES
-(1, 2, 750.00, 0.00, '0', '2018-05-20', '2018-05-20', 'HIDALGO #256, BUGAMBILIA', 'TECOMAN', 'NADA', '1 SEMANA', 'EFECTIVO', 'PENDIENTE', 'ENTREGADO', 'NO HAY OBSERVACIONES', '2018-05-20 21:48:57', '2018-05-20 21:54:35'),
-(2, 1, 300.00, 0.00, '1', '2018-05-20', '2018-05-20', 'FLOR DE LAUREL #122, LOMA ALTA', 'COLIMA', 'NADA', '1 MES', 'EFECTIVO', 'PENDIENTE', 'ENTREGADO', 'ULTIMO PRECIO: $345', '2018-05-20 21:56:55', '2018-05-20 21:56:55');
+(1, 1, 50.00, 50.00, '0', '2018-07-29', '2018-07-29', 'NIGROMANTE #56, CENTRO', 'COLIMA', 'ES DE PRUEBA.', 'CONTADO', 'EFECTIVO', 'PAGADO', 'ENTREGADO', 'NO HAY OBSERVACIONES', '2018-07-29 20:36:05', '2018-07-29 20:50:59'),
+(2, 1, 1400.00, 1400.00, '1', '2018-07-29', '2018-07-29', 'NIGROMANTE #56, CENTRO', 'COLIMA', 'ES DE PRUEBA X2', 'CONTADO', 'EFECTIVO', 'PAGADO', 'ENTREGADO', 'NO HAY OBSERVACIONES', '2018-07-29 20:53:39', '2018-07-29 20:58:33'),
+(3, 1, 1250.00, 1250.00, '2', '2018-07-29', '2018-07-29', 'NIGROMANTE #56, CENTRO', 'COLIMA', 'PRUEBA X4', 'CONTADO', 'EFECTIVO', 'PAGADO', 'ENTREGADO', 'NO HAY OBSERVACIONES', '2018-07-29 20:59:41', '2018-09-18 00:52:47'),
+(4, 1, 750.00, 0.00, '3', '2018-09-18', '2018-09-18', 'NIGROMANTE #56, CENTRO', 'COLIMA', '', '1 MES', 'EFECTIVO', 'PENDIENTE', 'EN CAMINO A ENTREGAR', 'NO HAY OBSERVACIONES', '2018-09-18 00:04:47', '2018-09-18 01:41:42'),
+(5, 2, 1250.00, 0.00, '4', '2018-09-18', '2018-09-18', 'AV IGNACIO SANDOVAL, JARDINES DE VISTA HERMOSA', 'COLIMA', 'ES PRUEBA.', '1 MES', 'EFECTIVO', 'PENDIENTE', 'PENDIENTE PARA PRODUCCION', 'NO HAY OBSERVACIONES', '2018-09-18 00:14:10', '2018-09-18 00:14:10');
 
 -- --------------------------------------------------------
 
@@ -657,7 +761,7 @@ CREATE TABLE `prestamo` (
 --
 
 INSERT INTO `prestamo` (`id_prestamo`, `pres_cantidad`, `pres_abonado`, `pres_status`, `pres_descripcion`, `empleado_id`, `viaje_id`, `movimiento_temporal_id`, `pres_tipo`, `pres_pago_status`, `created_at`, `updated_at`) VALUES
-(1, 500.00, 0.00, 'PENDIENTE', 'PRUEBA', 1, 0, 0, 'PERSONAL', 'PENDIENTE', '2018-05-28', '2018-05-28');
+(1, 500.00, 0.00, 'PENDIENTE', 'ES DE PRUEBA.', 1, 0, 0, 'PERSONAL', 'PENDIENTE', '2018-07-05', '2018-07-05');
 
 -- --------------------------------------------------------
 
@@ -683,7 +787,8 @@ CREATE TABLE `produccion` (
 --
 
 INSERT INTO `produccion` (`id_produccion`, `pr_encargado`, `pr_ayudante`, `pr_turno`, `pr_completo`, `pr_memo`, `pr_productos`, `pr_materiales`, `created_at`, `updated_at`) VALUES
-(2, 'JESUS', 'CARLOS', 'MATUTINO', 'FINALIZADO', 'NO HAY NINGÚN COMENTARIO', '1 PEGAZA ORO', '', '2018-05-20', '2018-05-20');
+(1, 'ALEJANDRO RIOS ALCARAZ', 'CARLOS RUIZ CARDENAS', 'MATUTINO', 'FINALIZADO', 'NO HAY NINGÚN COMENTARIO', '5 PEGA AZULEJO', '', '2018-07-29', '2018-07-29'),
+(2, 'ALEJANDRO RIOS ALCARAZ', 'CARLOS RUIZ CARDENAS', 'MATUTINO', 'FINALIZADO', 'NO HAY NINGÚN COMENTARIO', '5 JUNTEADOR NEGRO', '2.5 KILOS CEMENTO BLANCO|', '2018-09-18', '2018-09-18');
 
 -- --------------------------------------------------------
 
@@ -708,16 +813,12 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`id_producto`, `pd_nombre`, `pd_tipo`, `pd_cantidad`, `pd_costo`, `pd_precio_venta`, `pd_status`, `created_at`, `updated_at`) VALUES
-(1, 'PEGA AZULEJO', 'ENSAMBLADO', 1, 201.5000, 300.0000, 1, '2017-12-19', '2017-12-23'),
-(2, 'PEGAZA ORO', 'ENSAMBLADO', 1, 501.4000, 750.0000, 1, '2017-12-19', '2017-12-23'),
-(3, 'LLAVE PARA LAVAMANOS', 'NO ENSAMBLADO', 1, 123.0000, 321.0000, 1, '2017-12-23', '2017-12-23'),
-(6, 'EJEMPLO2', 'ENSAMBLADO', 1, 590.0000, 600.0000, 1, '2017-12-23', '2017-12-23'),
-(7, 'QUIMICO 1', 'ENSAMBLADO', 1, 73.0000, 100.0000, 1, '2017-12-23', '2017-12-23'),
-(8, 'PEGA AZULEJO ROJO', 'ENSAMBLADO', 1, 423.0000, 500.0000, 1, '2017-12-23', '2017-12-23'),
-(9, 'VASTAGO DE REGADERA', 'NO ENSAMBLADO', 1, 23.0000, 50.0000, 1, '2018-01-11', '2018-01-11'),
-(10, 'EJEMPLO3', 'ENSAMBLADO', 1, 162.0000, 200.0000, 1, '2018-02-21', '2018-02-21'),
-(11, 'EJEMPLO4', 'ENSAMBLADO', 1, 66.0000, 2.0000, 1, '2018-02-21', '2018-02-21'),
-(12, 'EJEMPLO5', 'ENSAMBLADO', 1, 5.0000, 10.0000, 1, '2018-02-21', '2018-02-21');
+(1, 'PEGAZA ORO', 'ENSAMBLADO', 1, 114.0000, 250.0000, 1, '2018-06-06', '2018-06-06'),
+(2, 'PEGA AZULEJO', 'ENSAMBLADO', 1, 0.0000, 250.0000, 1, '2018-06-06', '2018-06-06'),
+(3, 'LAMPARA LED', 'NO ENSAMBLADO', 1, 130.0000, 280.0000, 1, '2018-06-06', '2018-06-06'),
+(4, 'LAVAVO MARMOL', 'NO ENSAMBLADO', 1, 999.9999, 999.9999, 1, '2018-06-06', '2018-06-06'),
+(5, 'JUNTEADOR ROJO', 'ENSAMBLADO', 1, 0.0000, 50.0000, 1, '2018-07-03', '2018-07-03'),
+(6, 'JUNTEADOR NEGRO', 'ENSAMBLADO', 1, 2.5000, 5.0000, 1, '2018-07-10', '2018-07-10');
 
 -- --------------------------------------------------------
 
@@ -742,10 +843,7 @@ CREATE TABLE `proveedor` (
 --
 
 INSERT INTO `proveedor` (`id_proveedor`, `pv_nombre`, `pv_domicilio`, `pv_ciudad`, `pv_rfc`, `pv_correo`, `pv_status`, `created_at`, `updated_at`) VALUES
-(1, 'CEMENTO APASCO', 'PRADOS DEL NORTE #125, LOMAS DE LA HIGUERA', 'TECOMAN', 'APSC251292HS058', 'APSCO.MEXICO@GMAIL.COM', 1, '2017-12-19 20:40:08', '2017-12-19 20:40:08'),
-(2, 'CEMEX CEMENTO MEXICANDO', 'INDUSTRIAL #5996 B, TONILA', 'GUADALAJARA', 'CMXE232895ASD56', 'CEMEX@HOTMAIL.COM', 1, '2017-12-19 20:44:11', '2017-12-19 20:44:11'),
-(3, 'PAPELERIA SAN JOSE', 'PRADOS DEL NORTE #235, LOMAS DE LA HIGUERA', 'VILLA DE ALVAREZ', 'ASDFSD0326852', 'sanjose@gmail.com', 1, '2017-12-28 02:17:41', '2017-12-28 02:17:41'),
-(4, 'FERRETERIA LA PAROTA', 'AV. BENITO JUAREZ #32, COL. CENTRO', 'COLIMA', 'FTLPT12793763', 'FERRETERIA.PAROTA@GMAIL.COM', 1, '2018-01-11 21:31:48', '2018-01-11 21:31:48');
+(1, 'CEMEX', 'AV TERCER ANILLO PERIFERICO #23', 'VILLA DE ALVAREZ', 'ELDV0965', 'ventas@cemex.com', 1, '2018-06-06 16:05:03', '2018-06-06 16:05:03');
 
 -- --------------------------------------------------------
 
@@ -770,9 +868,11 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id_usuario`, `empleado_id`, `perfil`, `usuario`, `us_status`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 1, 'ADMIN', 'JORGE', 1, '$2y$10$fozx4Ah2/kvk4h1vhBo3su7sEjUQe9iQdNyKdApewGzilb9nh6lOu', 'V92qF40WMmwDHrcU9xRXlkmQRqZ0h1YIdFcpNwgVmQfGuj6FdUvugDGTzbO7', '2017-11-21', '2018-05-28'),
+(1, 1, 'ADMIN', 'JORGE', 1, '$2y$10$fozx4Ah2/kvk4h1vhBo3su7sEjUQe9iQdNyKdApewGzilb9nh6lOu', 'lr01rkepirS4qXS9MhzRPsn8K90lcM7D97u5r8hyPPztZUWnHceC42FBC2wC', '2017-11-21', '2018-07-29'),
 (2, 2, 'ADMIN', 'XOCHITL', 1, '$2y$10$xEIRMKVMHmXokj7/xH6RL.bKl5GudwgKwgMNZBE4qK24rPT8f7yGu', '', '2017-11-21', '2017-11-21'),
-(3, 3, 'ADMIN', 'JESUS', 1, '$2y$10$oA3Vhdo3VR10mvS12hz4o.NoYzTpCVWs8n11odUJueE.A6hoEPaYS', 'We98TbWrUgQk8Ggt8XrtKYhw1RfAF7df2cOpeWEJHVmYe57eTuLZuZTRoMD7', '2017-11-21', '2017-12-20');
+(3, 3, 'ADMIN', 'JESUS', 1, '$2y$10$oA3Vhdo3VR10mvS12hz4o.NoYzTpCVWs8n11odUJueE.A6hoEPaYS', 'jhjeePV9nxSSR38TaknICn9esfoojTclJf2HtPOCSOlzcm68gV1pUGFCw4tx', '2017-11-21', '2018-05-29'),
+(4, 1, 'ADMIN', 'JCERVANTES', 1, '$2y$10$1QgCnmHt4K1yUu8Q2d/Dpeu6sV2s/HVQXED6ikQalRhxgj4kJ5Tuy', '', '2018-06-06', '2018-06-06'),
+(5, 1, 'ADMIN', 'AMANZANERO', 1, '$2y$10$xNtI2Z09WhrKfT6PAdKcE.eHj65CkmbZGv.kfm4dSdnejHQGQYq2O', '', '2018-06-06', '2018-06-06');
 
 -- --------------------------------------------------------
 
@@ -794,8 +894,7 @@ CREATE TABLE `vehiculo` (
 --
 
 INSERT INTO `vehiculo` (`placas`, `vh_nombre`, `vh_caracteristicas`, `vh_status`, `created_at`, `updated_at`) VALUES
-('FTP-05-06', 'TOYOTA', 'CAMIONETA BLANCA', 1, '2017-12-22 23:54:45', '2017-12-23 00:04:54'),
-('ZTR-9087', 'HILUX', 'BLANCA, 4X4, DOBLE CABINA', 1, '2018-01-06 12:31:54', '2018-01-06 12:31:54');
+('COL-F23', 'CHEVROLET COLORADO', 'DOBLE CABINA BLANCA', 1, '2018-06-06 16:03:54', '2018-06-06 16:03:54');
 
 -- --------------------------------------------------------
 
@@ -814,9 +913,22 @@ CREATE TABLE `viaje` (
   `vi_viaticos` double(7,2) NOT NULL DEFAULT '0.00',
   `vi_status` tinyint(1) NOT NULL DEFAULT '0',
   `vi_observaciones` text NOT NULL,
+  `gasto_id` int(11) NOT NULL,
   `created_at` date NOT NULL,
   `updated_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `viaje`
+--
+
+INSERT INTO `viaje` (`id_viaje`, `vi_kilometraje_inicial`, `vi_fecha`, `vi_kilometraje_final`, `empleado_id`, `vehiculo_id`, `vi_destino`, `vi_viaticos`, `vi_status`, `vi_observaciones`, `gasto_id`, `created_at`, `updated_at`) VALUES
+(1, '12967', '2018-07-29', '13000', 1, 'COL-F23', 'COLIMA', 200.00, 1, 'ESTE VIAJE ES DE PRUEBA.', 0, '2018-07-29', '2018-07-29'),
+(2, '13000', '2018-07-29', '13050', 1, 'COL-F23', 'COLIMA', 100.00, 1, 'ES DE PRUEBA X2.', 0, '2018-07-29', '2018-07-29'),
+(3, '13050', '2018-07-29', '13100', 1, 'COL-F23', 'COLIMA', 100.00, 1, 'ES DE PRUEBA X3', 0, '2018-07-29', '2018-07-29'),
+(4, '13100', '2018-07-29', '13150', 1, 'COL-F23', 'COLIMA', 300.00, 1, 'NADA.', 0, '2018-07-29', '2018-07-29'),
+(5, '13150', '2018-09-18', '13200', 1, 'COL-F23', 'COLIMA', 100.00, 1, 'ESTE VIAJE ES DE PRUEBA.', 0, '2018-09-18', '2018-09-18'),
+(6, '13200', '2018-09-18', '', 1, 'COL-F23', 'COLIMA', 150.00, 0, '', 0, '2018-09-18', '2018-09-18');
 
 --
 -- Índices para tablas volcadas
@@ -839,6 +951,12 @@ ALTER TABLE `abono_pedido`
 --
 ALTER TABLE `abono_prestamo`
   ADD PRIMARY KEY (`id_ab_prestamo`);
+
+--
+-- Indices de la tabla `catalogo_gastos`
+--
+ALTER TABLE `catalogo_gastos`
+  ADD PRIMARY KEY (`id_cat_gastos`);
 
 --
 -- Indices de la tabla `cliente`
@@ -878,6 +996,12 @@ ALTER TABLE `contacto`
 --
 ALTER TABLE `contratos`
   ADD PRIMARY KEY (`id_contrato`);
+
+--
+-- Indices de la tabla `corte_caja`
+--
+ALTER TABLE `corte_caja`
+  ADD PRIMARY KEY (`id_corte`);
 
 --
 -- Indices de la tabla `cuentas`
@@ -950,12 +1074,6 @@ ALTER TABLE `documentos_cl`
 --
 ALTER TABLE `domicilio`
   ADD PRIMARY KEY (`id_domicilio`);
-
---
--- Indices de la tabla `egresos`
---
-ALTER TABLE `egresos`
-  ADD PRIMARY KEY (`id_egresos`);
 
 --
 -- Indices de la tabla `empleado`
@@ -1064,7 +1182,7 @@ ALTER TABLE `abono_compra`
 -- AUTO_INCREMENT de la tabla `abono_pedido`
 --
 ALTER TABLE `abono_pedido`
-  MODIFY `id_abono_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_abono_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `abono_prestamo`
@@ -1073,40 +1191,52 @@ ALTER TABLE `abono_prestamo`
   MODIFY `id_ab_prestamo` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `catalogo_gastos`
+--
+ALTER TABLE `catalogo_gastos`
+  MODIFY `id_cat_gastos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `compras`
 --
 ALTER TABLE `compras`
-  MODIFY `id_compra` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `compra_mp`
 --
 ALTER TABLE `compra_mp`
-  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `compra_producto`
 --
 ALTER TABLE `compra_producto`
-  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `contacto`
 --
 ALTER TABLE `contacto`
-  MODIFY `id_contacto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_contacto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `contratos`
 --
 ALTER TABLE `contratos`
-  MODIFY `id_contrato` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_contrato` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `corte_caja`
+--
+ALTER TABLE `corte_caja`
+  MODIFY `id_corte` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `cuentas`
@@ -1124,7 +1254,7 @@ ALTER TABLE `detalle_movimientos`
 -- AUTO_INCREMENT de la tabla `detalle_pedido`
 --
 ALTER TABLE `detalle_pedido`
-  MODIFY `id_det_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_det_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_produccion`
@@ -1136,7 +1266,7 @@ ALTER TABLE `detalle_produccion`
 -- AUTO_INCREMENT de la tabla `detalle_requisitos`
 --
 ALTER TABLE `detalle_requisitos`
-  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_requisito_producto`
@@ -1148,31 +1278,25 @@ ALTER TABLE `detalle_requisito_producto`
 -- AUTO_INCREMENT de la tabla `detalle_viaje`
 --
 ALTER TABLE `detalle_viaje`
-  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `documentos`
 --
 ALTER TABLE `documentos`
-  MODIFY `id_documentos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_documentos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `documentos_cl`
 --
 ALTER TABLE `documentos_cl`
-  MODIFY `id_documentos_cl` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_documentos_cl` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `domicilio`
 --
 ALTER TABLE `domicilio`
-  MODIFY `id_domicilio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT de la tabla `egresos`
---
-ALTER TABLE `egresos`
-  MODIFY `id_egresos` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_domicilio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `empleado`
@@ -1202,13 +1326,13 @@ ALTER TABLE `gasto_fijo`
 -- AUTO_INCREMENT de la tabla `inventario`
 --
 ALTER TABLE `inventario`
-  MODIFY `id_inventario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_inventario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `materia_prima`
 --
 ALTER TABLE `materia_prima`
-  MODIFY `id_materia_prima` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_materia_prima` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `movimiento_temporal`
@@ -1220,7 +1344,7 @@ ALTER TABLE `movimiento_temporal`
 -- AUTO_INCREMENT de la tabla `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `prestamo`
@@ -1238,25 +1362,25 @@ ALTER TABLE `produccion`
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
-  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `viaje`
 --
 ALTER TABLE `viaje`
-  MODIFY `id_viaje` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_viaje` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

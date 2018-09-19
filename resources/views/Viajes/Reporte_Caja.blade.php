@@ -107,14 +107,14 @@
 				<th>Importe</th>
 			</thead>
 			<tbody>
-				<?php //foreach ($egresos->gastos as $egreso): ?>
-					<?php //if ($egresos->vi_status===1): ?>
+				<?php //foreach ($gastos->viajes as $egreso): ?>
+					<?php //if ($viajes->vi_status===1): ?>
 						<tr>
 							<td><?php //echo $egreso->ga_nota ?></td>
 							<td><?php //echo $egreso->ga_concepto ?></td>
 							<td><?php //echo $egreso->ga_importe ?></td>
-						</tr>	
-					<?php //endif ?>
+						</tr>
+					<?php //endif ?>	
 				<?php //endforeach ?>
 				
 			</tbody>

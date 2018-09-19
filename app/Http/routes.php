@@ -451,6 +451,7 @@ Route::group(['middleware' => 'auth'],function(){
 	Route::get('/GetEmpleado', 'AjaxController@GetEmpleado');
 	Route::post('/SetEmpleado', 'AjaxController@SetEmpleado');
 	Route::get('/GetCliente', 'AjaxController@GetCliente');
+	Route::get('/GetGasto', 'AjaxController@GetGasto');
 	Route::get('/GetClienteSelected', 'AjaxController@GetClienteSelected');
 	Route::get('/GetPrecioUltimaCompra', 'AjaxController@GetPrecioUltimaCompra');
 	Route::get('/GetCuentas', 'AjaxController@GetCuentas');

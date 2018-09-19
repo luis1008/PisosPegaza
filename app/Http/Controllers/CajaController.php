@@ -51,10 +51,12 @@ class CajaController extends Controller
         $u_pe = Pedido::select('pe_nota')->orderBy('id_pedido','DESC')->first();
         $u_pe = ($u_pe) ? $u_pe->pe_nota + 1 : "0";
         $viaj = Viaje::where('vi_status','0')->get();
+        $viaje_fin = Viaje::where('vi_status','1')->get();
         /*$pega = PedidoPegaza::where('pp_status','PENDIENTE')->get();*/
         $mov_comp = Compra::where('cm_status','PENDIENTE')->where('cm_movimiento','0')->where('cm_proveedor','0')->get();
         $pend = \DB::table('detalle_viaje')->join('pedidos','pedidos.id_pedido','=','detalle_viaje.pedido_id')->select('pedidos.id_pedido')->where('detalle_viaje.det_status','PENDIENTE')->get();
         $pedidos_pendientes_produccion = Pedido::where('pe_status','PENDIENTE PARA PRODUCCION')->get();
+        $pedidos_produccion = Pedido::where('pe_status','EN PRODUCCION')->get();
         $ClientesPendientesPorPagar    = Pedido::where('pe_pago_status','!=','PAGADO')->where('pe_status','=','ENTREGADO')->orderBy('pe_fecha_pedido')->groupBy('cliente_id')->get();
         $ProveedoresPendientesPorPagar = Compra::where('cm_status','!=','PAGADO')->where('cm_bodega', '=', '1')->orderBy('created_at')->groupBy('proveedor_id')->get();
         $EmpleadosPendientesPorPagar   = Prestamo::where('pres_tipo','=','PERSONAL')->where('pres_status','=','APROBADO')->whereRaw('pres_abonado < pres_cantidad')->orderBy('created_at')->groupBy('empleado_id')->get();
@@ -79,6 +81,7 @@ class CajaController extends Controller
                                 ->with('preparados',$pre)
                                 ->with('ciudades',$ciu)
                                 ->with('viajes',$viaj)
+                                ->with('viajes_fin',$viaje_fin)
                                 ->with('pedidos_asignados',$pend)
                                 /*->with('pedidos_pegaza',$pega)*/
                                 ->with('pedidos_adeuda',$ped_ade)
@@ -86,6 +89,7 @@ class CajaController extends Controller
                                 ->with('mat_primas',$mp)
                                 ->with('cuentas',$CatalogoCuentas)
                                 ->with('pendientes',$pedidos_pendientes_produccion)
+                                ->with('enproduccion',$pedidos_produccion)
                                 ->with('productos',$prod)
                                 ->with('inventarios',$inv)
                                 ->with('cat_gastos',$CatalogoGastos);
